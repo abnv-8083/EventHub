@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', { title: 'Available Coupons' }) %>
+
+<body>
+
+    <!-- Header -->
+    <%- include('../partials/header') %>
+
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+                <%- include('../partials/sidebar') %>
+
+        <!-- Main Content -->
+        <main class="dashboard-main animate">
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem;">
+                <div>
+                    <h1 style="font-size: 1.8rem;">Available <span class="text-gradient">Coupons</span></h1>
+                    <p style="color: var(--text-muted);">Exclusive offers just for you.</p>
+                </div>
+                <div style="font-size: 0.9rem; color: var(--text-dim);">
+                    <i class="fa fa-info-circle"></i> Click code to copy
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;">
+                <!-- Coupon 1 -->
+                <div class="coupon-card">
+                    <span class="coupon-badge">NEW</span>
+                    <h3 style="font-size: 1.1rem; margin-right: 2rem;">Welcome Discount</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">Get 10% off on your first booking over $30.
+                    </p>
+                    <div>
+                        <span class="coupon-code">WELCOME10</span>
+                    </div>
+                    <div class="coupon-footer">
+                        <i class="fa fa-clock"></i> Expires: Dec 31, 2026
+                    </div>
+                </div>
+
+                <!-- Coupon 2 -->
+                <div class="coupon-card">
+                    <h3 style="font-size: 1.1rem;">Early Bird Special</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">Flat $20 off for bookings made 30 days in
+                        advance.</p>
+                    <div>
+                        <span class="coupon-code">EARLYBIRD20</span>
+                    </div>
+                    <div class="coupon-footer">
+                        <i class="fa fa-clock"></i> Expires: Oct 15, 2026
+                    </div>
+                </div>
+
+                <!-- Coupon 3 -->
+                <div class="coupon-card">
+                    <h3 style="font-size: 1.1rem;">Summer Vibez</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">15% off on all concert and music festival
+                        tickets.</p>
+                    <div>
+                        <span class="coupon-code">SUMMERMUSIC</span>
+                    </div>
+                    <div class="coupon-footer">
+                        <i class="fa fa-clock"></i> Expires: Sept 30, 2026
+                    </div>
+                </div>
+
+                <!-- Coupon 4 -->
+                <div class="coupon-card" style="opacity: 0.6; border-style: solid;">
+                    <span class="coupon-badge" style="background: #e67e22;">UPCOMING</span>
+                    <h3 style="font-size: 1.1rem;">Halloween Horror</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">Stay tuned for spooky savings this October!
+                    </p>
+                    <div>
+                        <span class="coupon-code"
+                            style="background: var(--border); color: var(--text-dim); border: none;">REVEALON_OCT1</span>
+                    </div>
+                    <div class="coupon-footer">
+                        <i class="fa fa-lock"></i> Activates: Oct 01, 2026
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+</body>
+
+</html>
+
+
+

@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', { title: 'Refund Requests' }) %>
+
+<body>
+
+    <%- include('../partials/header') %>
+
+    <div class="dashboard-layout">
+                <%- include('../partials/sidebar-organizer') %>
+
+        <main class="dashboard-main animate">
+            <h1 style="font-size: 1.8rem; margin-bottom: 2.5rem;">Refund <span class="text-gradient">Requests</span>
+            </h1>
+
+            <!-- Refund Table -->
+            <div class="card" style="padding: 0; overflow: hidden;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr style="background: var(--bg-surface); border-bottom: 1px solid var(--border);">
+                            <th style="padding: 1.5rem;">User & Order</th>
+                            <th style="padding: 1.5rem;">Reason</th>
+                            <th style="padding: 1.5rem;">Amount</th>
+                            <th style="padding: 1.5rem;">Status</th>
+                            <th style="padding: 1.5rem;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody style="color: var(--text-muted); font-size: 0.9rem;">
+                        <tr style="border-bottom: 1px solid var(--border);">
+                            <td style="padding: 1.5rem;">
+                                <div style="font-weight: 600; color: white;">#EH-992841</div>
+                                <div style="font-size: 0.75rem;">John Doe â€¢ Midnight Jazz</div>
+                                <div style="font-size: 0.75rem; color: var(--text-dim);">Oct 14, 2026</div>
+                            </td>
+                            <td style="padding: 1.5rem;">Schedule Conflict</td>
+                            <td style="padding: 1.5rem;">$83.50</td>
+                            <td style="padding: 1.5rem;"><span style="color: #E67E22;">Pending Approval</span></td>
+                            <td style="padding: 1.5rem;">
+                                <button class="btn btn-primary"
+                                    style="padding: 0.4rem 0.8rem; font-size: 0.7rem;">Approve & Refund</button>
+                            </td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border);">
+                            <td style="padding: 1.5rem;">
+                                <div style="font-weight: 600; color: white;">#EH-992830</div>
+                                <div style="font-size: 0.75rem;">Sarah Connor â€¢ Rock Park</div>
+                                <div style="font-size: 0.75rem; color: var(--text-dim);">Oct 10, 2026</div>
+                            </td>
+                            <td style="padding: 1.5rem;">Travel Issues</td>
+                            <td style="padding: 1.5rem;">$55.00</td>
+                            <td style="padding: 1.5rem;"><span style="color: #2ECC71;">Refunded</span></td>
+                            <td style="padding: 1.5rem;">
+                                <button class="btn btn-outline" disabled
+                                    style="padding: 0.4rem 0.8rem; font-size: 0.75rem; opacity: 0.5;">Completed</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+</body>
+
+</html>
+
+
+

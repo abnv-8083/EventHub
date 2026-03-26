@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', { title: 'Manage Admins | Admin Hub' }) %>
+
+<body>
+
+    <%- include('../partials/header-admin') %>
+
+    <div class="dashboard-layout">
+        <%- include('../partials/sidebar-admin') %>
+
+        <main class="dashboard-main animate">
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem;">
+                <div>
+                    <h1 style="font-size: 1.8rem;">Platform <span class="text-gradient" style="color: #E63946;">Administrators</span></h1>
+                    <p style="color: var(--text-muted);">Manage system operators, capability assignments, and security profiles.</p>
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <div style="position: relative;">
+                        <input type="text" class="input" placeholder="Search admins..."
+                            style="padding: 0.8rem 1rem 0.8rem 2.5rem; width: 250px;">
+                        <i class="fa fa-search"
+                            style="position: absolute; left: 1rem; top: 1rem; color: var(--text-dim);"></i>
+                    </div>
+                    <!-- Create Admin button goes to the register page -->
+                    <a href="register" class="btn btn-primary" style="padding: 0.8rem 1.5rem; background: #E63946; border-color: #E63946; box-shadow: 0 4px 14px rgba(230, 57, 70, 0.3);">
+                        <i class="fa fa-plus"></i> Add Administrator
+                    </a>
+                </div>
+            </div>
+
+            <!-- Admin Table -->
+            <div class="card" style="padding: 0; overflow: hidden;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr style="background: var(--bg-surface); border-bottom: 1px solid var(--border);">
+                            <th style="padding: 1.5rem;">Administrator</th>
+                            <th style="padding: 1.5rem;">Joined Date</th>
+                            <th style="padding: 1.5rem;">Status</th>
+                            <th style="padding: 1.5rem;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody style="color: var(--text-muted); font-size: 0.9rem;">
+                        <% if (admins && admins.length > 0) { %>
+                            <% admins.forEach(admin => { %>
+                            <tr style="border-bottom: 1px solid var(--border);">
+                                <td style="padding: 1.5rem;">
+                                    <div style="display: flex; gap: 1rem; align-items: center;">
+                                        <div style="width: 40px; height: 40px; background: rgba(230, 57, 70, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #E63946; font-weight: 700;">
+                                            <%= admin.name ? admin.name.substring(0, 2).toUpperCase() : 'AD' %>
+                                        </div>
+                                        <div>
+                                            <div style="font-weight: 600; color: white;">
+                                                <%= admin.name %> 
+                                            </div>
+                                            <div style="font-size: 0.75rem;"><%= admin.email %></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="padding: 1.5rem;"><%= new Date(admin.createdAt).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }) %></td>
+                                <td style="padding: 1.5rem;">
+                                    <% if (admin.status === 'Active') { %>
+                                        <span style="color: #2ECC71;">Active</span>
+                                    <% } else if (admin.status === 'Blocked') { %>
+                                        <span style="color: #E74C3C;">Blocked</span>
+                                    <% } else { %>
+                                        <span style="color: #F1C40F;"><%= admin.status %></span>
+                                    <% } %>
+                                </td>
+                                <td style="padding: 1.5rem;">
+                                    <div style="display: flex; gap: 0.5rem; justify-content: flex-start;">
+                                        <!-- View -->
+                                        <a href="/admin/admins/view/<%= admin._id %>" class="btn btn-outline" style="padding: 0.4rem 0.6rem; font-size: 0.85rem;" title="View Profile">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+                                        <!-- Edit -->
+                                        <a href="/admin/admins/edit/<%= admin._id %>" class="btn btn-outline" style="padding: 0.4rem 0.6rem; font-size: 0.85rem;" title="Edit Profile">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                        <!-- Block / Unblock -->
+                                        <form class="ajax-form d-inline" action="/admin/admins/toggle-block/<%= admin._id %>" method="POST" style="margin: 0;">
+                                            <% if (admin.status === 'Active') { %>
+                                                <button type="submit" class="btn btn-outline" style="padding: 0.4rem 0.6rem; font-size: 0.85rem; border-color: #E67E22; color: #E67E22;" title="Block Administrator">
+                                                    <i class="fa fa-ban"></i>
+                                                </button>
+                                            <% } else { %>
+                                                <button type="submit" class="btn btn-outline" style="padding: 0.4rem 0.6rem; font-size: 0.85rem; border-color: #2ECC71; color: #2ECC71;" title="Unblock Administrator">
+                                                    <i class="fa fa-check"></i>
+                                                </button>
+                                            <% } %>
+                                        </form>
+                                        <!-- Delete -->
+                                        <form class="ajax-form d-inline" action="/admin/admins/delete/<%= admin._id %>" method="POST" style="margin: 0;">
+                                            <button type="submit" class="btn btn-outline" style="padding: 0.4rem 0.6rem; font-size: 0.85rem; border-color: #E74C3C; color: #E74C3C;" title="Delete Administrator">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            <% }) %>
+                        <% } else { %>
+                            <tr>
+                                <td colspan="4" style="padding: 2rem; text-align: center; color: var(--text-dim);">
+                                    No administrators found.
+                                </td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <% if (totalPages > 1) { %>
+            <div style="display: flex; justify-content: center; gap: 0.8rem; margin-top: 3rem;">
+                <% for (let i = 1; i <= totalPages; i++) { %>
+                    <a href="?page=<%= i %>" class="btn <%= currentPage === i ? 'btn-primary' : 'btn-outline' %>" style="padding: 0.5rem 1rem;">
+                        <%= i %>
+                    </a>
+                <% } %>
+            </div>
+            <% } %>
+        </main>
+    </div>
+
+    <%- include('partials/scripts') %>
+</body>
+</html>

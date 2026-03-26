@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', { title: 'My Wishlist' }) %>
+
+<body>
+
+    <!-- Header -->
+    <%- include('../partials/header') %>
+
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+                <%- include('../partials/sidebar') %>
+
+        <!-- Main Content -->
+        <main class="dashboard-main animate">
+            <h1 style="font-size: 1.8rem; margin-bottom: 2.5rem;">My <span class="text-gradient">Wishlist</span></h1>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;">
+                <!-- Wishlist Item 1 -->
+                <div class="card">
+                    <div class="card-img"
+                        style="background-image: url('https://images.unsplash.com/photo-1514525253361-bee8718a74a2?auto=format&fit=crop&q=80&w=800');">
+                        <button class="btn btn-primary"
+                            style="position: absolute; top: 1rem; right: 1rem; padding: 0.5rem; border-radius: 50%; width: 35px; height: 35px;"><i
+                                class="fa fa-times"></i></button>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Glow-in-the-Dark EDM</h3>
+                        <div class="card-meta">
+                            <span><i class="fa fa-calendar"></i> Oct 31, 2026</span>
+                            <span><i class="fa fa-map-marker-alt"></i> Miami</span>
+                        </div>
+                        <div style="display: flex; gap: 0.8rem;">
+                            <a href="booking" class="btn btn-primary" style="flex: 1; padding: 0.6rem;">Book
+                                Now</a>
+                            <a href="/event-details" class="btn btn-outline"
+                                style="padding: 0.6rem;"><i class="fa fa-info-circle"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Wishlist Item 2 -->
+                <div class="card">
+                    <div class="card-img"
+                        style="background-image: url('https://images.unsplash.com/photo-1459749411177-042180ce673c?auto=format&fit=crop&q=80&w=800');">
+                        <button class="btn btn-primary"
+                            style="position: absolute; top: 1rem; right: 1rem; padding: 0.5rem; border-radius: 50%; width: 35px; height: 35px;"><i
+                                class="fa fa-times"></i></button>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Rock the Park</h3>
+                        <div class="card-meta">
+                            <span><i class="fa fa-calendar"></i> Nov 05, 2026</span>
+                            <span><i class="fa fa-map-marker-alt"></i> Central Park</span>
+                        </div>
+                        <div style="display: flex; gap: 0.8rem;">
+                            <a href="booking" class="btn btn-primary" style="flex: 1; padding: 0.6rem;">Book
+                                Now</a>
+                            <a href="/event-details" class="btn btn-outline"
+                                style="padding: 0.6rem;"><i class="fa fa-info-circle"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Empty State Illustration (not needed now as we have items) -->
+        </main>
+    </div>
+
+</body>
+
+</html>
+
+
+

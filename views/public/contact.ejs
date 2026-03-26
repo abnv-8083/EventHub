@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', { title: 'Contact Us' }) %>
+
+<body>
+
+    <!-- Header -->
+    <%- include('../partials/header', { activePage: 'contact' }) %>
+
+    <main>
+        <section class="section hero" style="padding-bottom: 4rem;">
+            <div class="container animate" style="text-align: center;">
+                <h1 style="font-size: 3.5rem;" class="mb-3">Get in <span class="text-gradient">Touch</span>
+                </h1>
+                <p style="color: var(--text-muted); font-size: 1.1rem; max-width: 600px; margin-inline: auto;"
+                    class="mb-0">
+                    Have questions or feedback? We'd love to hear from you. Our team typically responds within 24 hours.
+                </p>
+            </div>
+        </section>
+
+        <section class="section" style="padding-top: 0;">
+            <div class="container" style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 4rem;">
+
+                <!-- Contact Info -->
+                <div class="animate stagger-1">
+                    <div style="margin-bottom: 3rem;">
+                        <h2 style="margin-bottom: 1.5rem;">Contact <span class="text-gradient">Info</span></h2>
+                        <div style="display: grid; gap: 2rem;">
+                            <div style="display: flex; gap: 1.25rem;">
+                                <div
+                                    style="width: 45px; height: 45px; background: rgba(230, 57, 70, 0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <i class="fa fa-envelope" style="color: var(--primary);"></i>
+                                </div>
+                                <div>
+                                    <h4 style="margin-bottom: 0.25rem;">Email Us</h4>
+                                    <p style="color: var(--text-dim);">hello@eventhub.com</p>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 1.25rem;">
+                                <div
+                                    style="width: 45px; height: 45px; background: rgba(230, 57, 70, 0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <i class="fa fa-phone" style="color: var(--primary);"></i>
+                                </div>
+                                <div>
+                                    <h4 style="margin-bottom: 0.25rem;">Call Us</h4>
+                                    <p style="color: var(--text-dim);">+1 (555) 123-4567</p>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 1.25rem;">
+                                <div
+                                    style="width: 45px; height: 45px; background: rgba(230, 57, 70, 0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <i class="fa fa-map-marker-alt" style="color: var(--primary);"></i>
+                                </div>
+                                <div>
+                                    <h4 style="margin-bottom: 0.25rem;">Office</h4>
+                                    <p style="color: var(--text-dim);">123 Event Lane, Suite 100<br>New York, NY 10001
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card glass p-4" style="border-radius: 20px;">
+                        <h4 class="mb-3">Follow Us</h4>
+                        <div class="d-flex gap-2">
+                            <a href="#" class="btn btn-outline"
+                                style="width: 45px; height: 45px; padding: 0; display: flex; align-items: center; justify-content: center; border-radius: 10px;"><i
+                                    class="fab fa-twitter"></i></a>
+                            <a href="#" class="btn btn-outline"
+                                style="width: 45px; height: 45px; padding: 0; display: flex; align-items: center; justify-content: center; border-radius: 10px;"><i
+                                    class="fab fa-instagram"></i></a>
+                            <a href="#" class="btn btn-outline"
+                                style="width: 45px; height: 45px; padding: 0; display: flex; align-items: center; justify-content: center; border-radius: 10px;"><i
+                                    class="fab fa-linkedin"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Form -->
+                <div class="animate stagger-2">
+                    <div class="card glass-dark" style="padding: 3.5rem; border-radius: 32px;">
+                        <h3 style="margin-bottom: 2rem;">Send a <span class="text-gradient">Message</span></h3>
+                        <form action="#">
+                            <div
+                                style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+                                <div class="form-group">
+                                    <label class="label">Full Name</label>
+                                    <input type="text" class="input glass" placeholder="John Doe" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">Email Address</label>
+                                    <input type="email" class="input glass" placeholder="john@example.com" required>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 1.5rem;">
+                                <label class="label">Subject</label>
+                                <input type="text" class="input glass" placeholder="How can we help?" required>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 2rem;">
+                                <label class="label">Message</label>
+                                <textarea class="input glass" style="min-height: 180px; resize: none;"
+                                    placeholder="Tell us more about your inquiry..." required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary glow-primary"
+                                style="width: 100%; padding: 1.2rem; border-radius: 12px; font-size: 1.1rem;">
+                                <i class="fa fa-paper-plane" style="margin-right: 0.75rem;"></i> Send Message
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Map Section -->
+        <section class="section" style="padding-top: 0;">
+            <div class="container animate">
+                <div
+                    style="height: 400px; background: var(--bg-surface); border-radius: 32px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--text-dim);">
+                    <span>[Google Maps Placeholder - New York HQ]</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <a href="/" class="logo" style="margin-bottom: 1.5rem;">EVENT<span>HUB</span></a>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Empowering experiences across the globe.</p>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 1.5rem;">Quick Links</h4>
+                    <ul style="color: var(--text-muted); display: grid; gap: 0.8rem;">
+                        <li><a href="events">Browse Events</a></li>
+                        <li><a href="about">Our Story</a></li>
+                        <li><a href="contact">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 1.5rem;">Newsletter</h4>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <input type="email" class="input" placeholder="Your email" style="padding: 0.6rem;">
+                        <button class="btn btn-primary" style="padding: 0 1rem;">Join</button>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 EventHub Inc. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <%- include('../partials/footer-scripts') %>
+</body>
+
+</html>

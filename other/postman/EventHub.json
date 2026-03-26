@@ -1,0 +1,5318 @@
+{
+  "info": {
+    "name": "EventHub API",
+    "description": "Postman Collection for the EventHub platform API endpoints, including Error Responses and Original Requests.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "authToken",
+      "value": "your_jwt_token_here",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Authentication",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/auth/login",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "login"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\"\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"token\": \"jwt_token_here\",\n  \"user\": {\n    \"_id\": \"60b9b0f4f91b4c1a84f3eabc\",\n    \"name\": \"John Doe\",\n    \"email\": \"user@example.com\",\n    \"phone\": \"+1234567890\",\n    \"membership_tier\": \"basic\",\n    \"avatar_url\": \"https://example.com/avatar.jpg\",\n    \"city\": \"New York\",\n    \"loyalty_points\": 100,\n    \"interests\": [\n      \"Music\",\n      \"Technology\"\n    ],\n    \"status\": \"active\",\n    \"created_at\": \"2026-01-01T10:00:00.000Z\"\n  }\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/auth/login",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "login"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\"\n}"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Register Attendee",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\",\n  \"phone\": \"+1234567890\",\n  \"city\": \"New York\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/auth/register",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "register"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\",\n  \"phone\": \"+1234567890\",\n  \"city\": \"New York\"\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Registration successful. Please verify your email.\",\n  \"user\": {\n    \"_id\": \"60b9b0f4f91b4c1a84f3eabc\",\n    \"name\": \"John Doe\",\n    \"email\": \"user@example.com\",\n    \"status\": \"pending_verification\",\n    \"created_at\": \"2026-03-14T10:00:00.000Z\"\n  }\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/auth/register",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "register"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\",\n  \"phone\": \"+1234567890\",\n  \"city\": \"New York\"\n}"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Register Organizer",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/register-organizer",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register-organizer"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"org_name\": \"Acme Events\",\n  \"contact_name\": \"Jane Smith\",\n  \"email\": \"org@example.com\",\n  \"phone\": \"+1987654321\",\n  \"password\": \"password123\",\n  \"category\": \"60b9b0f4f91b4c1a84f3eab7\",\n  \"website\": \"https://acme.events\",\n  \"social_links\": {\n    \"twitter\": \"@acme\"\n  }\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/auth/register-organizer",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "register-organizer"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"org_name\": \"Acme Events\",\n  \"contact_name\": \"Jane Smith\",\n  \"email\": \"org@example.com\",\n  \"phone\": \"+1987654321\",\n  \"password\": \"password123\",\n  \"category\": \"60b9b0f4f91b4c1a84f3eab7\",\n  \"website\": \"https://acme.events\",\n  \"social_links\": {\n    \"twitter\": \"@acme\"\n  }\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Application submitted successfully. Pending admin approval.\",\n  \"organizer\": {\n    \"_id\": \"60b9b0f4f91b4c1a84f3eab2\",\n    \"org_name\": \"Acme Events\",\n    \"contact_name\": \"Jane Smith\",\n    \"email\": \"org@example.com\",\n    \"phone\": \"+1987654321\",\n    \"category\": \"60b9b0f4f91b4c1a84f3eab7\",\n    \"website\": \"https://acme.events\",\n    \"social_links\": {\n      \"twitter\": \"https://twitter.com/acme\",\n      \"facebook\": \"https://facebook.com/acme\"\n    },\n    \"verified\": false,\n    \"status\": \"pending\",\n    \"created_at\": \"2026-03-14T10:05:00.000Z\",\n    \"approved_by\": null\n  }\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/auth/register-organizer",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "register-organizer"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"org_name\": \"Acme Events\",\n  \"contact_name\": \"Jane Smith\",\n  \"email\": \"org@example.com\",\n  \"phone\": \"+1987654321\",\n  \"password\": \"password123\",\n  \"category\": \"60b9b0f4f91b4c1a84f3eab7\",\n  \"website\": \"https://acme.events\",\n  \"social_links\": {\n    \"twitter\": \"@acme\"\n  }\n}"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/forgot-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "forgot-password"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/auth/forgot-password",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "forgot-password"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"user@example.com\"\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Password reset OTP sent to email.\"\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/auth/forgot-password",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "forgot-password"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"user@example.com\"\n}"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/reset-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "reset-password"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"reset_token_123\",\n  \"newPassword\": \"newpassword123\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/auth/reset-password",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "reset-password"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"token\": \"reset_token_123\",\n  \"newPassword\": \"newpassword123\"\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Password updated successfully.\"\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/auth/reset-password",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "reset-password"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"token\": \"reset_token_123\",\n  \"newPassword\": \"newpassword123\"\n}"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Verify OTP",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/verify-otp",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "verify-otp"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"otp_code\": \"123456\",\n  \"purpose\": \"email_verification\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/auth/verify-otp",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "verify-otp"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"user@example.com\",\n  \"otp_code\": \"123456\",\n  \"purpose\": \"email_verification\"\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Verification successful.\",\n  \"otp\": {\n    \"_id\": \"60b9b0f4f91b4c1a84f3eac4\",\n    \"email\": \"user@example.com\",\n    \"user_id\": \"60b9b0f4f91b4c1a84f3eabc\",\n    \"otp_code\": \"123456\",\n    \"purpose\": \"email_verification\",\n    \"expires_at\": \"2026-03-16T21:13:42.000Z\",\n    \"verified\": true,\n    \"created_at\": \"2026-03-16T21:03:42.000Z\"\n  }\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/auth/verify-otp",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "verify-otp"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"user@example.com\",\n  \"otp_code\": \"123456\",\n  \"purpose\": \"email_verification\"\n}"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "2. Public",
+      "item": [
+        {
+          "name": "List Events",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/public/events?category_id=60b9b0f4f91b4c1a84f3eab7&search=summer&date=2026-07-20",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "public",
+                "events"
+              ],
+              "query": [
+                {
+                  "key": "category_id",
+                  "value": "60b9b0f4f91b4c1a84f3eab7"
+                },
+                {
+                  "key": "search",
+                  "value": "summer"
+                },
+                {
+                  "key": "date",
+                  "value": "2026-07-20"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/public/events?category_id=60b9b0f4f91b4c1a84f3eab7",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "public",
+                    "events"
+                  ],
+                  "query": [
+                    {
+                      "key": "category_id",
+                      "value": "60b9b0f4f91b4c1a84f3eab7"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"_id\": \"60b9b0f4f91b4c1a84f3eab3\",\n      \"title\": \"Summer Music Festival\",\n      \"description\": \"A massive outdoor music festival featuring top artists.\",\n      \"organizer_id\": \"60b9b0f4f91b4c1a84f3eab2\",\n      \"category_id\": \"60b9b0f4f91b4c1a84f3eab7\",\n      \"banner_url\": \"https://example.com/banner.jpg\",\n      \"venue\": {\n        \"name\": \"Central Park\",\n        \"address\": \"Manhattan, NY\",\n        \"city\": \"New York\"\n      },\n      \"start_date\": \"2026-07-20T10:00:00.000Z\",\n      \"end_date\": \"2026-07-22T22:00:00.000Z\",\n      \"capacity\": 10000,\n      \"tickets_sold\": 5420,\n      \"status\": \"live\",\n      \"created_at\": \"2026-03-16T10:00:00.000Z\",\n      \"ticket_types\": [\n        {\n          \"_id\": \"60b9b0f4f91b4c1a84f3eab6\",\n          \"name\": \"General Admission\",\n          \"price\": 500,\n          \"quantity\": 9000,\n          \"remaining_count\": 4000\n        },\n        {\n          \"_id\": \"61b9b0f4f91b4c1a84f3eab7\",\n          \"name\": \"VIP\",\n          \"price\": 2000,\n          \"quantity\": 1000,\n          \"remaining_count\": 580\n        }\n      ]\n    }\n  ],\n  \"pagination\": {\n    \"total\": 1,\n    \"page\": 1\n  }\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/public/events?category_id=60b9b0f4f91b4c1a84f3eab7",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "public",
+                    "events"
+                  ],
+                  "query": [
+                    {
+                      "key": "category_id",
+                      "value": "60b9b0f4f91b4c1a84f3eab7"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Event Details",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/public/events/60b9b0f4f91b4c1a84f3eab3",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "public",
+                "events",
+                "60b9b0f4f91b4c1a84f3eab3"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/public/events/60b9b0f4f91b4c1a84f3eab3",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "public",
+                    "events",
+                    "60b9b0f4f91b4c1a84f3eab3"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"_id\": \"60b9b0f4f91b4c1a84f3eab3\",\n  \"title\": \"Summer Music Festival\",\n  \"description\": \"A massive outdoor music festival featuring top artists.\",\n  \"organizer\": {\n    \"_id\": \"60b9b0f4f91b4c1a84f3eab2\",\n    \"name\": \"Acme Events\",\n    \"bio\": \"Leading event organizer since 2010. Specializing in music and arts.\",\n    \"verified\": true,\n    \"rating\": 4.8\n  },\n  \"category\": {\n    \"_id\": \"60b9b0f4f91b4c1a84f3eab7\",\n    \"name\": \"Music\"\n  },\n  \"banner_url\": \"https://example.com/banner.jpg\",\n  \"venue\": {\n    \"name\": \"Central Park\",\n    \"address\": \"Manhattan, NY\",\n    \"city\": \"New York\",\n    \"map_coordinates\": {\"lat\": 40.785091, \"lng\": -73.968285}\n  },\n  \"start_date\": \"2026-07-20T10:00:00.000Z\",\n  \"end_date\": \"2026-07-22T22:00:00.000Z\",\n  \"ticket_types\": [\n    {\n      \"_id\": \"60b9b0f4f91b4c1a84f3eab6\",\n      \"name\": \"General Admission\",\n      \"price\": 500,\n      \"remaining\": 4000\n    },\n    {\n      \"_id\": \"61b9b0f4f91b4c1a84f3eab7\",\n      \"name\": \"VIP\",\n      \"price\": 2000,\n      \"remaining\": 580\n    }\n  ],\n  \"status\": \"live\"\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/public/events/60b9b0f4f91b4c1a84f3eab3",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "public",
+                    "events",
+                    "60b9b0f4f91b4c1a84f3eab3"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "List Categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/public/categories",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "public",
+                "categories"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/public/categories",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "public",
+                    "categories"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"_id\": \"60b9b0f4f91b4c1a84f3eab7\",\n      \"name\": \"Music\",\n      \"description\": \"Live concerts and musical events\",\n      \"icon\": \"fa-music\",\n      \"created_at\": \"2026-01-01T00:00:00.000Z\"\n    }\n  ]\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/public/categories",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "public",
+                    "categories"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Featured/Trending Events",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/public/events/featured",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "public",
+                "events",
+                "featured"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/public/events/featured",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "public",
+                    "events",
+                    "featured"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"_id\": \"60b9b0f4f91b4c1a84f3eab3\",\n      \"title\": \"Summer Music Festival\",\n      \"trending_score\": 95\n    }\n  ]\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/public/events/featured",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "public",
+                    "events",
+                    "featured"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Submit Contact Form",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/public/contact",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "public",
+                "contact"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Jane Doe\",\n  \"email\": \"jane@example.com\",\n  \"subject\": \"Partnership Inquiry\",\n  \"message\": \"I would like to organize an event on your platform.\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/public/contact",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "public",
+                    "contact"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Jane Doe\",\n  \"email\": \"jane@example.com\",\n  \"subject\": \"Partnership Inquiry\",\n  \"message\": \"I would like to organize an event on your platform.\"\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Your inquiry has been submitted. We will get back to you soon.\"\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/public/contact",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "public",
+                    "contact"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Jane Doe\",\n  \"email\": \"jane@example.com\",\n  \"subject\": \"Partnership Inquiry\",\n  \"message\": \"I would like to organize an event on your platform.\"\n}"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "List Testimonials",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/public/testimonials",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "public",
+                "testimonials"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/public/testimonials",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "public",
+                    "testimonials"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"_id\": \"1\",\n      \"user\": \"Alice Johnson\",\n      \"comment\": \"Amazing platform! Booking tickets was so smooth.\",\n      \"rating\": 5\n    }\n  ]\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/public/testimonials",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "public",
+                    "testimonials"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "3. Attendee Portal",
+      "item": [
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/user/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "user",
+                "profile"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/user/profile",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "user",
+                    "profile"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"_id\": \"60b9b0f4f91b4c1a84f3eabc\",\n  \"name\": \"John Doe\",\n  \"email\": \"user@example.com\",\n  \"phone\": \"+1234567890\",\n  \"membership_tier\": \"basic\",\n  \"avatar_url\": \"https://example.com/avatar.jpg\",\n  \"city\": \"New York\",\n  \"loyalty_points\": 100,\n  \"interests\": [\n    \"Music\",\n    \"Technology\"\n  ],\n  \"status\": \"active\",\n  \"created_at\": \"2026-01-01T10:00:00.000Z\"\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/user/profile",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "user",
+                    "profile"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/user/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "user",
+                "profile"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"city\": \"Los Angeles\",\n  \"interests\": [\n    \"Sports\"\n  ]\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/user/profile",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "user",
+                    "profile"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"city\": \"Los Angeles\",\n  \"interests\": [\n    \"Sports\"\n  ]\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Profile updated successfully.\"\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/user/profile",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "user",
+                    "profile"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"city\": \"Los Angeles\",\n  \"interests\": [\n    \"Sports\"\n  ]\n}"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "List Refundable Bookings",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/user/bookings/refundable",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "user",
+                "bookings",
+                "refundable"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/user/bookings/refundable",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "user",
+                    "bookings",
+                    "refundable"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"_id\": \"60b9b0f4f91b4c1a84f3eab4\",\n      \"order_id\": \"ORD-123456\",\n      \"event\": {\n        \"_id\": \"60b9b0f4f91b4c1a84f3eab3\",\n        \"title\": \"Midnight Jazz Festival\",\n        \"banner_url\": \"https://example.com/banner.jpg\"\n      },\n      \"quantity\": 2,\n      \"amount_paid\": 90.0,\n      \"status\": \"confirmed\",\n      \"refund_eligibility\": \"full\",\n      \"created_at\": \"2026-03-16T14:30:00.000Z\"\n    }\n  ]\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/user/bookings/refundable",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "user",
+                    "bookings",
+                    "refundable"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "List Tickets",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/user/tickets",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "user",
+                "tickets"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/user/tickets",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "user",
+                    "tickets"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"_id\": \"60b9b0f4f91b4c1a84f3eab5\",\n      \"ticket_number\": \"TKT-987654\",\n      \"booking_id\": \"60b9b0f4f91b4c1a84f3eab4\",\n      \"event_id\": \"60b9b0f4f91b4c1a84f3eab3\",\n      \"user_id\": \"60b9b0f4f91b4c1a84f3eabc\",\n      \"ticket_type_id\": \"60b9b0f4f91b4c1a84f3eab6\",\n      \"qr_code\": \"https://example.com/qrcodes/tkt-987654.png\",\n      \"attendee_name\": \"Alice Johnson\",\n      \"attendee_phone\": \"+1 (555) 123-4567\",\n      \"status\": \"active\",\n      \"cancelled\": false,\n      \"cancelled_at\": null,\n      \"refund_status\": \"none\",\n      \"checked_in\": false,\n      \"checked_in_at\": null,\n      \"created_at\": \"2026-03-16T14:35:00.000Z\"\n    }\n  ]\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/user/tickets",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "user",
+                    "tickets"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Ticket Details",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/user/tickets/60b9b0f4f91b4c1a84f3eab5",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "user",
+                "tickets",
+                "60b9b0f4f91b4c1a84f3eab5"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/user/tickets/60b9b0f4f91b4c1a84f3eab5",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "user",
+                    "tickets",
+                    "60b9b0f4f91b4c1a84f3eab5"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"_id\": \"60b9b0f4f91b4c1a84f3eab5\",\n  \"ticket_number\": \"TKT-987654\",\n  \"booking_id\": \"60b9b0f4f91b4c1a84f3eab4\",\n  \"event_id\": \"60b9b0f4f91b4c1a84f3eab3\",\n  \"user_id\": \"60b9b0f4f91b4c1a84f3eabc\",\n  \"ticket_type_id\": \"60b9b0f4f91b4c1a84f3eab6\",\n  \"qr_code\": \"https://example.com/qrcodes/tkt-987654.png\",\n  \"attendee_name\": \"Alice Johnson\",\n  \"attendee_phone\": \"+1 (555) 123-4567\",\n  \"status\": \"active\",\n  \"cancelled\": false,\n  \"cancelled_at\": null,\n  \"refund_status\": \"none\",\n  \"checked_in\": false,\n  \"checked_in_at\": null,\n  \"created_at\": \"2026-03-16T14:35:00.000Z\"\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/user/tickets/60b9b0f4f91b4c1a84f3eab5",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "user",
+                    "tickets",
+                    "60b9b0f4f91b4c1a84f3eab5"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Cancel Booking / Tickets",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/user/bookings/60b9b0f4f91b4c1a84f3eab4/cancel",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "user",
+                "bookings",
+                "60b9b0f4f91b4c1a84f3eab4",
+                "cancel"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ticket_ids\": [\"60b9b0f4f91b4c1a84f3eab5\"],\n  \"reason_category\": \"Schedule Conflict\",\n  \"comments\": \"Unexpected work trip.\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/user/bookings/60b9b0f4f91b4c1a84f3eab4/cancel",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "user",
+                    "bookings",
+                    "60b9b0f4f91b4c1a84f3eab4",
+                    "cancel"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"ticket_ids\": [\"60b9b0f4f91b4c1a84f3eab5\"],\n  \"reason_category\": \"Schedule Conflict\",\n  \"comments\": \"Unexpected work trip.\"\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Selected tickets cancelled successfully. Refund of $42.50 initiated.\"\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/user/bookings/60b9b0f4f91b4c1a84f3eab4/cancel",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "user",
+                    "bookings",
+                    "60b9b0f4f91b4c1a84f3eab4",
+                    "cancel"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"ticket_ids\": [\"60b9b0f4f91b4c1a84f3eab5\"],\n  \"reason_category\": \"Schedule Conflict\",\n  \"comments\": \"Unexpected work trip.\"\n}"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Wishlist",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/user/wishlist",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "user",
+                "wishlist"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/user/wishlist",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "user",
+                    "wishlist"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"_id\": \"60b9b0f4f91b4c1a84f3eabc1\",\n      \"user_id\": \"60b9b0f4f91b4c1a84f3eabc\",\n      \"event_id\": \"60b9b0f4f91b4c1a84f3eab3\",\n      \"created_at\": \"2026-03-16T12:00:00.000Z\",\n      \"event\": {\n        \"_id\": \"60b9b0f4f91b4c1a84f3eab3\",\n        \"title\": \"Summer Music Festival\",\n        \"description\": \"A massive outdoor music festival featuring top artists.\",\n        \"organizer_id\": \"60b9b0f4f91b4c1a84f3eab2\",\n        \"category_id\": \"60b9b0f4f91b4c1a84f3eab7\",\n        \"banner_url\": \"https://example.com/banner.jpg\",\n        \"venue\": {\n          \"name\": \"Central Park\",\n          \"address\": \"Manhattan, NY\",\n          \"city\": \"New York\"\n        },\n        \"start_date\": \"2026-07-20T10:00:00.000Z\",\n        \"end_date\": \"2026-07-22T22:00:00.000Z\",\n        \"capacity\": 10000,\n        \"tickets_sold\": 5420,\n        \"status\": \"live\",\n        \"created_at\": \"2026-03-16T10:00:00.000Z\"\n      }\n    }\n  ]\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/user/wishlist",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "user",
+                    "wishlist"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Add to Wishlist",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/user/wishlist",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "user",
+                "wishlist"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"event_id\": \"60b9b0f4f91b4c1a84f3eab3\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/user/wishlist",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "user",
+                    "wishlist"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"event_id\": \"60b9b0f4f91b4c1a84f3eab3\"\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Event added to wishlist.\",\n  \"wishlist\": {\n    \"_id\": \"60b9b0f4f91b4c1a84f3eabc1\",\n    \"user_id\": \"60b9b0f4f91b4c1a84f3eabc\",\n    \"event_id\": \"60b9b0f4f91b4c1a84f3eab3\",\n    \"created_at\": \"2026-03-16T12:00:00.000Z\"\n  }\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/user/wishlist",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "user",
+                    "wishlist"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"event_id\": \"60b9b0f4f91b4c1a84f3eab3\"\n}"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "List Coupons",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/user/coupons",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "user",
+                "coupons"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/user/coupons",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "user",
+                    "coupons"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"_id\": \"60b9b0f4f91b4c1a84f3eab9\",\n      \"code\": \"SUMMER20\",\n      \"discount_type\": \"PERCENTAGE\",\n      \"discount_value\": 20,\n      \"expiry_date\": \"2026-08-31T23:59:59.000Z\",\n      \"max_uses\": 500,\n      \"used_count\": 120,\n      \"applicable_events\": [\n        \"60b9b0f4f91b4c1a84f3eab3\"\n      ],\n      \"status\": \"active\"\n    }\n  ]\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/user/coupons",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "user",
+                    "coupons"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Booking Refund Details",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/user/bookings/60b9b0f4f91b4c1a84f3eab4/refund-info",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "user",
+                "bookings",
+                "60b9b0f4f91b4c1a84f3eab4",
+                "refund-info"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/user/bookings/60b9b0f4f91b4c1a84f3eab4/refund-info",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "user",
+                    "bookings",
+                    "60b9b0f4f91b4c1a84f3eab4",
+                    "refund-info"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"booking_id\": \"60b9b0f4f91b4c1a84f3eab4\",\n  \"event_title\": \"Midnight Jazz Festival\",\n  \"tickets\": [\n    {\n      \"ticket_id\": \"60b9b0f4f91b4c1a84f3eab5\",\n      \"attendee_name\": \"Alice Johnson\",\n      \"ticket_number\": \"EH-992841-01\",\n      \"refundable_amount\": 45.0,\n      \"is_cancellable\": true\n    },\n    {\n      \"ticket_id\": \"60b9b0f4f91b4c1a84f3eab6\",\n      \"attendee_name\": \"Bob Wilson\",\n      \"ticket_number\": \"EH-992841-02\",\n      \"refundable_amount\": 45.0,\n      \"is_cancellable\": true\n    }\n  ]\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/user/bookings/60b9b0f4f91b4c1a84f3eab4/refund-info",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "user",
+                    "bookings",
+                    "60b9b0f4f91b4c1a84f3eab4",
+                    "refund-info"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Preview Refund",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/user/bookings/60b9b0f4f91b4c1a84f3eab4/refund-preview",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "user",
+                "bookings",
+                "60b9b0f4f91b4c1a84f3eab4",
+                "refund-preview"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ticket_ids\": [\"60b9b0f4f91b4c1a84f3eab5\"]\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/user/bookings/60b9b0f4f91b4c1a84f3eab4/refund-preview",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "user",
+                    "bookings",
+                    "60b9b0f4f91b4c1a84f3eab4",
+                    "refund-preview"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"ticket_ids\": [\"60b9b0f4f91b4c1a84f3eab5\"]\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tickets_selected\": 1,\n  \"gross_refund\": 45.0,\n  \"platform_fee\": 2.50,\n  \"net_refund\": 42.50\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/user/bookings/60b9b0f4f91b4c1a84f3eab4/refund-preview",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "user",
+                    "bookings",
+                    "60b9b0f4f91b4c1a84f3eab4",
+                    "refund-preview"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"ticket_ids\": [\"60b9b0f4f91b4c1a84f3eab5\"]\n}"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Checkout / Create Booking",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/user/bookings",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "user",
+                "bookings"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"event_id\": \"60b9b0f4f91b4c1a84f3eab3\",\n  \"ticket_type_id\": \"60b9b0f4f91b4c1a84f3eab6\",\n  \"quantity\": 2,\n  \"payment_method\": \"Credit Card\",\n  \"coupon_code\": \"SUMMER20\",\n  \"attendees\": [\n    {\n      \"name\": \"Alice Johnson\",\n      \"phone\": \"+1 (555) 123-4567\"\n    },\n    {\n      \"name\": \"Bob Wilson\",\n      \"phone\": \"+1 (555) 987-6543\"\n    }\n  ]\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/user/bookings",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "user",
+                    "bookings"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"event_id\": \"60b9b0f4f91b4c1a84f3eab3\",\n  \"ticket_type_id\": \"60b9b0f4f91b4c1a84f3eab6\",\n  \"quantity\": 2,\n  \"payment_method\": \"Credit Card\",\n  \"coupon_code\": \"SUMMER20\"\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Booking created, pending payment.\",\n  \"booking\": {\n    \"_id\": \"60b9b0f4f91b4c1a84f3eab4\",\n    \"order_id\": \"ORD-123456\",\n    \"user_id\": \"60b9b0f4f91b4c1a84f3eabc\",\n    \"event_id\": \"60b9b0f4f91b4c1a84f3eab3\",\n    \"ticket_type_id\": \"60b9b0f4f91b4c1a84f3eab6\",\n    \"quantity\": 2,\n    \"amount_paid\": 1000.0,\n    \"payment_method\": \"Razorpay\",\n    \"booking_status\": \"confirmed\",\n    \"attendees_summary\": [\"Alice Johnson\", \"Bob Wilson\"],\n    \"cancelled_tickets\": 0,\n    \"created_at\": \"2026-03-16T14:30:00.000Z\"\n  }\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/user/bookings",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "user",
+                    "bookings"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"event_id\": \"60b9b0f4f91b4c1a84f3eab3\",\n  \"ticket_type_id\": \"60b9b0f4f91b4c1a84f3eab6\",\n  \"quantity\": 2,\n  \"payment_method\": \"Credit Card\",\n  \"coupon_code\": \"SUMMER20\"\n}"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Submit Refund Request",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/user/refunds",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "user",
+                "refunds"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ticket_id\": \"60b9b0f4f91b4c1a84f3eab5\",\n  \"booking_id\": \"60b9b0f4f91b4c1a84f3eab4\",\n  \"event_id\": \"60b9b0f4f91b4c1a84f3eab3\",\n  \"refund_amount\": 50.0,\n  \"reason\": \"Cannot attend anymore\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/user/refunds",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "user",
+                    "refunds"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"ticket_id\": \"60b9b0f4f91b4c1a84f3eab5\",\n  \"booking_id\": \"60b9b0f4f91b4c1a84f3eab4\",\n  \"event_id\": \"60b9b0f4f91b4c1a84f3eab3\",\n  \"refund_amount\": 50.0,\n  \"reason\": \"Cannot attend anymore\"\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Refund request submitted successfully.\",\n  \"refund\": {\n    \"_id\": \"60b9b0f4f91b4c1a84f3eabc1\",\n    \"ticket_id\": \"60b9b0f4f91b4c1a84f3eab5\",\n    \"booking_id\": \"60b9b0f4f91b4c1a84f3eab4\",\n    \"user_id\": \"60b9b0f4f91b4c1a84f3eabc\",\n    \"event_id\": \"60b9b0f4f91b4c1a84f3eab3\",\n    \"refund_amount\": 500.0,\n    \"reason\": \"Personal issues\",\n    \"status\": \"pending\",\n    \"requested_at\": \"2026-03-16T15:00:00.000Z\",\n    \"approved_by\": null\n  }\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/user/refunds",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "user",
+                    "refunds"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"ticket_id\": \"60b9b0f4f91b4c1a84f3eab5\",\n  \"booking_id\": \"60b9b0f4f91b4c1a84f3eab4\",\n  \"event_id\": \"60b9b0f4f91b4c1a84f3eab3\",\n  \"refund_amount\": 50.0,\n  \"reason\": \"Cannot attend anymore\"\n}"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "4. Organizer Portal",
+      "item": [
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizer/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizer",
+                "profile"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizer/profile",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizer",
+                    "profile"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"_id\": \"60b9b0f4f91b4c1a84f3eab2\",\n  \"org_name\": \"Acme Events\",\n  \"contact_name\": \"Jane Smith\",\n  \"email\": \"org@example.com\",\n  \"phone\": \"+1987654321\",\n  \"category\": \"60b9b0f4f91b4c1a84f3eab7\",\n  \"website\": \"https://acme.events\",\n  \"social_links\": {\n    \"twitter\": \"https://twitter.com/acme\",\n    \"facebook\": \"https://facebook.com/acme\"\n  },\n  \"verified\": true,\n  \"status\": \"approved\",\n  \"created_at\": \"2026-01-01T10:00:00.000Z\",\n  \"approved_by\": \"60b9b0f4f91b4c1a84f3eabd\"\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizer/profile",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizer",
+                    "profile"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Create Event",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizer/events",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizer",
+                "events"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"New Event\",\n  \"description\": \"Awesome event\",\n  \"category_id\": \"60b9b0f4f91b4c1a84f3eab7\",\n  \"banner_url\": \"https://example.com/banner.img\",\n  \"venue\": {\n    \"name\": \"City Hall\",\n    \"address\": \"456 Center St\"\n  },\n  \"start_date\": \"2026-12-01T10:00:00.000Z\",\n  \"end_date\": \"2026-12-01T18:00:00.000Z\",\n  \"capacity\": 500,\n  \"ticket_types\": [\n    {\n      \"name\": \"Standard\",\n      \"price\": 25.0,\n      \"quantity\": 500\n    }\n  ]\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizer/events",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizer",
+                    "events"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"New Event\",\n  \"description\": \"Awesome event\",\n  \"category_id\": \"60b9b0f4f91b4c1a84f3eab7\",\n  \"banner_url\": \"https://example.com/banner.img\",\n  \"venue\": {\n    \"name\": \"City Hall\",\n    \"address\": \"456 Center St\"\n  },\n  \"start_date\": \"2026-12-01T10:00:00.000Z\",\n  \"end_date\": \"2026-12-01T18:00:00.000Z\",\n  \"capacity\": 500,\n  \"ticket_types\": [\n    {\n      \"name\": \"Standard\",\n      \"price\": 25.0,\n      \"quantity\": 500\n    }\n  ]\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Event created.\",\n  \"event\": {\n    \"_id\": \"60b9b0f4f91b4c1a84f3eab3\",\n    \"title\": \"Summer Music Festival\",\n    \"description\": \"A massive outdoor music festival featuring top artists.\",\n    \"organizer_id\": \"60b9b0f4f91b4c1a84f3eab2\",\n    \"category_id\": \"60b9b0f4f91b4c1a84f3eab7\",\n    \"banner_url\": \"https://example.com/banner.jpg\",\n    \"venue\": {\n      \"name\": \"Central Park\",\n      \"address\": \"Manhattan, NY\",\n      \"city\": \"New York\"\n    },\n    \"start_date\": \"2026-07-20T10:00:00.000Z\",\n    \"end_date\": \"2026-07-22T22:00:00.000Z\",\n    \"capacity\": 10000,\n    \"tickets_sold\": 0,\n    \"status\": \"pending\",\n    \"created_at\": \"2026-03-16T10:00:00.000Z\",\n    \"ticket_types\": [\n      {\n        \"_id\": \"60b9b0f4f91b4c1a84f3eab6\",\n        \"name\": \"General Admission\",\n        \"price\": 500,\n        \"quantity\": 9000,\n        \"remaining_count\": 9000\n      }\n    ]\n  }\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizer/events",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizer",
+                    "events"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"New Event\",\n  \"description\": \"Awesome event\",\n  \"category_id\": \"60b9b0f4f91b4c1a84f3eab7\",\n  \"banner_url\": \"https://example.com/banner.img\",\n  \"venue\": {\n    \"name\": \"City Hall\",\n    \"address\": \"456 Center St\"\n  },\n  \"start_date\": \"2026-12-01T10:00:00.000Z\",\n  \"end_date\": \"2026-12-01T18:00:00.000Z\",\n  \"capacity\": 500,\n  \"ticket_types\": [\n    {\n      \"name\": \"Standard\",\n      \"price\": 25.0,\n      \"quantity\": 500\n    }\n  ]\n}"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizer/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizer",
+                "profile"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contact_name\": \"Jane Updated\",\n  \"website\": \"https://newsite.com\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizer/profile",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizer",
+                    "profile"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"contact_name\": \"Jane Updated\",\n  \"website\": \"https://newsite.com\"\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Profile updated successfully.\"\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizer/profile",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizer",
+                    "profile"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"contact_name\": \"Jane Updated\",\n  \"website\": \"https://newsite.com\"\n}"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Dashboard Metrics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizer/dashboard",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizer",
+                "dashboard"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizer/dashboard",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizer",
+                    "dashboard"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"revenue\": 45000.50,\n  \"total_tickets_sold\": 420,\n  \"active_events\": 3,\n  \"payout_balance\": 12000.00\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizer/dashboard",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizer",
+                    "dashboard"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "List Own Events",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizer/events",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizer",
+                "events"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizer/events",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizer",
+                    "events"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"_id\": \"60b9b0f4f91b4c1a84f3eab3\",\n      \"title\": \"Summer Music Festival\",\n      \"status\": \"live\",\n      \"tickets_sold\": 5420\n    }\n  ]\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizer/events",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizer",
+                    "events"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update Event",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizer/events/60b9b0f4f91b4c1a84f3eab3",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizer",
+                "events",
+                "60b9b0f4f91b4c1a84f3eab3"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"capacity\": 12000\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizer/events/60b9b0f4f91b4c1a84f3eab3",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizer",
+                    "events",
+                    "60b9b0f4f91b4c1a84f3eab3"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"capacity\": 12000\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Event updated successfully.\"\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizer/events/60b9b0f4f91b4c1a84f3eab3",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizer",
+                    "events",
+                    "60b9b0f4f91b4c1a84f3eab3"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"capacity\": 12000\n}"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Event Attendees",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizer/events/60b9b0f4f91b4c1a84f3eab3/attendees",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizer",
+                "events",
+                "60b9b0f4f91b4c1a84f3eab3",
+                "attendees"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizer/events/60b9b0f4f91b4c1a84f3eab3/attendees",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizer",
+                    "events",
+                    "60b9b0f4f91b4c1a84f3eab3",
+                    "attendees"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"ticket_id\": \"60b9b0f4f91b4c1a84f3eab5\",\n      \"attendee_name\": \"Alice Johnson\",\n      \"status\": \"active\",\n      \"checked_in\": false\n    }\n  ]\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizer/events/60b9b0f4f91b4c1a84f3eab3/attendees",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizer",
+                    "events",
+                    "60b9b0f4f91b4c1a84f3eab3",
+                    "attendees"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "List Refund Requests",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizer/refunds",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizer",
+                "refunds"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizer/refunds",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizer",
+                    "refunds"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"_id\": \"REF-123\",\n      \"ticket_id\": \"TKT-456\",\n      \"refund_amount\": 500.00,\n      \"status\": \"pending\"\n    }\n  ]\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizer/refunds",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizer",
+                    "refunds"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update Refund Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizer/refunds/REF-123",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizer",
+                "refunds",
+                "REF-123"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"approved\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizer/refunds/REF-123",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizer",
+                    "refunds",
+                    "REF-123"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"approved\"\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Refund status updated.\"\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizer/refunds/REF-123",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizer",
+                    "refunds",
+                    "REF-123"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"approved\"\n}"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Revenue Report",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizer/revenue",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizer",
+                "revenue"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizer/revenue",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizer",
+                    "revenue"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"total_revenue\": 150000.00,\n  \"platform_fees\": 15000.00,\n net_earnings\": 135000.00,\n  \"payout_history\": []\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizer/revenue",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizer",
+                    "revenue"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Verify Ticket Scanner",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizer/scanner/verify",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizer",
+                "scanner",
+                "verify"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"qr_code\": \"TKT-12345-ABC-DATA\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizer/scanner/verify",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizer",
+                    "scanner",
+                    "verify"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"qr_code\": \"TKT-12345-ABC-DATA\"\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Ticket valid. Attendee checked in.\",\n  \"ticket\": {\n    \"_id\": \"60b9b0f4f91b4c1a84f3eab5\",\n    \"ticket_number\": \"TKT-987654\",\n    \"booking_id\": \"60b9b0f4f91b4c1a84f3eab4\",\n    \"event_id\": \"60b9b0f4f91b4c1a84f3eab3\",\n    \"user_id\": \"60b9b0f4f91b4c1a84f3eabc\",\n    \"ticket_type_id\": \"60b9b0f4f91b4c1a84f3eab6\",\n    \"qr_code\": \"https://example.com/qrcodes/tkt-987654.png\",\n    \"attendee_name\": \"Alice Johnson\",\n    \"attendee_phone\": \"+1 (555) 123-4567\",\n    \"status\": \"active\",\n    \"cancelled\": false,\n    \"cancelled_at\": null,\n    \"refund_status\": \"none\",\n    \"checked_in\": true,\n    \"checked_in_at\": \"2026-03-16T14:35:00.000Z\",\n    \"created_at\": \"2026-03-16T14:35:00.000Z\"\n  }\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizer/scanner/verify",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizer",
+                    "scanner",
+                    "verify"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"qr_code\": \"TKT-12345-ABC-DATA\"\n}"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "5. Admin Portal",
+      "item": [
+        {
+          "name": "List Pending Events",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/approvals/events",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "approvals",
+                "events"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/approvals/events",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "approvals",
+                    "events"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"_id\": \"60b9b0f4f91b4c1a84f3eab3\",\n      \"title\": \"Summer Music Festival\",\n      \"description\": \"A massive outdoor music festival featuring top artists.\",\n      \"organizer_id\": \"60b9b0f4f91b4c1a84f3eab2\",\n      \"category_id\": \"60b9b0f4f91b4c1a84f3eab7\",\n      \"banner_url\": \"https://example.com/banner.jpg\",\n      \"venue\": {\n        \"name\": \"Central Park\",\n        \"address\": \"Manhattan, NY\",\n        \"city\": \"New York\"\n      },\n      \"start_date\": \"2026-07-20T10:00:00.000Z\",\n      \"end_date\": \"2026-07-22T22:00:00.000Z\",\n      \"capacity\": 10000,\n      \"tickets_sold\": 5420,\n      \"status\": \"pending\",\n      \"created_at\": \"2026-03-16T10:00:00.000Z\",\n      \"ticket_types\": [\n        {\n          \"_id\": \"60b9b0f4f91b4c1a84f3eab6\",\n          \"name\": \"General Admission\",\n          \"price\": 500,\n          \"quantity\": 9000,\n          \"remaining_count\": 4000\n        }\n      ]\n    }\n  ]\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/approvals/events",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "approvals",
+                    "events"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Create Category",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/categories",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "categories"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Sports\",\n  \"description\": \"Athletic events\",\n  \"icon\": \"fa-futbol\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/categories",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "categories"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Sports\",\n  \"description\": \"Athletic events\",\n  \"icon\": \"fa-futbol\"\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Category created\",\n  \"category\": {\n    \"_id\": \"60b9b0f4f91b4c1a84f3eab7\",\n    \"name\": \"Sports\",\n    \"description\": \"Athletic events\",\n    \"icon\": \"fa-futbol\",\n    \"created_at\": \"2026-03-16T21:03:42.000Z\"\n  }\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/categories",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "categories"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Sports\",\n  \"description\": \"Athletic events\",\n  \"icon\": \"fa-futbol\"\n}"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Admin Profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "profile"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/profile",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "profile"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"_id\": \"60b9b0f4f91b4c1a84f3eabd\",\n  \"email\": \"admin@eventhub.com\",\n  \"role\": \"super_admin\",\n  \"name\": \"System Administrator\"\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/profile",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "profile"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Platform Metrics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/dashboard",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "dashboard"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/dashboard",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "dashboard"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"global_revenue\": 1200000.00,\n  \"total_users\": 25000,\n  \"active_organizers\": 150,\n  \"pending_approvals\": 12\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/dashboard",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "dashboard"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "List Pending Organizers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/approvals/organizers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "approvals",
+                "organizers"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/approvals/organizers",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "approvals",
+                    "organizers"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"_id\": \"60b9b0f4f91b4c1a84f3eab2\",\n      \"org_name\": \"Acme Events\",\n      \"status\": \"pending\"\n    }\n  ]\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/approvals/organizers",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "approvals",
+                    "organizers"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Approve Content",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/approvals/approve",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "approvals",
+                "approve"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"event\",\n  \"id\": \"60b9b0f4f91b4c1a84f3eab3\",\n  \"action\": \"approve\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/approvals/approve",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "approvals",
+                    "approve"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"event\",\n  \"id\": \"60b9b0f4f91b4c1a84f3eab3\",\n  \"action\": \"approve\"\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Content approved successfully.\"\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/approvals/approve",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "approvals",
+                    "approve"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"event\",\n  \"id\": \"60b9b0f4f91b4c1a84f3eab3\",\n  \"action\": \"approve\"\n}"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Master Users List",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "users"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/users",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "users"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"_id\": \"USER-1\",\n      \"email\": \"user@example.com\",\n      \"status\": \"active\"\n    }\n  ]\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/users",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "users"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Manage Platform Coupons",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/coupons",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "coupons"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"MEGA50\",\n  \"discount\": 50,\n  \"type\": \"FIXED\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/coupons",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "coupons"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"code\": \"MEGA50\",\n  \"discount\": 50,\n  \"type\": \"FIXED\"\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Coupon created by admin.\"\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/coupons",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "coupons"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"code\": \"MEGA50\",\n  \"discount\": 50,\n  \"type\": \"FIXED\"\n}"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Master Revenue Report",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/reports/revenue",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "reports",
+                "revenue"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/reports/revenue",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "reports",
+                    "revenue"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"total_volume\": 5000000.00,\n  \"platform_cut\": 500000.00,\n  \"period\": \"2026-Q1\"\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/reports/revenue",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "reports",
+                    "revenue"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Read System Logs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/logs",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "logs"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/logs",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "logs"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"logs\": [\n    { \"time\": \"2026-03-17T12:00:00Z\", \"level\": \"error\", \"msg\": \"Database connection timed out\" }\n  ]\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/logs",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "logs"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get System Settings",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/settings",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "settings"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/settings",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "settings"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"maintenance_mode\": false,\n  \"platform_fee_percentage\": 10,\n  \"supported_currencies\": [\"USD\", \"INR\"]\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/settings",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "settings"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"Invalid input data or missing fields.\"\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

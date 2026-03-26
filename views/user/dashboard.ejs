@@ -1,0 +1,139 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', { title: 'User Dashboard' }) %>
+
+<body>
+
+    <!-- Header -->
+    <%- include('../partials/header') %>
+
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+                <%- include('../partials/sidebar') %>
+
+        <!-- Main Content -->
+        <main class="dashboard-main animate">
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem;">
+                <div>
+                    <h1 style="font-size: 1.8rem;">Welcome back, <span class="text-gradient">John!</span></h1>
+                    <p style="color: var(--text-muted);">Here's what's happening with your events.</p>
+                </div>
+                <a href="/events" class="btn btn-primary"><i class="fa fa-search"></i> Discover New
+                    Events</a>
+            </div>
+
+            <!-- Quick Stats -->
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 3rem;">
+                <div class="card" style="padding: 1.5rem; display: flex; align-items: center; gap: 1.2rem;">
+                    <div
+                        style="width: 50px; height: 50px; background: rgba(230, 57, 70, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fa fa-calendar-check text-gradient" style="font-size: 1.2rem;"></i>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">Upcoming Events</div>
+                        <div style="font-size: 1.5rem; font-weight: 700;">3</div>
+                    </div>
+                </div>
+                <div class="card" style="padding: 1.5rem; display: flex; align-items: center; gap: 1.2rem;">
+                    <div
+                        style="width: 50px; height: 50px; background: rgba(230, 57, 70, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fa fa-ticket-alt text-gradient" style="font-size: 1.2rem;"></i>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">Total Tickets</div>
+                        <div style="font-size: 1.5rem; font-weight: 700;">12</div>
+                    </div>
+                </div>
+                <div class="card" style="padding: 1.5rem; display: flex; align-items: center; gap: 1.2rem;">
+                    <div
+                        style="width: 50px; height: 50px; background: rgba(230, 57, 70, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fa fa-heart text-gradient" style="font-size: 1.2rem;"></i>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">Wishlist Items</div>
+                        <div style="font-size: 1.5rem; font-weight: 700;">8</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 2rem;">
+                <!-- Recent Bookings -->
+                <div>
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                        <h3 style="font-size: 1.2rem;">Upcoming Bookings</h3>
+                        <a href="tickets" style="color: var(--primary); font-size: 0.85rem;">View All</a>
+                    </div>
+                    <div style="display: grid; gap: 1rem;">
+                        <div class="card"
+                            style="padding: 1rem; display: flex; align-items: center; gap: 1.5rem; border-left: 3px solid var(--primary);">
+                            <div
+                                style="width: 60px; height: 60px; background: url('https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&q=80&w=200') center/cover; border-radius: 8px;">
+                            </div>
+                            <div style="flex: 1;">
+                                <div style="font-weight: 600;">Midnight Jazz Festival</div>
+                                <div style="font-size: 0.8rem; color: var(--text-muted);"><i class="fa fa-calendar"></i>
+                                    Oct 24, 2026 â€¢ 08:00 PM</div>
+                            </div>
+                            <a href="ticket-details" class="btn btn-outline"
+                                style="padding: 0.5rem 1rem; font-size: 0.8rem;">View Ticket</a>
+                        </div>
+                        <div class="card"
+                            style="padding: 1rem; display: flex; align-items: center; gap: 1.5rem; border-left: 3px solid var(--primary);">
+                            <div
+                                style="width: 60px; height: 60px; background: url('https://images.unsplash.com/photo-1540575861501-7ad0582371f3?auto=format&fit=crop&q=80&w=200') center/cover; border-radius: 8px;">
+                            </div>
+                            <div style="flex: 1;">
+                                <div style="font-weight: 600;">Tech Innovators Summit</div>
+                                <div style="font-size: 0.8rem; color: var(--text-muted);"><i class="fa fa-calendar"></i>
+                                    Nov 12, 2026 â€¢ 09:00 AM</div>
+                            </div>
+                            <a href="ticket-details" class="btn btn-outline"
+                                style="padding: 0.5rem 1rem; font-size: 0.8rem;">View Ticket</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Wishlist Preview -->
+                <div>
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                        <h3 style="font-size: 1.2rem;">Wishlist <span
+                                style="color: var(--text-dim); font-size: 0.9rem;">(8)</span></h3>
+                        <a href="wishlist" style="color: var(--primary); font-size: 0.85rem;">Manage</a>
+                    </div>
+                    <div class="card" style="padding: 1rem;">
+                        <div
+                            style="display: flex; gap: 1rem; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border);">
+                            <div
+                                style="width: 50px; height: 50px; background: url('https://images.unsplash.com/photo-1514525253361-bee8718a74a2?auto=format&fit=crop&q=80&w=100') center/cover; border-radius: 6px;">
+                            </div>
+                            <div>
+                                <div style="font-size: 0.9rem; font-weight: 600;">Glow EDM Night</div>
+                                <div style="font-size: 0.8rem; color: var(--primary);">$60.00</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 1rem;">
+                            <div
+                                style="width: 50px; height: 50px; background: url('https://images.unsplash.com/photo-1459749411177-042180ce673c?auto=format&fit=crop&q=80&w=100') center/cover; border-radius: 6px;">
+                            </div>
+                            <div>
+                                <div style="font-size: 0.9rem; font-weight: 600;">Rock the Park</div>
+                                <div style="font-size: 0.8rem; color: var(--primary);">$55.00</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <%- include('partials/scripts') %>
+</body>
+
+</html>
+
+
+

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', { title: 'Organizer Application Status' }) %>
+
+<body>
+    <%- include('../partials/header') %>
+    
+    <main style="padding: 8rem 0; min-height: 80vh; display: flex; align-items: center; justify-content: center;">
+        <div class="container" style="max-width: 700px; text-align: center;">
+            
+            <% if (organizer.status === 'Pending') { %>
+            <!-- PENDING STATE -->
+            <div class="animate">
+                <div style="width: 90px; height: 90px; background: rgba(230, 126, 34, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 2rem; border: 2px solid rgba(230, 126, 34, 0.3);">
+                    <i class="fa fa-hourglass-half" style="font-size: 2.5rem; color: #E67E22;"></i>
+                </div>
+                <h1 style="font-size: 2.5rem; margin-bottom: 1rem;">Application <span style="color: #E67E22;">Under Review</span></h1>
+                <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.7; max-width: 500px; margin: 0 auto 2.5rem;">
+                    Your organizer application for <strong style="color: #fff;"><%= organizer.organizationName %></strong> has been submitted and is currently being reviewed by our team.
+                </p>
+                
+                <div class="card glass" style="padding: 2rem; border-radius: 20px; text-align: left; margin-bottom: 2.5rem;">
+                    <h4 style="font-size: 0.85rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1.5rem;">Application Details</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                        <div>
+                            <p style="color: var(--text-dim); font-size: 0.8rem; margin-bottom: 0.2rem;">Organization</p>
+                            <p style="color: #fff; margin: 0; font-weight: 500;"><%= organizer.organizationName %></p>
+                        </div>
+                        <div>
+                            <p style="color: var(--text-dim); font-size: 0.8rem; margin-bottom: 0.2rem;">Reference ID</p>
+                            <p style="color: #fff; margin: 0; font-family: monospace; font-size: 0.9rem;"><%= organizer.registrationNumber %></p>
+                        </div>
+                        <div>
+                            <p style="color: var(--text-dim); font-size: 0.8rem; margin-bottom: 0.2rem;">Category</p>
+                            <p style="color: #fff; margin: 0;"><%= organizer.industryCategory %></p>
+                        </div>
+                        <div>
+                            <p style="color: var(--text-dim); font-size: 0.8rem; margin-bottom: 0.2rem;">Region</p>
+                            <p style="color: #fff; margin: 0;"><%= organizer.operatingRegion %></p>
+                        </div>
+                        <div>
+                            <p style="color: var(--text-dim); font-size: 0.8rem; margin-bottom: 0.2rem;">Submitted</p>
+                            <p style="color: #fff; margin: 0;"><%= new Date(organizer.createdAt).toLocaleDateString() %></p>
+                        </div>
+                        <div>
+                            <p style="color: var(--text-dim); font-size: 0.8rem; margin-bottom: 0.2rem;">Status</p>
+                            <span style="font-size: 0.8rem; background: rgba(230, 126, 34, 0.1); color: #E67E22; padding: 0.3rem 0.8rem; border-radius: 2rem;"><i class="fa fa-clock"></i> Pending Review</span>
+                        </div>
+                    </div>
+                </div>
+                <a href="/" class="btn btn-outline" style="padding: 1rem 3rem;">Back to Home</a>
+            </div>
+
+            <% } else if (organizer.status === 'Rejected') { %>
+            <!-- REJECTED STATE -->
+            <div class="animate">
+                <div style="width: 90px; height: 90px; background: rgba(231, 76, 60, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 2rem; border: 2px solid rgba(231, 76, 60, 0.3);">
+                    <i class="fa fa-times-circle" style="font-size: 2.5rem; color: #E74C3C;"></i>
+                </div>
+                <h1 style="font-size: 2.5rem; margin-bottom: 1rem;">Application <span style="color: #E74C3C;">Not Approved</span></h1>
+                <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.7; max-width: 500px; margin: 0 auto 1.5rem;">
+                    Unfortunately, your application for <strong style="color: #fff;"><%= organizer.organizationName %></strong> was not approved at this time.
+                </p>
+                <% if (organizer.rejectionReason) { %>
+                <div class="card" style="padding: 1.5rem; border-radius: 16px; border-left: 4px solid #E74C3C; background: rgba(231, 76, 60, 0.05); margin-bottom: 2rem; text-align: left;">
+                    <p style="color: var(--text-dim); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 0.5rem;">Reason</p>
+                    <p style="color: #fff; margin: 0;"><%= organizer.rejectionReason %></p>
+                </div>
+                <% } %>
+                <a href="/" class="btn btn-outline" style="padding: 1rem 3rem;">Back to Home</a>
+            </div>
+
+            <% } else { %>
+            <!-- APPROVED (shouldn't appear but fallback) -->
+            <div class="animate">
+                <div style="width: 90px; height: 90px; background: rgba(46, 204, 113, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 2rem; border: 2px solid rgba(46, 204, 113, 0.3);">
+                    <i class="fa fa-check-circle" style="font-size: 2.5rem; color: #2ECC71;"></i>
+                </div>
+                <h1 style="font-size: 2.5rem; margin-bottom: 1rem;">You're <span style="color: #2ECC71;">Approved!</span></h1>
+                <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 2rem;">Your account now has verified Organizer privileges.</p>
+                <a href="/organizer/dashboard" class="btn btn-primary" style="padding: 1rem 3rem;">Go to Organizer Dashboard</a>
+            </div>
+            <% } %>
+
+        </div>
+    </main>
+
+    <%- include('../partials/footer-scripts') %>
+</body>
+</html>

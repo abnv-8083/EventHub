@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', { title: 'Browse Events' }) %>
+
+<body>
+
+    <!-- Header -->
+    <%- include('../partials/header', { activePage: 'events', positionClass: 'navbar-fixed' }) %>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="section"
+            style="padding: 6rem 0 3rem; background: radial-gradient(circle at top right, rgba(230, 57, 70, 0.05) 0%, transparent 50%);">
+            <div class="container animate">
+                <div style="max-width: 600px;">
+                    <h1 style="font-size: 3.5rem; letter-spacing: -2px;" class="mb-3">Discover <span
+                            class="text-gradient">Experiences</span></h1>
+                    <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.6;" class="mb-0">Browse a
+                        curated selection
+                        of the finest events happening around the globe. Filter by interest, location, or date to find
+                        your next unforgettable moment.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Filters & Tools Bar -->
+        <section
+            style="position: sticky; top: 0; z-index: 100; background: rgba(10, 10, 10, 0.8); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border);">
+            <div class="container" style="padding: 1.25rem 0;">
+                <div style="display: flex; gap: 2rem; align-items: center; flex-wrap: wrap; justify-content: center;">
+                    <!-- Search Field (Medium) -->
+                    <div style="width: 400px; position: relative;">
+                        <i class="fa fa-search"
+                            style="position: absolute; left: 1.25rem; top: 50%; transform: translateY(-50%); color: var(--text-dim); pointer-events: none;"></i>
+                        <input type="text" class="input glass-dark" placeholder="Search events..."
+                            style="padding-left: 3.25rem; border-radius: 50px; border-color: rgba(255,255,255,0.05); font-size: 0.95rem;">
+                    </div>
+
+                    <div class="d-flex align-center gap-2">
+                        <span
+                            style="font-size: 0.85rem; color: var(--text-dim); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Category</span>
+                        <div style="position: relative;">
+                            <select class="input glass-dark"
+                                style="width: auto; padding: 0.6rem 3rem 0.6rem 1.25rem; border-radius: 50px; border-color: rgba(255,255,255,0.05); appearance: none; font-size: 0.9rem; font-weight: 500; cursor: pointer;">
+                                <option>All Types</option>
+                                <option>Concerts</option>
+                                <option>Tech Conferences</option>
+                                <option>Art Exhibits</option>
+                            </select>
+                            <i class="fa fa-chevron-down"
+                                style="position: absolute; right: 1.25rem; top: 50%; transform: translateY(-50%); font-size: 0.75rem; color: var(--text-dim); pointer-events: none;"></i>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-center gap-2">
+                        <span
+                            style="font-size: 0.85rem; color: var(--text-dim); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Date</span>
+                        <div style="position: relative;">
+                            <select class="input glass-dark"
+                                style="width: auto; padding: 0.6rem 3rem 0.6rem 1.25rem; border-radius: 50px; border-color: rgba(255,255,255,0.05); appearance: none; font-size: 0.9rem; font-weight: 500; cursor: pointer;">
+                                <option>Anytime</option>
+                                <option>Today</option>
+                                <option>This Weekend</option>
+                                <option>Next 30 Days</option>
+                            </select>
+                            <i class="fa fa-chevron-down"
+                                style="position: absolute; right: 1.25rem; top: 50%; transform: translateY(-50%); font-size: 0.75rem; color: var(--text-dim); pointer-events: none;"></i>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-outline glow-primary"
+                        style="border-radius: 50px; padding: 0.65rem 1.5rem; font-size: 0.9rem; border-color: var(--border-red); color: var(--primary);">
+                        <i class="fa fa-sliders-h" style="margin-right: 0.6rem;"></i> More Filters
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Listing Grid -->
+        <section class="section">
+            <div class="container">
+                <!-- Sorting & View Options -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem;">
+                    <div style="display: flex; gap: 1.5rem;">
+                        <a href="#"
+                            style="color: var(--primary); font-weight: 600; font-size: 0.95rem; border-bottom: 2px solid var(--primary); padding-bottom: 0.25rem;">ALL
+                            EVENTS</a>
+                        <a href="#" style="color: var(--text-dim); font-weight: 500; font-size: 0.95rem;">POPULAR</a>
+                        <a href="#" style="color: var(--text-dim); font-weight: 500; font-size: 0.95rem;">NEAR ME</a>
+                    </div>
+                    <div style="color: var(--text-dim); font-size: 0.9rem;">
+                        Showing <span style="color: var(--text-white); font-weight: 600;">248</span> events
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 2.5rem;">
+
+                    <!-- Event Card 1 -->
+                    <div class="card animate"
+                        style="border-radius: 20px; overflow: hidden; border: 1px solid var(--border);">
+                        <div class="card-img"
+                            style="height: 220px; background-image: url('https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&q=80&w=800');">
+                            <div style="position: absolute; top: 1rem; right: 1rem;">
+                                <span class="card-badge"
+                                    style="background: rgba(46, 204, 113, 0.9); backdrop-filter: blur(5px); font-size: 0.7rem;">live</span>
+                            </div>
+                        </div>
+                        <div class="card-content" style="padding: 1.5rem;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+                                <span
+                                    style="color: var(--primary); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Jazz
+                                    & Blues</span>
+                                <span style="font-weight: 700; font-size: 1.1rem;">$45.00</span>
+                            </div>
+                            <h3 style="font-size: 1.25rem; margin-bottom: 1rem; line-height: 1.3;">Midnight Jazz
+                                Festival 2026</h3>
+                            <div class="card-meta"
+                                style="margin-bottom: 1.5rem; color: var(--text-dim); font-size: 0.85rem;">
+                                <span><i class="fa fa-calendar-alt"></i> Oct 24 • 8:00 PM</span>
+                                <span><i class="fa fa-map-marker-alt"></i> New York, NY</span>
+                            </div>
+                            <a href="event-details" class="btn btn-outline"
+                                style="width: 100%; border-radius: 10px; font-weight: 600;">View Details</a>
+                        </div>
+                    </div>
+
+                    <!-- Event Card 2 -->
+                    <div class="card animate"
+                        style="animation-delay: 0.1s; border-radius: 20px; overflow: hidden; border: 1px solid var(--border);">
+                        <div class="card-img"
+                            style="height: 220px; background-image: url('https://images.unsplash.com/photo-1540575861501-7ad0582371f3?auto=format&fit=crop&q=80&w=800');">
+                            <div style="position: absolute; top: 1rem; right: 1rem;">
+                                <span class="card-badge"
+                                    style="background: rgba(230, 57, 70, 0.9); backdrop-filter: blur(5px); font-size: 0.7rem;">upcoming</span>
+                            </div>
+                        </div>
+                        <div class="card-content" style="padding: 1.5rem;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+                                <span
+                                    style="color: #3498db; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Technology</span>
+                                <span style="font-weight: 700; font-size: 1.1rem;">$120.00</span>
+                            </div>
+                            <h3 style="font-size: 1.25rem; margin-bottom: 1rem; line-height: 1.3;">Global AI Expo &
+                                Summit</h3>
+                            <div class="card-meta"
+                                style="margin-bottom: 1.5rem; color: var(--text-dim); font-size: 0.85rem;">
+                                <span><i class="fa fa-calendar-alt"></i> Nov 12 • 9:00 AM</span>
+                                <span><i class="fa fa-map-marker-alt"></i> SF, CA</span>
+                            </div>
+                            <a href="event-details" class="btn btn-outline"
+                                style="width: 100%; border-radius: 10px; font-weight: 600;">View Details</a>
+                        </div>
+                    </div>
+
+                    <!-- Event Card 3 -->
+                    <div class="card animate"
+                        style="animation-delay: 0.2s; border-radius: 20px; overflow: hidden; border: 1px solid var(--border);">
+                        <div class="card-img"
+                            style="height: 220px; background-image: url('https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80&w=800');">
+                            <div style="position: absolute; top: 1rem; right: 1rem;">
+                                <span class="card-badge"
+                                    style="background: rgba(46, 204, 113, 0.9); backdrop-filter: blur(5px); font-size: 0.7rem;">live</span>
+                            </div>
+                        </div>
+                        <div class="card-content" style="padding: 1.5rem;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+                                <span
+                                    style="color: #9b59b6; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Wellness</span>
+                                <span style="font-weight: 700; font-size: 1.1rem; color: #2ecc71;">FREE</span>
+                            </div>
+                            <h3 style="font-size: 1.25rem; margin-bottom: 1rem; line-height: 1.3;">Yoga & Mindfulness by
+                                the Beach</h3>
+                            <div class="card-meta"
+                                style="margin-bottom: 1.5rem; color: var(--text-dim); font-size: 0.85rem;">
+                                <span><i class="fa fa-calendar-alt"></i> Oct 30 • 6:30 AM</span>
+                                <span><i class="fa fa-map-marker-alt"></i> Miami, FL</span>
+                            </div>
+                            <a href="event-details" class="btn btn-outline"
+                                style="width: 100%; border-radius: 10px; font-weight: 600;">View Details</a>
+                        </div>
+                    </div>
+
+                    <!-- Event Card 4 -->
+                    <div class="card animate"
+                        style="animation-delay: 0.3s; border-radius: 20px; overflow: hidden; border: 1px solid var(--border);">
+                        <div class="card-img"
+                            style="height: 220px; background-image: url('https://images.unsplash.com/photo-1459749411177-042180ce673c?auto=format&fit=crop&q=80&w=800');">
+                            <div style="position: absolute; top: 1rem; right: 1rem;">
+                                <span class="card-badge"
+                                    style="background: rgba(230, 57, 70, 0.9); backdrop-filter: blur(5px); font-size: 0.7rem;">upcoming</span>
+                            </div>
+                        </div>
+                        <div class="card-content" style="padding: 1.5rem;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+                                <span
+                                    style="color: var(--primary); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Rock</span>
+                                <span style="font-weight: 700; font-size: 1.1rem;">$55.00</span>
+                            </div>
+                            <h3 style="font-size: 1.25rem; margin-bottom: 1rem; line-height: 1.3;">Rock the Park: Summer
+                                Finale</h3>
+                            <div class="card-meta"
+                                style="margin-bottom: 1.5rem; color: var(--text-dim); font-size: 0.85rem;">
+                                <span><i class="fa fa-calendar-alt"></i> Nov 05 • 5:00 PM</span>
+                                <span><i class="fa fa-map-marker-alt"></i> Austin, TX</span>
+                            </div>
+                            <a href="event-details" class="btn btn-outline"
+                                style="width: 100%; border-radius: 10px; font-weight: 600;">View Details</a>
+                        </div>
+                    </div>
+
+                    <!-- Event Card 5 -->
+                    <div class="card animate"
+                        style="animation-delay: 0.4s; border-radius: 20px; overflow: hidden; border: 1px solid var(--border);">
+                        <div class="card-img"
+                            style="height: 220px; background-image: url('https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&q=80&w=800');">
+                            <div style="position: absolute; top: 1rem; right: 1rem;">
+                                <span class="card-badge"
+                                    style="background: rgba(230, 57, 70, 0.9); backdrop-filter: blur(5px); font-size: 0.7rem;">upcoming</span>
+                            </div>
+                        </div>
+                        <div class="card-content" style="padding: 1.5rem;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+                                <span
+                                    style="color: #e67e22; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Culinary</span>
+                                <span style="font-weight: 700; font-size: 1.1rem;">$80.00</span>
+                            </div>
+                            <h3 style="font-size: 1.25rem; margin-bottom: 1rem; line-height: 1.3;">Modern Gourmet
+                                Workshop</h3>
+                            <div class="card-meta"
+                                style="margin-bottom: 1.5rem; color: var(--text-dim); font-size: 0.85rem;">
+                                <span><i class="fa fa-calendar-alt"></i> Dec 10 • 11:00 AM</span>
+                                <span><i class="fa fa-map-marker-alt"></i> Chicago, IL</span>
+                            </div>
+                            <a href="event-details" class="btn btn-outline"
+                                style="width: 100%; border-radius: 10px; font-weight: 600;">View Details</a>
+                        </div>
+                    </div>
+
+                    <!-- Event Card 6 -->
+                    <div class="card animate"
+                        style="animation-delay: 0.5s; border-radius: 20px; overflow: hidden; border: 1px solid var(--border);">
+                        <div class="card-img"
+                            style="height: 220px; background-image: url('https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&q=80&w=800');">
+                            <div style="position: absolute; top: 1rem; right: 1rem;">
+                                <span class="card-badge"
+                                    style="background: rgba(230, 57, 70, 0.9); backdrop-filter: blur(5px); font-size: 0.7rem;">upcoming</span>
+                            </div>
+                        </div>
+                        <div class="card-content" style="padding: 1.5rem;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+                                <span
+                                    style="color: #16a085; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Film</span>
+                                <span style="font-weight: 700; font-size: 1.1rem;">$15.00</span>
+                            </div>
+                            <h3 style="font-size: 1.25rem; margin-bottom: 1rem; line-height: 1.3;">Indie Film Festival:
+                                Rising Stars</h3>
+                            <div class="card-meta"
+                                style="margin-bottom: 1.5rem; color: var(--text-dim); font-size: 0.85rem;">
+                                <span><i class="fa fa-calendar-alt"></i> Nov 18 • 7:00 PM</span>
+                                <span><i class="fa fa-map-marker-alt"></i> Seattle, WA</span>
+                            </div>
+                            <a href="event-details" class="btn btn-outline"
+                                style="width: 100%; border-radius: 10px; font-weight: 600;">View Details</a>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Modern Pagination -->
+                <div style="display: flex; justify-content: center; align-items: center; gap: 1rem; margin-top: 6rem;">
+                    <button class="btn btn-outline"
+                        style="width: 45px; height: 45px; padding: 0; border-radius: 50%; border-color: var(--border); color: var(--text-dim);"><i
+                            class="fa fa-chevron-left"></i></button>
+                    <div style="display: flex; gap: 0.75rem;">
+                        <button class="btn btn-primary"
+                            style="width: 45px; height: 45px; padding: 0; border-radius: 50%;">1</button>
+                        <button class="btn btn-outline"
+                            style="width: 45px; height: 45px; padding: 0; border-radius: 50%; border-color: var(--border); color: var(--text-dim);">2</button>
+                        <button class="btn btn-outline"
+                            style="width: 45px; height: 45px; padding: 0; border-radius: 50%; border-color: var(--border); color: var(--text-dim);">3</button>
+                        <span style="color: var(--text-dim); padding: 0 0.5rem;">...</span>
+                        <button class="btn btn-outline"
+                            style="width: 45px; height: 45px; padding: 0; border-radius: 50%; border-color: var(--border); color: var(--text-dim);">12</button>
+                    </div>
+                    <button class="btn btn-outline"
+                        style="width: 45px; height: 45px; padding: 0; border-radius: 50%; border-color: var(--border); color: var(--text-dim);"><i
+                            class="fa fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <a href="/" class="logo" style="margin-bottom: 1.5rem;">EVENT<span>HUB</span></a>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">The leading platform for managing and
+                        discovering world-class events.</p>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 1.5rem;">Quick Links</h4>
+                    <ul style="color: var(--text-muted); display: grid; gap: 0.8rem;">
+                        <li><a href="events">Browse Events</a></li>
+                        <li><a href="about">Our Story</a></li>
+                        <li><a href="contact">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 1.5rem;">Legal</h4>
+                    <ul style="color: var(--text-muted); display: grid; gap: 0.8rem;">
+                        <li><a href="../terms">Terms</a></li>
+                        <li><a href="../privacy">Privacy</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 1.5rem;">Social</h4>
+                    <div style="display: flex; gap: 1rem; font-size: 1.5rem;">
+                        <a href="#" style="color: var(--text-dim);"><i class="fab fa-twitter"></i></a>
+                        <a href="#" style="color: var(--text-dim);"><i class="fab fa-instagram"></i></a>
+                        <a href="#" style="color: var(--text-dim);"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 EventHub Inc. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <%- include('../partials/footer-scripts') %>
+</body>
+
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', { title: 'Email Verified' }) %>
+
+<body class="bg-mesh"
+    style="min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem;">
+<div class="container" style="max-width: 500px; position: relative; z-index: 1;">
+        <div class="card glass animate" style="padding: 4rem 3rem; border-radius: 32px; text-align: center;">
+            <div style="margin-bottom: 2.5rem;">
+                <div style="width: 80px; height: 80px; background: rgba(46, 204, 113, 0.1); border: 2px solid #2ECC71; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 2rem;"
+                    class="animate">
+                    <i class="fa fa-check" style="font-size: 2.5rem; color: #2ECC71;"></i>
+                </div>
+                <h1 style="font-size: 2.2rem; margin-bottom: 1rem; letter-spacing: -1px;">Email <span
+                        class="text-gradient">Verified!</span></h1>
+                <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.6;">Your account is now fully
+                    active. You can now access all the features of EventHub.</p>
+            </div>
+
+            <div class="animate stagger-2">
+                <a href="/user/login" class="btn btn-primary glow-primary"
+                    style="width: 100%; padding: 1.2rem; border-radius: 12px; font-size: 1.1rem; display: block; text-decoration: none;">
+                    Proceed to Login
+                </a>
+            </div>
+
+            <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border);"
+                class="animate stagger-3">
+                <a href="/" style="color: var(--text-dim); text-decoration: none; font-size: 0.9rem;">
+                    <i class="fa fa-arrow-left" style="margin-right: 0.5rem;"></i> Back to Home
+                </a>
+            </div>
+        </div>
+
+        <p style="text-align: center; margin-top: 2rem; color: var(--text-dim); font-size: 0.8rem;"
+            class="animate stagger-4">
+            &copy; 2026 EventHub Inc. All rights reserved.
+        </p>
+    </div>
+    <%- include('../partials/footer-scripts') %>
+</body>
+
+</html>

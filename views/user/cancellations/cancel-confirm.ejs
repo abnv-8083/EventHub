@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../../partials/head', { title: 'Review Cancellation' }) %>
+
+<body>
+
+    <%- include('../../partials/header') %>
+
+    <div class="dashboard-layout">
+                <%- include('../../partials/sidebar') %>
+
+        <main class="dashboard-main animate">
+            <div style="margin-bottom: 2.5rem; display: flex; align-items: center; gap: 1rem;">
+                <a href="cancel-detail" style="color: var(--text-muted);"><i class="fa fa-arrow-left"></i></a>
+                <h1 style="font-size: 1.8rem;">Review Your <span class="text-gradient">Cancellation</span></h1>
+            </div>
+
+            <div class="confirm-alert">
+                <i class="fa fa-exclamation-triangle"
+                    style="color: #e74c3c; font-size: 1.2rem; margin-top: 0.2rem;"></i>
+                <div>
+                    <h4 style="color: #e74c3c; margin-bottom: 0.3rem;">Order Cancellation Notice</h4>
+                    <p style="font-size: 0.9rem; line-height: 1.5; color: var(--text-muted);">
+                        Once you confirm, these tickets will be immediately invalidated. The refund processing will
+                        follow the organizer's platform guidelines.
+                    </p>
+                </div>
+            </div>
+
+            <div class="card" style="padding: 2.5rem;">
+                <div style="margin-bottom: 2rem;">
+                    <h3 style="font-size: 1.1rem; margin-bottom: 1.2rem;">Selection Summary</h3>
+                    <div class="review-box">
+                        <div class="review-item">
+                            <div>
+                                <div style="font-weight: 600;">Alice Johnson</div>
+                                <div style="font-size: 0.8rem; color: var(--text-dim);">#EH-992841-01 â€¢ General
+                                    Admission</div>
+                            </div>
+                            <div style="font-weight: 600;">$45.00</div>
+                        </div>
+                        <div class="review-item">
+                            <div>
+                                <div style="color: var(--text-muted);">Platform Cancellation Fee</div>
+                                <div style="font-size: 0.75rem; color: var(--text-dim);">Non-refundable fixed charge
+                                </div>
+                            </div>
+                            <div style="color: #e74c3c;">-$2.50</div>
+                        </div>
+                        <div class="review-item"
+                            style="border: none; padding-top: 1rem; margin-top: 1rem; border-top: 1px solid var(--border);">
+                            <div style="font-weight: 700; font-size: 1.1rem;">Net Refundable Amount</div>
+                            <div style="font-weight: 800; font-size: 1.3rem; color: #2ECC71;">$42.50</div>
+                        </div>
+                    </div>
+                </div>
+
+                <form action="cancel-success">
+                    <div class="form-group">
+                        <label class="label">Primary Reason for Cancellation</label>
+                        <select class="input" required>
+                            <option>Schedule Conflict</option>
+                            <option>Health/Personal Emergency</option>
+                            <option>Travel Issues</option>
+                            <option>Purchased by mistake</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="label">Additional Comments (Optional)</label>
+                        <textarea class="input" rows="3" placeholder="Tell us more about your experience..."></textarea>
+                    </div>
+
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem;">
+                        <input type="checkbox" id="terms" required>
+                        <label for="terms" style="font-size: 0.85rem; color: var(--text-muted);">I understand that this
+                            action is irreversible and I agree to the <a href="#" style="color: var(--primary);">Refund
+                                Policy</a>.</label>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 1.5rem;">
+                        <a href="cancel-detail" class="btn btn-outline" style="text-align: center;">Go Back</a>
+                        <button type="submit" class="btn btn-primary"
+                            style="background: #e74c3c; border: none; font-weight: 600; font-size: 1rem; height: 50px;">Finalize
+                            Cancellation</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+
+</body>
+
+</html>
+
+
+
+

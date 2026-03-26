@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', { title: 'Coupon Management | Admin Hub' }) %>
+
+<body>
+
+    <%- include('../partials/header-admin') %>
+
+    <div class="dashboard-layout">
+                <%- include('../partials/sidebar-admin') %>
+
+        <main class="dashboard-main animate">
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem;">
+                <div>
+                    <h1 style="font-size: 1.8rem;">Coupon <span class="text-gradient">Management</span></h1>
+                    <p style="color: var(--text-muted);">Create and monitor discount codes.</p>
+                </div>
+                <button class="btn btn-primary"><i class="fa fa-plus"></i> Create Coupon</button>
+            </div>
+
+            <!-- Coupon Grid -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 1.5rem;">
+                <!-- Coupon 1 -->
+                <div class="card"
+                    style="padding: 1.5rem; display: flex; justify-content: space-between; align-items: center; border-left: 4px solid var(--primary);">
+                    <div>
+                        <div style="display: flex; gap: 0.8rem; align-items: center; margin-bottom: 0.5rem;">
+                            <span
+                                style="font-weight: 800; font-size: 1.2rem; letter-spacing: 1px; color: white;">SAVE20</span>
+                            <span
+                                style="background: rgba(46, 204, 113, 0.1); color: #2ECC71; font-size: 0.7rem; padding: 0.2rem 0.6rem; border-radius: 10px;">ACTIVE</span>
+                        </div>
+                        <div style="font-size: 0.85rem; color: var(--text-muted);">20% Offline â€¢ Min $50.00</div>
+                        <div style="font-size: 0.75rem; color: var(--text-dim); margin-top: 0.5rem;">Used: 124/500 â€¢
+                            Expiry: Dec 2026</div>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button class="btn btn-outline" style="padding: 0.5rem;"><i class="fa fa-edit"></i></button>
+                        <button class="btn btn-outline" style="padding: 0.5rem; color: #e74c3c;"><i
+                                class="fa fa-trash"></i></button>
+                    </div>
+                </div>
+
+                <!-- Coupon 2 -->
+                <div class="card"
+                    style="padding: 1.5rem; display: flex; justify-content: space-between; align-items: center; border-left: 4px solid var(--primary);">
+                    <div>
+                        <div style="display: flex; gap: 0.8rem; align-items: center; margin-bottom: 0.5rem;">
+                            <span
+                                style="font-weight: 800; font-size: 1.2rem; letter-spacing: 1px; color: white;">WELCOME10</span>
+                            <span
+                                style="background: rgba(46, 204, 113, 0.1); color: #2ECC71; font-size: 0.7rem; padding: 0.2rem 0.6rem; border-radius: 10px;">ACTIVE</span>
+                        </div>
+                        <div style="font-size: 0.85rem; color: var(--text-muted);">10% Off â€¢ For New Users</div>
+                        <div style="font-size: 0.75rem; color: var(--text-dim); margin-top: 0.5rem;">Used: 842/âˆž â€¢ No
+                            Expiry</div>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button class="btn btn-outline" style="padding: 0.5rem;"><i class="fa fa-edit"></i></button>
+                        <button class="btn btn-outline" style="padding: 0.5rem; color: #e74c3c;"><i
+                                class="fa fa-trash"></i></button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <%- include('partials/scripts') %>
+</body>
+
+</html>
+
+
+

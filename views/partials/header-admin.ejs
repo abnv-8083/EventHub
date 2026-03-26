@@ -1,0 +1,70 @@
+<header class="navbar-sticky">
+    <nav class="navbar navbar-expand-lg navbar-dark w-100" style="background: rgba(10, 10, 10, 0.95); border-bottom: 1px solid var(--border);">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand logo" href="/admin">EVENT<span>HUB</span> <span style="font-size: 0.9rem; font-weight: 300; opacity: 0.8; letter-spacing: 2px;">| ADMIN</span></a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <!-- Empty middle section for admin header, since sidebar handles navigation -->
+                <ul class="navbar-nav mx-auto"></ul>
+
+                <ul class="navbar-nav">
+                    <!-- Notifications -->
+                    <li class="nav-item me-3 d-flex align-items-center">
+                        <a class="nav-link position-relative" href="/admin/approvals">
+                            <i class="fa fa-bell" style="font-size: 1.2rem; color: #fff;"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">
+                                3
+                            </span>
+                        </a>
+                    </li>
+                    
+                    <!-- Admin Profile Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" id="navbarDropdownAdmin"
+                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <div style="text-align: right; line-height: 1.1;">
+                                <div style="font-weight: 600; font-size: 1rem; color: #fff;">
+                                    <%= (locals.admin && locals.admin.name) ? locals.admin.name : 'System Admin' %>
+                                </div>
+                                <div style="font-size: 0.75rem; color: #E63946;">Administrator</div>
+                            </div>
+                            <div
+                                style="width: 40px; height: 40px; background: rgba(230, 57, 70, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid rgba(230, 57, 70, 0.3);">
+                                <i class="fa fa-shield-alt" style="font-size: 1rem; color: #E63946;"></i>
+                            </div>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end glass-dark shadow border-0 p-2" aria-labelledby="navbarDropdownAdmin" style="margin-top: 0.5rem; min-width: 220px; border-radius: 12px; border: 1px solid var(--border) !important;">
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center py-2 px-3" href="/admin/profile" style="border-radius: 8px;">
+                                    <i class="fa fa-user-shield me-3" style="font-size: 1.1rem; color: var(--primary);"></i>
+                                    <span style="font-weight: 500; font-size: 0.95rem;">Admin Settings</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center py-2 px-3" href="/" style="border-radius: 8px;">
+                                    <i class="fa fa-external-link-alt me-3" style="font-size: 1.1rem; color: var(--text-muted);"></i>
+                                    <span style="font-weight: 500; font-size: 0.95rem;">View Public Site</span>
+                                </a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider" style="opacity: 0.1; margin: 0.5rem 0;">
+                            </li>
+                            <li>
+                                <form class="ajax-form m-0 p-0" action="/admin/logout" method="POST">
+                                    <button type="submit" class="dropdown-item text-danger d-flex align-items-center py-2 px-3" style="background: none; border: none; width: 100%; text-align: left; border-radius: 8px; transition: all 0.2s;">
+                                        <i class="fa fa-sign-out-alt me-3" style="font-size: 1.1rem;"></i>
+                                        <span style="font-weight: 500; font-size: 0.95rem;">Logout</span>
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>

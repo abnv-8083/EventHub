@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../../partials/head', { title: 'Ticket Details' }) %>
+
+<body>
+
+    <%- include('../../partials/header') %>
+
+    <main class="section">
+        <div class="container" style="max-width: 500px; text-align: center;">
+            <div style="margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem; text-align: left;">
+                <a href="tickets" style="color: var(--text-muted);"><i class="fa fa-arrow-left"></i> Back</a>
+                <h1 style="font-size: 1.5rem;">Ticket <span class="text-gradient">Details</span></h1>
+            </div>
+
+            <!-- Physical Ticket Look -->
+            <div class="card animate" style="padding: 0; overflow: hidden; border-radius: var(--radius-lg);">
+                <div
+                    style="height: 120px; background: linear-gradient(135deg, #E63946 0%, #000 100%); padding: 1.5rem; text-align: left; display: flex; flex-direction: column; justify-content: center;">
+                    <div style="font-weight: 800; font-size: 1.2rem; margin-bottom: 0.3rem;">Midnight Jazz Festival
+                    </div>
+                    <div style="font-size: 0.85rem; color: rgba(255,255,255,0.8);">Blue Note Jazz Club, NY</div>
+                </div>
+
+                <div style="padding: 2.5rem 2rem; background: var(--bg-card);">
+                    <!-- Attendee Info -->
+                    <div style="margin-bottom: 2rem;">
+                        <h2 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 0.2rem;">Alice Johnson</h2>
+                        <p style="color: var(--text-dim); font-size: 0.9rem;">Attendee Phone: +1 (555) 123-4567</p>
+                    </div>
+
+                    <!-- QR Code Placeholder -->
+                    <div
+                        style="width: 200px; height: 200px; background: white; margin: 0 auto 2rem; padding: 1rem; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=EH-992841-ALICE"
+                            alt="QR Code" style="width: 100%; image-rendering: pixelated;">
+                    </div>
+
+                    <div
+                        style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; text-align: left; border-top: 1px dashed var(--border); padding-top: 1.5rem;">
+                        <div>
+                            <div style="font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase;">Date
+                            </div>
+                            <div style="font-weight: 600;">Oct 24, 2026</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase;">Time
+                            </div>
+                            <div style="font-weight: 600;">08:00 PM</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase;">Ticket
+                                ID</div>
+                            <div style="font-weight: 600; color: var(--primary);">#EH-992841</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase;">Section
+                            </div>
+                            <div style="font-weight: 600;">General</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: var(--bg-surface); padding: 1.5rem; border-top: 1px solid var(--border);">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 0.85rem; color: var(--text-muted);"><i class="fa fa-info-circle"></i>
+                            Present this QR at entry</span>
+                        <button class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.8rem;"><i
+                                class="fa fa-download"></i> Save PDF</button>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 2rem;">
+                <a href="cancel" style="color: var(--text-dim); font-size: 0.9rem;">Need to cancel? <span
+                        style="color: var(--primary);">Start refund process</span></a>
+            </div>
+        </div>
+    </main>
+
+</body>
+
+</html>
+
+
+
+

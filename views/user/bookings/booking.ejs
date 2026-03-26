@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../../partials/head', { title: 'Book Tickets' }) %>
+
+<body>
+
+    <!-- Header -->
+    <%- include('../../partials/header') %>
+
+    <main class="section">
+        <div class="container" style="max-width: 900px;">
+            <div style="margin-bottom: 2.5rem; display: flex; align-items: center; gap: 1rem;">
+                <a href="/event-details" style="color: var(--text-muted);"><i
+                        class="fa fa-arrow-left"></i> Back to
+                    Event</a>
+                <h1 style="font-size: 1.8rem;">Booking <span class="text-gradient">Details</span></h1>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 2rem; align-items: start;">
+                <!-- Booking Steps -->
+                <div style="display: grid; gap: 2rem;">
+                    <!-- Step 1: Selection -->
+                    <div class="card" style="padding: 2rem;">
+                        <h3 style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.8rem;">
+                            <span
+                                style="width: 28px; height: 28px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem;">1</span>
+                            Select Tickets
+                        </h3>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; padding: 1.5rem; background: var(--bg-surface); border-radius: var(--radius-md); border: 1px solid var(--border);">
+                            <div>
+                                <div style="font-weight: 600;">General Admission</div>
+                                <div style="font-size: 0.85rem; color: var(--text-muted);">Access to all standard areas
+                                </div>
+                                <div style="margin-top: 0.5rem; font-weight: 700; color: var(--primary);">$45.00</div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <button class="btn btn-outline"
+                                    style="padding: 0.5rem; min-width: 35px; height: 35px;"><i
+                                        class="fa fa-minus"></i></button>
+                                <span style="font-weight: 700; font-size: 1.1rem;">2</span>
+                                <button class="btn btn-outline"
+                                    style="padding: 0.5rem; min-width: 35px; height: 35px;"><i
+                                        class="fa fa-plus"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Coupon -->
+                    <div class="card" style="padding: 2rem;">
+                        <h3 style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.8rem;">
+                            <span
+                                style="width: 28px; height: 28px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem;">2</span>
+                            Apply Coupon
+                        </h3>
+                        <div style="display: flex; gap: 1rem;">
+                            <input type="text" class="input" placeholder="Enter coupon code" style="flex: 1;">
+                            <button class="btn btn-outline">Apply</button>
+                        </div>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.8rem;">
+                            <p style="font-size: 0.8rem; color: var(--text-dim);">Get 10% off with code: WELCOME10</p>
+                            <a href="coupons" target="_blank"
+                                style="font-size: 0.8rem; color: var(--primary); font-weight: 600;">View Available
+                                Coupons <i class="fa fa-external-link-alt" style="font-size: 0.7rem;"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Summary Sidebar -->
+                <div class="card animate" style="padding: 2rem; position: sticky; top: 120px;">
+                    <h3 style="margin-bottom: 1.5rem;">Order Summary</h3>
+                    <div
+                        style="display: flex; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                        <div
+                            style="width: 60px; height: 60px; background: url('https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&q=80&w=200') center/cover; border-radius: 8px;">
+                        </div>
+                        <div>
+                            <div style="font-weight: 600; font-size: 0.9rem;">Midnight Jazz Festival</div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted);">Oct 24, 2026 â€¢ 2 Tickets</div>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; gap: 0.8rem; font-size: 0.95rem; margin-bottom: 2rem;">
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: var(--text-muted);">Subtotal</span>
+                            <span>$90.00</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; color: #2ECC71;">
+                            <span>Discount (10%)</span>
+                            <span>-$9.00</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: var(--text-muted);">Service Fee</span>
+                            <span>$2.50</span>
+                        </div>
+                        <div
+                            style="display: flex; justify-content: space-between; font-weight: 700; font-size: 1.2rem; margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 1rem;">
+                            <span>Total</span>
+                            <span class="text-gradient">$83.50</span>
+                        </div>
+                    </div>
+
+                    <a href="add-attendees" class="btn btn-primary" style="width: 100%; padding: 1rem;">Confirm
+                        Selection</a>
+                    <p
+                        style="text-align: center; font-size: 0.75rem; color: var(--text-dim); margin-top: 1rem; line-height: 1.4;">
+                        By clicking "Proceed to Payment" you agree to our Terms of Service.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+</body>
+
+</html>
+
+
+
+

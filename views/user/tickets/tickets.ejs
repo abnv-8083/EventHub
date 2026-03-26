@@ -1,0 +1,111 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../../partials/head', { title: 'My Tickets' }) %>
+
+<body>
+
+    <%- include('../../partials/header') %>
+
+    <div class="dashboard-layout">
+                <%- include('../../partials/sidebar') %>
+
+        <main class="dashboard-main animate">
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem;">
+                <div>
+                    <h1 style="font-size: 1.8rem;">My <span class="text-gradient">Tickets</span></h1>
+                    <p style="color: var(--text-muted);">Manage and view your entry passes.</p>
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <button class="btn btn-outline"
+                        style="border-color: var(--primary); color: var(--primary);">Upcoming</button>
+                    <button class="btn btn-outline">Expired</button>
+                </div>
+            </div>
+
+            <div style="display: grid; gap: 1.5rem;">
+                <!-- Ticket Card 1 -->
+                <div class="card" style="display: flex; align-items: center; padding: 1.5rem; gap: 2rem;">
+                    <div
+                        style="width: 100px; height: 100px; background: url('https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&q=80&w=200') center/cover; border-radius: 12px;">
+                    </div>
+                    <div style="flex: 1;">
+                        <span class="card-badge"
+                            style="position: static; font-size: 0.7rem; margin-bottom: 0.5rem; display: inline-block;">UPCOMING</span>
+                        <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">Midnight Jazz Festival</h3>
+                        <div
+                            style="font-size: 0.9rem; color: var(--text-muted); display: flex; gap: 1.5rem; margin-bottom: 1rem;">
+                            <span><i class="fa fa-calendar"></i> Oct 24, 2026</span>
+                            <span><i class="fa fa-ticket-alt"></i> 2 Tickets</span>
+                        </div>
+
+                        <!-- Attendees Sub-list -->
+                        <div
+                            style="border-top: 1px solid var(--border); padding-top: 1rem; display: grid; gap: 0.8rem;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem;">
+                                <div>
+                                    <span style="font-weight: 600;">Alice Johnson</span>
+                                    <span style="color: var(--text-dim); margin-left: 0.5rem;">+1 (555) 123-4567</span>
+                                </div>
+                                <div style="display: flex; gap: 0.5rem;">
+                                    <a href="ticket-details" class="btn btn-outline"
+                                        style="padding: 0.3rem 0.8rem; font-size: 0.75rem;">View</a>
+                                    <a href="cancel" class="btn btn-outline"
+                                        style="padding: 0.3rem 0.8rem; font-size: 0.75rem; color: #E63946; border-color: #E63946;">Cancel</a>
+                                </div>
+                            </div>
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem;">
+                                <div>
+                                    <span style="font-weight: 600;">Bob Wilson</span>
+                                    <span style="color: var(--text-dim); margin-left: 0.5rem;">+1 (555) 987-6543</span>
+                                </div>
+                                <div style="display: flex; gap: 0.5rem;">
+                                    <a href="ticket-details" class="btn btn-outline"
+                                        style="padding: 0.3rem 0.8rem; font-size: 0.75rem;">View</a>
+                                    <a href="cancel" class="btn btn-outline"
+                                        style="padding: 0.3rem 0.8rem; font-size: 0.75rem; color: #E63946; border-color: #E63946;">Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        style="display: flex; flex-direction: column; gap: 0.8rem; border-left: 1px solid var(--border); padding-left: 2rem;">
+                        <button class="btn btn-primary" style="padding: 0.6rem 1.2rem;">Download All</button>
+                        <a href="cancel"
+                            style="text-align: center; color: var(--text-dim); font-size: 0.8rem;">Cancel Entire
+                            Booking</a>
+                    </div>
+                </div>
+
+                <!-- Ticket Card 2 -->
+                <div class="card" style="display: flex; align-items: center; padding: 1.5rem; gap: 2rem; opacity: 0.8;">
+                    <div
+                        style="width: 100px; height: 100px; background: url('https://images.unsplash.com/photo-1540575861501-7ad0582371f3?auto=format&fit=crop&q=80&w=200') center/cover; border-radius: 12px;">
+                    </div>
+                    <div style="flex: 1;">
+                        <span class="card-badge"
+                            style="position: static; font-size: 0.7rem; margin-bottom: 0.5rem; display: inline-block; background: #666;">EXPIRED</span>
+                        <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">Tech Innovators Summit</h3>
+                        <div style="font-size: 0.9rem; color: var(--text-muted); display: flex; gap: 1.5rem;">
+                            <span><i class="fa fa-calendar"></i> Mar 12, 2026</span>
+                            <span><i class="fa fa-ticket-alt"></i> 1 Ticket</span>
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 0.8rem;">
+                        <button class="btn btn-outline" disabled
+                            style="padding: 0.6rem 1.2rem; cursor: not-allowed;">Archived</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+</body>
+
+</html>
+
+
+
+

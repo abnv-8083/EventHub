@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../../partials/head', { title: 'Refund Status' }) %>
+
+<body>
+
+    <%- include('../../partials/header') %>
+
+    <div class="dashboard-layout">
+                <%- include('../../partials/sidebar') %>
+
+        <main class="dashboard-main animate">
+            <h1 style="font-size: 1.8rem; margin-bottom: 2.5rem;">Track <span class="text-gradient">Refunds</span></h1>
+
+            <div class="card" style="padding: 2.5rem;">
+                <div
+                    style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem;">
+                    <div>
+                        <h3 style="margin-bottom: 0.5rem;">Refund for #EH-992841</h3>
+                        <p style="color: var(--text-muted); font-size: 0.9rem;">Midnight Jazz Festival â€¢ 2 Tickets</p>
+                    </div>
+                    <div style="text-align: right;">
+                        <span style="font-weight: 700; font-size: 1.5rem; color: #2ECC71;">$83.50</span>
+                        <div style="font-size: 0.8rem; color: var(--text-dim);">Estimated arrival: 3-5 Business Days
+                        </div>
+                    </div>
+                </div>
+
+                <div class="status-tracker">
+                    <div class="step completed">
+                        <div class="step-icon"><i class="fa fa-check"></i></div>
+                        <div class="step-label">Request Submitted</div>
+                    </div>
+                    <div class="step active">
+                        <div class="step-icon"><i class="fa fa-sync fa-spin"></i></div>
+                        <div class="step-label">Organizer Approval</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon"><i class="fa fa-university"></i></div>
+                        <div class="step-label">Processing Bank</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon"><i class="fa fa-wallet"></i></div>
+                        <div class="step-label">Refund Issued</div>
+                    </div>
+                </div>
+
+                <div
+                    style="background: var(--bg-surface); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--border); margin-top: 2rem;">
+                    <h4 style="margin-bottom: 1rem; font-size: 1rem;"><i class="fa fa-info-circle"
+                            style="color: var(--primary);"></i> Current Updates</h4>
+                    <div style="display: grid; gap: 1rem;">
+                        <div
+                            style="display: flex; gap: 1rem; border-left: 2px solid var(--primary); padding-left: 1rem;">
+                            <div style="flex: 1;">
+                                <div style="font-weight: 600; font-size: 0.9rem;">Reviewing Request</div>
+                                <div style="font-size: 0.8rem; color: var(--text-dim);">Jazz Society NY is currently
+                                    reviewing your cancellation reason.</div>
+                            </div>
+                            <div style="font-size: 0.8rem; color: var(--text-dim);">2 hours ago</div>
+                        </div>
+                        <div
+                            style="display: flex; gap: 1rem; border-left: 2px solid var(--border); padding-left: 1rem;">
+                            <div style="flex: 1;">
+                                <div style="font-weight: 600; font-size: 0.9rem; color: var(--text-muted);">Request
+                                    Received</div>
+                                <div style="font-size: 0.8rem; color: var(--text-dim);">Your refund request was
+                                    successfully registered in our system.</div>
+                            </div>
+                            <div style="font-size: 0.8rem; color: var(--text-dim);">3 hours ago</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+</body>
+
+</html>
+
+
+
+

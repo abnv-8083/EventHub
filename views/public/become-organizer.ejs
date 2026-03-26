@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', { title: 'Become an Organizer' }) %>
+
+<body>
+
+    <!-- Header -->
+    <%- include('../partials/header') %>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="section hero"
+            style="padding: 8rem 0; text-align: center; background: radial-gradient(circle at top right, rgba(230, 57, 70, 0.1) 0%, transparent 60%);">
+            <div class="container animate">
+                <div style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; border-radius: 2rem; background: rgba(230, 57, 70, 0.1); color: var(--primary); font-size: 0.9rem; font-weight: 600; margin-bottom: 2rem;">
+                    <i class="fa fa-star"></i> EventHub For Creators
+                </div>
+                <h1 style="font-size: 4.5rem;" class="mb-4">Host the <span class="text-gradient">Extraordinary</span></h1>
+                <p style="color: var(--text-muted); font-size: 1.25rem; max-width: 700px; margin-inline: auto; line-height: 1.8;"
+                    class="mb-4">
+                    Turn your vision into reality. EventHub provides world-class ticketing, marketing tools, and analytics to help you seamlessly host events that people will never forget.
+                </p>
+                <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 3rem;">
+                    <% if(locals.user) { %>
+                        <a href="/user/organizer/register" class="btn btn-primary btn-glow" style="padding: 1.2rem 3rem; font-size: 1.1rem; border-radius: 3rem;">Become an Organizer</a>
+                    <% } else { %>
+                        <a href="/user/login" class="btn btn-primary btn-glow" style="padding: 1.2rem 3rem; font-size: 1.1rem; border-radius: 3rem;">Login to Apply</a>
+                    <% } %>
+                    <a href="#features" class="btn btn-outline" style="padding: 1.2rem 3rem; font-size: 1.1rem; border-radius: 3rem;">Explore Features</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Grid -->
+        <section id="features" class="section">
+            <div class="container">
+                <div style="text-align: center; margin-bottom: 5rem;" class="animate">
+                    <h2 style="font-size: 3rem;">Everything You <span class="text-gradient">Need</span></h2>
+                    <p style="color: var(--text-muted); font-size: 1.1rem; max-width: 600px; margin: 1rem auto 0;">Powerful tools designed to save you time and maximize your revenue.</p>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2.5rem;">
+                    <!-- Feature 1 -->
+                    <div class="card glass animate stagger-1" style="padding: 2.5rem; border-radius: 24px;">
+                        <div style="width: 60px; height: 60px; background: rgba(230, 57, 70, 0.1); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 2rem;">
+                            <i class="fa fa-ticket-alt" style="color: var(--primary); font-size: 1.8rem;"></i>
+                        </div>
+                        <h3 style="margin-bottom: 1rem; font-size: 1.5rem;">Smart Ticketing</h3>
+                        <p style="color: var(--text-muted); line-height: 1.7;">Create multiple ticket tiers, manage inventory, set up early-bird discounts, and securely handle payments with instant payouts.</p>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div class="card glass animate stagger-2" style="padding: 2.5rem; border-radius: 24px;">
+                        <div style="width: 60px; height: 60px; background: rgba(230, 57, 70, 0.1); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 2rem;">
+                            <i class="fa fa-chart-line" style="color: var(--primary); font-size: 1.8rem;"></i>
+                        </div>
+                        <h3 style="margin-bottom: 1rem; font-size: 1.5rem;">Live Analytics</h3>
+                        <p style="color: var(--text-muted); line-height: 1.7;">Track your sales in real-time. Understand your audience demographics and see exactly where your traffic is coming from.</p>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div class="card glass animate stagger-3" style="padding: 2.5rem; border-radius: 24px;">
+                        <div style="width: 60px; height: 60px; background: rgba(230, 57, 70, 0.1); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 2rem;">
+                            <i class="fa fa-bullhorn" style="color: var(--primary); font-size: 1.8rem;"></i>
+                        </div>
+                        <h3 style="margin-bottom: 1rem; font-size: 1.5rem;">Marketing Reach</h3>
+                        <p style="color: var(--text-muted); line-height: 1.7;">Get your event featured on EventHub's expansive network. Access promotional tools to boost ticket sales effortlessly.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Earnings Section -->
+        <section class="section" style="background: var(--bg-surface);">
+            <div class="container animate" style="display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center;">
+                <div style="height: 500px; background: url('https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&q=80&w=800') center/cover; border-radius: 32px; border: 1px solid var(--border);"></div>
+                <div>
+                    <h2 style="font-size: 3rem; margin-bottom: 1.5rem;">Keep More of Your <span class="text-gradient">Revenue</span></h2>
+                    <p style="color: var(--text-muted); font-size: 1.15rem; line-height: 1.8; margin-bottom: 2rem;">
+                        Other platforms take a massive cut of your hard work. We believe in empowering creators with transparent, industry-low fees. You completely control the pricing.
+                    </p>
+                    <ul style="display: grid; gap: 1.2rem; margin-bottom: 3rem;">
+                        <li style="display: flex; align-items: center; gap: 1rem; color: var(--text-light);"><i class="fa fa-check-circle" style="color: var(--primary);"></i> Same-day payout capabilities</li>
+                        <li style="display: flex; align-items: center; gap: 1rem; color: var(--text-light);"><i class="fa fa-check-circle" style="color: var(--primary);"></i> No hidden setup costs</li>
+                        <li style="display: flex; align-items: center; gap: 1rem; color: var(--text-light);"><i class="fa fa-check-circle" style="color: var(--primary);"></i> Free for free events</li>
+                    </ul>
+                    <% if(locals.user) { %>
+                        <a href="/user/organizer/register" class="btn btn-outline" style="padding: 1rem 2.5rem; font-size: 1.05rem; border-radius: 2rem;">Start Earning Today <i class="fa fa-arrow-right" style="margin-left: 0.5rem;"></i></a>
+                    <% } else { %>
+                        <a href="/user/login" class="btn btn-outline" style="padding: 1rem 2.5rem; font-size: 1.05rem; border-radius: 2rem;">Login to Start Earning <i class="fa fa-arrow-right" style="margin-left: 0.5rem;"></i></a>
+                    <% } %>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <a href="/" class="logo" style="margin-bottom: 1.5rem;">EVENT<span>HUB</span></a>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">The leading platform for managing and
+                        discovering world-class events.</p>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 1.5rem;">Quick Links</h4>
+                    <ul style="color: var(--text-muted); display: grid; gap: 0.8rem;">
+                        <li><a href="/events">Browse Events</a></li>
+                        <li><a href="/about">Our Story</a></li>
+                        <li><a href="/contact">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 1.5rem;">Legal</h4>
+                    <ul style="color: var(--text-muted); display: grid; gap: 0.8rem;">
+                        <li><a href="/terms">Terms</a></li>
+                        <li><a href="/privacy">Privacy</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 1.5rem;">Social</h4>
+                    <div style="display: flex; gap: 1rem; font-size: 1.5rem;">
+                        <a href="#" style="color: var(--text-dim);"><i class="fab fa-twitter"></i></a>
+                        <a href="#" style="color: var(--text-dim);"><i class="fab fa-instagram"></i></a>
+                        <a href="#" style="color: var(--text-dim);"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 EventHub Inc. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <%- include('../partials/footer-scripts') %>
+</body>
+</html>

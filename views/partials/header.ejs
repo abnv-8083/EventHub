@@ -1,0 +1,7 @@
+<header class="<%= typeof positionClass !== 'undefined' ? positionClass : 'navbar-sticky' %>">
+    <% if (typeof user !== 'undefined' && user) { %>
+        <%- include('navbar-after-login') %>
+    <% } else { %>
+        <%- include('navbar-before-login') %>
+    <% } %>
+</header>

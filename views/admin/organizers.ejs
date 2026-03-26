@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', { title: 'Manage Organizers | Admin Hub' }) %>
+
+<body>
+
+    <%- include('../partials/header-admin') %>
+
+    <div class="dashboard-layout">
+        <%- include('../partials/sidebar-admin') %>
+
+        <main class="dashboard-main animate">
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem;">
+                <div>
+                    <h1 style="font-size: 1.8rem;">Platform <span class="text-gradient">Organizers</span></h1>
+                    <p style="color: var(--text-muted);">Manage and verify organization accounts.</p>
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <div style="position: relative;">
+                        <input type="text" class="input" placeholder="Search orgs..."
+                            style="padding: 0.8rem 1rem 0.8rem 2.5rem; width: 250px;">
+                        <i class="fa fa-search"
+                            style="position: absolute; left: 1rem; top: 1rem; color: var(--text-dim);"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Organizer Table -->
+            <div class="card" style="padding: 0; overflow: hidden;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr style="background: var(--bg-surface); border-bottom: 1px solid var(--border);">
+                            <th style="padding: 1.5rem;">Organization</th>
+                            <th style="padding: 1.5rem;">KYC Status</th>
+                            <th style="padding: 1.5rem;">Events</th>
+                            <th style="padding: 1.5rem;">Commission Rate</th>
+                            <th style="padding: 1.5rem;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody style="color: var(--text-muted); font-size: 0.9rem;">
+                        <% if (organizers && organizers.length > 0) { %>
+                            <% organizers.forEach(org => { %>
+                            <tr style="border-bottom: 1px solid var(--border);">
+                                <td style="padding: 1.5rem;">
+                                    <div style="display: flex; gap: 1rem; align-items: center;">
+                                        <div style="width: 40px; height: 40px; background: #333; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--primary);">
+                                            <i class="fa fa-briefcase"></i>
+                                        </div>
+                                        <div>
+                                            <div style="font-weight: 600; color: white;">
+                                                <%= org.organizationName %> 
+                                                <% if (org.status === 'Approved') { %>
+                                                    <i class="fa fa-check-circle" style="color: #2ECC71; font-size: 0.75rem;" title="Verified"></i>
+                                                <% } %>
+                                            </div>
+                                            <div style="font-size: 0.75rem;"><%= org.userId ? org.userId.email : 'No email' %></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="padding: 1.5rem;">
+                                    <% if (org.status === 'Approved') { %>
+                                        <span style="color: #2ECC71;">Verified</span>
+                                    <% } else if (org.status === 'Pending') { %>
+                                        <span style="color: #E67E22;">Pending KYC</span>
+                                    <% } else { %>
+                                        <span style="color: #E74C3C;">Rejected</span>
+                                    <% } %>
+                                </td>
+                                <td style="padding: 1.5rem;">0 Live / 0 Total</td>
+                                <td style="padding: 1.5rem;"><%= org.commissionRate %>%</td>
+                                <td style="padding: 1.5rem;">
+                                    <div style="display: flex; gap: 0.8rem;">
+                                        <% if (org.status === 'Pending') { %>
+                                            <a href="/admin/organizer/verify-kyc/<%= org._id %>" class="btn btn-primary" style="padding: 0.4rem 0.8rem; font-size: 0.75rem; text-decoration: none;">Verify Level</a>
+                                        <% } else { %>
+                                            <a href="/admin/organizer/verify-kyc/<%= org._id %>" class="btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.75rem;"><i class="fa fa-eye"></i> View</a>
+                                        <% } %>
+                                    </div>
+                                </td>
+                            </tr>
+                            <% }) %>
+                        <% } else { %>
+                            <tr>
+                                <td colspan="5" style="padding: 2rem; text-align: center; color: var(--text-dim);">
+                                    No organizers found.
+                                </td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <% if (locals.totalPages > 1) { %>
+            <div style="display: flex; justify-content: center; gap: 0.8rem; margin-top: 3rem;">
+                <% for (let i = 1; i <= totalPages; i++) { %>
+                    <a href="?page=<%= i %>" class="btn <%= currentPage === i ? 'btn-primary' : 'btn-outline' %>" style="padding: 0.5rem 1rem;">
+                        <%= i %>
+                    </a>
+                <% } %>
+            </div>
+            <% } %>
+        </main>
+    </div>
+
+    <%- include('partials/scripts') %>
+</body>
+
+</html>

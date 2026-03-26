@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../../partials/head', { title: 'Cancel Bookings' }) %>
+
+<body>
+
+    <%- include('../../partials/header') %>
+
+    <div class="dashboard-layout">
+                <%- include('../../partials/sidebar') %>
+
+        <main class="dashboard-main animate">
+            <h1 style="font-size: 1.8rem; margin-bottom: 2rem;">Refund <span class="text-gradient">Center</span></h1>
+            <p style="color: var(--text-muted); margin-bottom: 2.5rem; max-width: 600px;">
+                Select a booking to manage cancellations. Note that refund eligibility depends on the event's
+                cancellation policy.
+            </p>
+
+            <div style="display: grid; gap: 1.5rem;">
+                <!-- Booking Item 1 -->
+                <div class="card" style="display: flex; align-items: center; padding: 1.5rem; gap: 2rem;">
+                    <div
+                        style="width: 80px; height: 80px; background: url('https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&q=80&w=200') center/cover; border-radius: 12px;">
+                    </div>
+                    <div style="flex: 1;">
+                        <h3 style="font-size: 1.2rem; margin-bottom: 0.3rem;">Midnight Jazz Festival</h3>
+                        <div style="font-size: 0.9rem; color: var(--text-dim); margin-bottom: 0.8rem;">
+                            Order #EH-992841 â€¢ 2 Tickets â€¢ Total $90.00
+                        </div>
+                        <div style="display: flex; gap: 1rem; align-items: center;">
+                            <span
+                                style="font-size: 0.75rem; background: rgba(46, 204, 113, 0.1); color: #2ECC71; padding: 0.2rem 0.6rem; border-radius: 100px;">Eligible
+                                for Full Refund</span>
+                            <span style="font-size: 0.75rem; color: var(--text-dim);"><i class="fa fa-clock"></i> Ends
+                                in 2 days</span>
+                        </div>
+                    </div>
+                    <div style="text-align: right;">
+                        <a href="cancel-detail" class="btn btn-outline"
+                            style="border-color: #e74c3c; color: #e74c3c;">Manage Cancellation</a>
+                    </div>
+                </div>
+
+                <!-- Booking Item 2 -->
+                <div class="card" style="display: flex; align-items: center; padding: 1.5rem; gap: 2rem;">
+                    <div
+                        style="width: 80px; height: 80px; background: url('https://images.unsplash.com/photo-1540575861501-7ad0582371f3?auto=format&fit=crop&q=80&w=200') center/cover; border-radius: 12px; filter: grayscale(1);">
+                    </div>
+                    <div style="flex: 1;">
+                        <h3 style="font-size: 1.2rem; margin-bottom: 0.3rem;">Tech Summit 2026</h3>
+                        <div style="font-size: 0.9rem; color: var(--text-dim); margin-bottom: 0.8rem;">
+                            Order #EH-110293 â€¢ 1 Ticket â€¢ Total $150.00
+                        </div>
+                        <div style="display: flex; gap: 1rem; align-items: center;">
+                            <span
+                                style="font-size: 0.75rem; background: rgba(231, 76, 60, 0.1); color: #e74c3c; padding: 0.2rem 0.6rem; border-radius: 100px;">Partial
+                                Refund Only</span>
+                            <span style="font-size: 0.75rem; color: var(--text-dim);"><i
+                                    class="fa fa-exclamation-triangle"></i> Policy has changed</span>
+                        </div>
+                    </div>
+                    <div style="text-align: right;">
+                        <a href="cancel-detail" class="btn btn-outline"
+                            style="border-color: #e74c3c; color: #e74c3c;">Manage Cancellation</a>
+                    </div>
+                </div>
+
+                <div class="card"
+                    style="padding: 1.5rem; background: rgba(255, 255, 255, 0.02); border-style: dashed; display: flex; align-items: center; justify-content: center; opacity: 0.6;">
+                    <p style="font-size: 0.9rem; color: var(--text-muted);"><i class="fa fa-info-circle"></i> Only
+                        upcoming events within the cancellation window are shown here.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+</body>
+
+</html>
+
+
+
+

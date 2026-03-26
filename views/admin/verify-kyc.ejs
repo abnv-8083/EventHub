@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', { title: 'Verify KYC | Admin Hub' }) %>
+
+<body>
+
+    <%- include('../partials/header-admin') %>
+
+    <div class="dashboard-layout">
+        <%- include('../partials/sidebar-admin') %>
+
+        <main class="dashboard-main animate">
+            <!-- Header -->
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem;">
+                <div>
+                    <h1 style="font-size: 1.8rem; margin-bottom: 0.5rem;">Verify <span class="text-gradient">KYC Application</span></h1>
+                    <p style="color: var(--text-muted); margin: 0;">Review organization details to approve or reject their creator status.</p>
+                </div>
+                <div>
+                    <a href="/admin/organizer" class="btn btn-outline" style="padding: 0.8rem 1.5rem;"><i class="fa fa-arrow-left"></i> Back to Organizers</a>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem;">
+                <!-- Document Viewer pane -->
+                <div style="display: flex; flex-direction: column; gap: 2rem;">
+                    
+                    <!-- Company Info -->
+                    <div class="card" style="padding: 2rem;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem;">
+                            <h3 style="font-size: 1.25rem; font-weight: 600; margin: 0;"><i class="fa fa-building" style="color: var(--primary); margin-right: 0.5rem;"></i> Business Details</h3>
+                            <% if (organizer.status === 'Pending') { %>
+                                <span class="badge" style="background: rgba(230, 126, 34, 0.1); color: #E67E22; padding: 0.4rem 0.8rem; border-radius: 2rem; font-size: 0.75rem;"><i class="fa fa-clock"></i> Pending Review</span>
+                            <% } else if (organizer.status === 'Approved') { %>
+                                <span class="badge" style="background: rgba(46, 204, 113, 0.1); color: #2ECC71; padding: 0.4rem 0.8rem; border-radius: 2rem; font-size: 0.75rem;"><i class="fa fa-check"></i> Approved</span>
+                            <% } else { %>
+                                <span class="badge" style="background: rgba(231, 76, 60, 0.1); color: #E74C3C; padding: 0.4rem 0.8rem; border-radius: 2rem; font-size: 0.75rem;"><i class="fa fa-times"></i> Rejected</span>
+                            <% } %>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; background: var(--bg-surface); padding: 1.5rem; border-radius: 16px; border: 1px solid var(--border);">
+                            <div>
+                                <p style="color: var(--text-dim); font-size: 0.85rem; margin-bottom: 0.2rem; text-transform: uppercase;">Legal Entity Name</p>
+                                <p style="font-size: 1.05rem; font-weight: 500; color: #fff; margin: 0;"><%= organizer.organizationName %></p>
+                            </div>
+                            <div>
+                                <p style="color: var(--text-dim); font-size: 0.85rem; margin-bottom: 0.2rem; text-transform: uppercase;">Registration Number</p>
+                                <p style="font-size: 1.05rem; font-weight: 500; color: #fff; margin: 0;"><%= organizer.registrationNumber %></p>
+                            </div>
+                            <div>
+                                <p style="color: var(--text-dim); font-size: 0.85rem; margin-bottom: 0.2rem; text-transform: uppercase;">Industry category</p>
+                                <p style="font-size: 1.05rem; font-weight: 500; color: #fff; margin: 0;"><%= organizer.industryCategory %></p>
+                            </div>
+                            <div>
+                                <p style="color: var(--text-dim); font-size: 0.85rem; margin-bottom: 0.2rem; text-transform: uppercase;">Operating Region</p>
+                                <p style="font-size: 1.05rem; font-weight: 500; color: #fff; margin: 0;"><%= organizer.operatingRegion %></p>
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr; gap: 1.5rem; margin-top: 1.5rem; background: var(--bg-surface); padding: 1.5rem; border-radius: 16px; border: 1px solid var(--border);">
+                            <div>
+                                <p style="color: var(--text-dim); font-size: 0.85rem; margin-bottom: 0.2rem; text-transform: uppercase;">Linked User Account</p>
+                                <p style="font-size: 1.05rem; font-weight: 500; color: #fff; margin: 0;"><%= organizer.userId ? `${organizer.userId.name} (${organizer.userId.email})` : 'Unknown User' %></p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Action Sidebar -->
+                <div style="display: flex; flex-direction: column; gap: 2rem;">
+                    
+                    <!-- Primary Actions -->
+                    <div class="card" style="padding: 2rem; position: sticky; top: 100px;">
+                        <h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 0.8rem;">Adjudication</h3>
+                        
+                        <% if (organizer.status === 'Pending') { %>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">
+                            Before approving, ensure that the registered business details align authentically with the designated user profile.
+                        </p>
+
+                        <div style="display: flex; flex-direction: column; gap: 1rem;">
+                            <!-- Approve Form -->
+                            <form class="ajax-form" action="/admin/organizer/approve-kyc/<%= organizer._id %>" method="POST">
+                                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1rem; background: #2ECC71; border-color: #2ECC71; box-shadow: 0 4px 15px rgba(46, 204, 113, 0.2);">
+                                    <i class="fa fa-check-circle"></i> Approve Registration
+                                </button>
+                            </form>
+
+                            <!-- Reject Form -->
+                            <form class="ajax-form" action="/admin/organizer/reject-kyc/<%= organizer._id %>" method="POST">
+                                <div style="margin-bottom: 1rem;">
+                                    <label style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem; display: block;">Rejection Reason</label>
+                                    <select name="reason" class="input" style="width: 100%; background: var(--bg-surface); appearance: none;" required>
+                                        <option value="Invalid Details">Invalid corporate details</option>
+                                        <option value="Unregistered Entity">Entity not found in region</option>
+                                        <option value="Fraudulent Account">Suspected fraudulent activity</option>
+                                        <option value="Duplicate Account">Duplicate application</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-outline" style="width: 100%; padding: 1rem; color: #E63946; border-color: rgba(230, 57, 70, 0.3);">
+                                    <i class="fa fa-times-circle"></i> Reject Application
+                                </button>
+                            </form>
+                        </div>
+                        <% } else { %>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">
+                            This application has already been processed. No further administrative action is necessary.
+                        </p>
+                        <a href="/admin/organizer" class="btn btn-outline" style="width: 100%; padding: 1rem; text-align: center;">Return to Organizer List</a>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <%- include('partials/scripts') %>
+</body>
+
+</html>

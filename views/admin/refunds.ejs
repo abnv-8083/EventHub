@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', { title: 'Refund Approval | Admin Hub' }) %>
+
+<body>
+
+    <%- include('../partials/header-admin') %>
+
+    <div class="dashboard-layout">
+                <%- include('../partials/sidebar-admin') %>
+
+        <main class="dashboard-main animate">
+            <h1 style="font-size: 1.8rem; margin-bottom: 2.5rem;">Refund <span class="text-gradient">Approval
+                    Queue</span></h1>
+
+            <!-- Refund Queue Table -->
+            <div class="card" style="padding: 0; overflow: hidden;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr style="background: var(--bg-surface); border-bottom: 1px solid var(--border);">
+                            <th style="padding: 1.5rem;">Request Info</th>
+                            <th style="padding: 1.5rem;">Organizer Status</th>
+                            <th style="padding: 1.5rem;">Amount</th>
+                            <th style="padding: 1.5rem;">Method</th>
+                            <th style="padding: 1.5rem;">Final Action</th>
+                        </tr>
+                    </thead>
+                    <tbody style="color: var(--text-muted); font-size: 0.9rem;">
+                        <tr style="border-bottom: 1px solid var(--border);">
+                            <td style="padding: 1.5rem;">
+                                <div style="font-weight: 600; color: white;">#EH-992841</div>
+                                <div style="font-size: 0.75rem;">John Doe â€¢ Oct 14, 2026</div>
+                            </td>
+                            <td style="padding: 1.5rem;"><span style="color: #2ECC71;"><i
+                                        class="fa fa-check-circle"></i> Organizer Approved</span></td>
+                            <td style="padding: 1.5rem; font-weight: 700; color: #2ECC71;">$83.50</td>
+                            <td style="padding: 1.5rem;">Card ending in 4242</td>
+                            <td style="padding: 1.5rem;">
+                                <button class="btn btn-primary"
+                                    style="padding: 0.4rem 0.8rem; font-size: 0.75rem;">Authorize Refund</button>
+                            </td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border);">
+                            <td style="padding: 1.5rem;">
+                                <div style="font-weight: 600; color: white;">#EH-992830</div>
+                                <div style="font-size: 0.75rem;">Sarah Connor â€¢ Oct 10, 2026</div>
+                            </td>
+                            <td style="padding: 1.5rem;"><span style="color: #E67E22;"><i class="fa fa-clock"></i>
+                                    Awaiting Org Approval</span></td>
+                            <td style="padding: 1.5rem; font-weight: 700; color: #2ECC71;">$55.00</td>
+                            <td style="padding: 1.5rem;">PayPal</td>
+                            <td style="padding: 1.5rem;">
+                                <button class="btn btn-outline" disabled
+                                    style="padding: 0.4rem 0.8rem; font-size: 0.75rem; opacity: 0.5;">Wait for
+                                    Org</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <%- include('partials/scripts') %>
+</body>
+
+</html>
+
+
+

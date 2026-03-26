@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', { title: 'Login' }) %>
+
+<body style="height: 100vh; overflow: hidden; margin: 0; padding: 0; display: flex; font-family: 'Outfit', sans-serif;">
+<!-- Left Side: Typography and Imagery -->
+    <div class="d-none d-lg-flex flex-column justify-content-between" 
+         style="width: 50%; background: linear-gradient(135deg, rgba(10, 10, 10, 0.8), rgba(230, 57, 70, 0.8)), url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80&w=1600') center/cover; padding: 4rem; position: relative;">
+        <!-- Logo -->
+        <div>
+            <a href="/" class="logo" style="font-size: 2rem; color: #ffffff;">EVENT<span>HUB</span></a>
+        </div>
+        
+        <!-- Typography -->
+        <div style="margin-bottom: 4rem;">
+            <h1 style="font-size: 4rem; font-weight: 700; line-height: 1.1; margin-bottom: 1.5rem; color: #ffffff; letter-spacing: -1.5px;">
+                Unforgettable<br>Experiences<br>Await.
+            </h1>
+            <p style="font-size: 1.25rem; color: rgba(255, 255, 255, 0.85); max-width: 450px; line-height: 1.6;">
+                Discover the best concerts, conferences, and festivals in your city. Join our global community of creators and enthusiasts today.
+            </p>
+        </div>
+        
+        <!-- Footer Info -->
+        <div style="color: rgba(255, 255, 255, 0.6); font-size: 0.9rem;">
+            &copy; 2026 EventHub Inc. All rights reserved.
+        </div>
+    </div>
+
+    <!-- Right Side: Plain Form Page (Dark Theme) -->
+    <div style="flex: 1; background: var(--bg-surface); display: flex; padding: 2rem; overflow-y: auto;">
+        <div style="width: 100%; max-width: 440px; margin: auto; padding-top: 2rem; padding-bottom: 2rem;">
+            
+            <!-- Mobile Logo -->
+            <div class="d-block d-lg-none" style="text-align: center; margin-bottom: 2.5rem;">
+                <a href="/" class="logo" style="justify-content: center; font-size: 2.5rem; color: #ffffff;">EVENT<span>HUB</span></a>
+            </div>
+
+            <div style="margin-bottom: 2.5rem;">
+                <h2 style="font-size: 2rem; letter-spacing: -1px; margin-bottom: 0.5rem; color: #ffffff; font-weight: 700;">Welcome Back</h2>
+                <p style="color: var(--text-muted); font-size: 1rem; margin-bottom: 0;">Enter your credentials to access your portal.</p>
+            </div>
+
+            <form class="needs-validation" action="/user/login" method="POST">
+                
+                <div style="margin-bottom: 1.25rem;">
+                    <label style="display: block; font-size: 0.9rem; margin-bottom: 0.5rem; color: var(--text-muted); font-weight: 500;">Email Address</label>
+                    <input type="email" name="email" required placeholder="name@example.com"
+                           style="width: 100%; padding: 0.9rem 1rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; color: #ffffff; font-size: 1rem; transition: all 0.2s; outline: none;"
+                           onfocus="this.style.borderColor='var(--primary)'; this.style.boxShadow='0 0 0 4px rgba(230, 57, 70, 0.1)';" 
+                           onblur="this.style.borderColor='var(--border)'; this.style.boxShadow='none';">
+                </div>
+
+                <div style="margin-bottom: 1.5rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                        <label style="margin-bottom: 0; font-size: 0.9rem; color: var(--text-muted); font-weight: 500;">Password</label>
+                        <a href="/user/forgot-password" style="color: var(--primary); font-size: 0.85rem; font-weight: 600;">Forgot Password?</a>
+                    </div>
+                    <input type="password" name="password" required placeholder="••••••••"
+                           style="width: 100%; padding: 0.9rem 1rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; color: #ffffff; font-size: 1rem; transition: all 0.2s; outline: none;"
+                           onfocus="this.style.borderColor='var(--primary)'; this.style.boxShadow='0 0 0 4px rgba(230, 57, 70, 0.1)';" 
+                           onblur="this.style.borderColor='var(--border)'; this.style.boxShadow='none';">
+                </div>
+
+                <button type="submit" class="btn btn-primary"
+                        style="width: 100%; padding: 0.9rem; border-radius: 12px; font-size: 1.05rem; font-weight: 600; box-shadow: 0 4px 14px rgba(230, 57, 70, 0.3);">
+                    Sign In
+                </button>
+
+                <div style="display: flex; align-items: center; gap: 1rem; margin: 1.75rem 0;">
+                    <hr style="flex: 1; border: 0; border-top: 1px solid var(--border);">
+                    <span style="color: var(--text-dim); font-size: 0.8rem; text-transform: uppercase; font-weight: 600;">OR</span>
+                    <hr style="flex: 1; border: 0; border-top: 1px solid var(--border);">
+                </div>
+
+                <a href="/user/google"><button type="button"
+                        style="width: 100%; padding: 0.9rem; border-radius: 12px; display: flex; align-items: center; justify-content: center; gap: 1rem; border: 1px solid var(--border); background: var(--bg-card); color: #ffffff; font-size: 1rem; font-weight: 500; cursor: pointer; transition: all 0.2s;"
+                        onmouseover="this.style.background='rgba(255,255,255,0.05)';" onmouseout="this.style.background='var(--bg-card)';">
+                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20" alt="Google">
+                    Continue with Google
+                </button></a>
+            </form>
+
+            <div style="text-align: center; margin-top: 2.5rem; padding-top: 1.5rem;">
+                <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 0;">New to EventHub? 
+                    <a href="/user/signup" style="color: var(--primary); font-weight: 700; text-decoration: underline; text-underline-offset: 4px;">Create Account</a>
+                </p>
+            </div>
+            
+            <!-- Mobile Footer -->
+            <div class="d-block d-lg-none" style="text-align: center; margin-top: 2.5rem; color: var(--text-dim); font-size: 0.85rem;">
+                &copy; 2026 EventHub Inc.
+            </div>
+        </div>
+    </div>
+
+    <%- include('../partials/footer-scripts') %>
+</body>
+</html>

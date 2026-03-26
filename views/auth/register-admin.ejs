@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', { title: 'Admin Registration' }) %>
+
+<body style="height: 100vh; overflow: hidden; margin: 0; padding: 0; display: flex; font-family: 'Outfit', sans-serif;">
+    <!-- Left Side: Typography and Imagery -->
+    <div class="d-none d-lg-flex flex-column justify-content-between"
+         style="width: 50%; background: linear-gradient(135deg, rgba(10, 10, 10, 0.9), rgba(30, 30, 30, 0.8)), url('https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=1600') center/cover; padding: 4rem; position: relative;">
+        <!-- Logo -->
+        <div>
+            <a href="/" class="logo" style="font-size: 2rem; color: #ffffff;">EVENT<span>HUB</span> <span style="font-size: 1rem; font-weight: 300; opacity: 0.8; letter-spacing: 2px;">| ADMIN</span></a>
+        </div>
+
+        <!-- Typography -->
+        <div style="margin-bottom: 4rem;">
+            <h1 style="font-size: 4rem; font-weight: 700; line-height: 1.1; margin-bottom: 1.5rem; color: #ffffff; letter-spacing: -1.5px;">
+                Initialize<br>Authority.
+            </h1>
+            <p style="font-size: 1.25rem; color: rgba(255, 255, 255, 0.85); max-width: 450px; line-height: 1.6;">
+                Generate a new administrator profile to govern platform operations, ensure community safety, and manage high-level infrastructure limits.
+            </p>
+        </div>
+
+        <!-- Footer Info -->
+        <div style="color: rgba(255, 255, 255, 0.6); font-size: 0.9rem;">
+            &copy; 2026 EventHub Inc. Restricted Access.
+        </div>
+    </div>
+
+    <!-- Right Side: Plain Form Page (Dark Theme) -->
+    <div style="flex: 1; background: var(--bg-surface); display: flex; padding: 2rem; overflow-y: auto;">
+        <div style="width: 100%; max-width: 460px; margin: auto; padding-top: 2rem; padding-bottom: 2rem;">
+
+            <!-- Mobile Logo -->
+            <div class="d-block d-lg-none" style="text-align: center; margin-bottom: 2rem;">
+                <a href="/" class="logo" style="justify-content: center; font-size: 2.5rem; color: #ffffff;">EVENT<span>HUB</span></a>
+                <div style="font-size: 0.9rem; font-weight: 300; color: var(--text-muted); letter-spacing: 2px; margin-top: 0.2rem;">SYSTEM ADMIN</div>
+            </div>
+
+            <div style="margin-bottom: 2rem;">
+                <h2 style="font-size: 2rem; letter-spacing: -1px; margin-bottom: 0.5rem; color: #ffffff; font-weight: 700;">Establish Access</h2>
+                <p style="color: var(--text-muted); font-size: 1rem; margin-bottom: 0;">Register a new administrative identity securely.</p>
+            </div>
+
+            <form class="needs-validation" action="/admin/register" method="POST">
+
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; font-size: 0.9rem; margin-bottom: 0.4rem; color: var(--text-muted); font-weight: 500;">Authorized Name</label>
+                    <input type="text" name="name" required placeholder="John Security"
+                        style="width: 100%; padding: 0.9rem 1rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; color: #ffffff; font-size: 1rem; transition: all 0.2s; outline: none;"
+                        onfocus="this.style.borderColor='var(--primary)'; this.style.boxShadow='0 0 0 4px rgba(230, 57, 70, 0.1)';"
+                        onblur="this.style.borderColor='var(--border)'; this.style.boxShadow='none';">
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                    <div>
+                        <label style="display: block; font-size: 0.9rem; margin-bottom: 0.4rem; color: var(--text-muted); font-weight: 500;">Admin Internal Email</label>
+                        <input type="email" name="email" required placeholder="name@eventhub.com"
+                            style="width: 100%; padding: 0.9rem 1rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; color: #ffffff; font-size: 1rem; transition: all 0.2s; outline: none;"
+                            onfocus="this.style.borderColor='var(--primary)'; this.style.boxShadow='0 0 0 4px rgba(230, 57, 70, 0.1)';"
+                            onblur="this.style.borderColor='var(--border)'; this.style.boxShadow='none';">
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 0.9rem; margin-bottom: 0.4rem; color: var(--text-muted); font-weight: 500;">Department</label>
+                        <select name="department" required
+                            style="width: 100%; padding: 0.9rem 1rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; color: #ffffff; font-size: 1rem; transition: all 0.2s; outline: none; appearance: none;"
+                            onfocus="this.style.borderColor='var(--primary)'; this.style.boxShadow='0 0 0 4px rgba(230, 57, 70, 0.1)';"
+                            onblur="this.style.borderColor='var(--border)'; this.style.boxShadow='none';">
+                            <option value="moderation">Trust & Safety</option>
+                            <option value="finances">Financial Reviews</option>
+                            <option value="engineering">Platform Engineering</option>
+                            <option value="operations">Global Operations</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                    <div>
+                        <label style="display: block; font-size: 0.9rem; margin-bottom: 0.4rem; color: var(--text-muted); font-weight: 500;">Access Key</label>
+                        <input type="password" name="password" required minlength="8" placeholder="••••••••"
+                            style="width: 100%; padding: 0.9rem 1rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; color: #ffffff; font-size: 1rem; transition: all 0.2s; outline: none;"
+                            onfocus="this.style.borderColor='var(--primary)'; this.style.boxShadow='0 0 0 4px rgba(230, 57, 70, 0.1)';"
+                            onblur="this.style.borderColor='var(--border)'; this.style.boxShadow='none';">
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 0.9rem; margin-bottom: 0.4rem; color: var(--text-muted); font-weight: 500;">Confirm Access Key</label>
+                        <input type="password" required minlength="8" placeholder="••••••••"
+                            style="width: 100%; padding: 0.9rem 1rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; color: #ffffff; font-size: 1rem; transition: all 0.2s; outline: none;"
+                            onfocus="this.style.borderColor='var(--primary)'; this.style.boxShadow='0 0 0 4px rgba(230, 57, 70, 0.1)';"
+                            onblur="this.style.borderColor='var(--border)'; this.style.boxShadow='none';">
+                    </div>
+                </div>
+
+                <div style="display: flex; align-items: flex-start; gap: 0.8rem; margin-bottom: 1.75rem;">
+                    <input type="checkbox" id="terms" required style="margin-top: 0.25rem;">
+                    <label for="terms" style="font-size: 0.85rem; color: var(--text-muted); cursor: pointer; line-height: 1.4;">
+                        I agree to maintain confidentiality according to the <a href="#" style="color: var(--primary); font-weight: 500;">Internal Staff Agreement</a>.
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary"
+                    style="width: 100%; padding: 0.9rem; border-radius: 12px; font-size: 1.05rem; font-weight: 600; box-shadow: 0 4px 14px rgba(230, 57, 70, 0.3);">
+                    Generate Credentials
+                </button>
+
+            </form>
+
+            <div style="text-align: center; margin-top: 2rem; padding-top: 1.5rem;">
+                <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 0;">Authorized identity already active?
+                    <a href="/admin/login"
+                        style="color: var(--primary); font-weight: 700; text-decoration: underline; text-underline-offset: 4px;">Sign In</a>
+                </p>
+            </div>
+
+            <!-- Mobile Footer -->
+            <div class="d-block d-lg-none" style="text-align: center; margin-top: 2rem; color: var(--text-dim); font-size: 0.85rem;">
+                &copy; 2026 EventHub Inc. Restricted Access.
+            </div>
+
+        </div>
+    </div>
+
+    <%- include('../partials/footer-scripts') %>
+</body>
+
+</html>

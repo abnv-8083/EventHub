@@ -1,0 +1,177 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', { title: 'Event Bookings' }) %>
+
+<body>
+
+    <%- include('../partials/header') %>
+
+    <div class="dashboard-layout">
+                <%- include('../partials/sidebar-organizer') %>
+
+        <main class="dashboard-main animate">
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem;">
+                <div>
+                    <h1 style="font-size: 1.8rem;">Midnight Jazz <span class="text-gradient">Bookings</span></h1>
+                    <p style="color: var(--text-muted);">View and manage attendees for this event.</p>
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <div
+                        style="background: var(--bg-surface); padding: 0.8rem 1.5rem; border-radius: var(--radius-sm); border: 1px solid var(--border);">
+                        <div style="font-size: 0.75rem; color: var(--text-muted);">Total Attendees</div>
+                        <div style="font-weight: 700;">324</div>
+                    </div>
+                    <button class="btn btn-primary" style="padding: 0 1.5rem;"><i class="fa fa-download"></i> Export
+                        CSV</button>
+                </div>
+            </div>
+
+            <div class="card" style="padding: 0; overflow: hidden;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr style="background: var(--bg-surface); border-bottom: 1px solid var(--border);">
+                            <th style="padding: 1.5rem;">User</th>
+                            <th style="padding: 1.5rem;">Ticket Count</th>
+                            <th style="padding: 1.5rem;">Total Paid</th>
+                            <th style="padding: 1.5rem;">Booking Date</th>
+                            <th style="padding: 1.5rem;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody style="color: var(--text-muted); font-size: 0.9rem;">
+                        <tr style="border-bottom: 1px solid var(--border);">
+                            <td style="padding: 1.5rem;">
+                                <div style="display: flex; gap: 1rem; align-items: center;">
+                                    <div style="width: 40px; height: 40px; background: #333; border-radius: 50%;"></div>
+                                    <div>
+                                        <div style="font-weight: 600; color: white;">John Doe</div>
+                                        <div style="font-size: 0.75rem;">john@example.com</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td style="padding: 1.5rem;">2</td>
+                            <td style="padding: 1.5rem;">$83.50</td>
+                            <td style="padding: 1.5rem;">Oct 12, 2026</td>
+                            <td style="padding: 1.5rem;">
+                                <button class="btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.75rem;"
+                                    onclick="openProfileModal('John Doe', 'john@example.com')">View
+                                    Profile</button>
+                            </td>
+                        </tr>
+                        <!-- More attendees -->
+                        <tr style="border-bottom: 1px solid var(--border);">
+                            <td style="padding: 1.5rem;">
+                                <div style="display: flex; gap: 1rem; align-items: center;">
+                                    <div style="width: 40px; height: 40px; background: #333; border-radius: 50%;"></div>
+                                    <div>
+                                        <div style="font-weight: 600; color: white;">Jane Smith</div>
+                                        <div style="font-size: 0.75rem;">jane@test.com</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td style="padding: 1.5rem;">1</td>
+                            <td style="padding: 1.5rem;">$45.00</td>
+                            <td style="padding: 1.5rem;">Oct 13, 2026</td>
+                            <td style="padding: 1.5rem;">
+                                <button class="btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.75rem;"
+                                    onclick="openProfileModal('Jane Smith', 'jane@test.com')">View
+                                    Profile</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- View Profile Modal -->
+    <div id="profileModal" class="modal-overlay">
+        <div class="modal-container animate" style="max-width: 550px;">
+            <div class="modal-header">
+                <h3 style="font-size: 1.1rem;">Attendee Profile</h3>
+                <i class="fa fa-times modal-close" onclick="closeModal()"></i>
+            </div>
+            <div class="modal-body">
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    <div
+                        style="width: 100px; height: 100px; background: var(--bg-surface); border: 3px solid var(--primary); border-radius: 50%; margin: 0 auto 1rem; overflow: hidden;">
+                        <img id="modalUserImg" src="https://i.pravatar.cc/150?u=default" alt="User"
+                            style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <h2 id="modalUserName" style="font-size: 1.5rem; margin-bottom: 0.3rem;">Name</h2>
+                    <p id="modalUserEmail" style="color: var(--text-muted); font-size: 0.9rem;">email@example.com</p>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
+                    <div
+                        style="background: rgba(255,255,255,0.03); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--border);">
+                        <div style="font-size: 0.75rem; color: var(--text-dim); margin-bottom: 0.3rem;">Total Bookings
+                        </div>
+                        <div style="font-weight: 700; font-size: 1.2rem;">12 Events</div>
+                    </div>
+                    <div
+                        style="background: rgba(255,255,255,0.03); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--border);">
+                        <div style="font-size: 0.75rem; color: var(--text-dim); margin-bottom: 0.3rem;">Member Since
+                        </div>
+                        <div style="font-weight: 700; font-size: 1.2rem;">Jan 2024</div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 2rem;">
+                    <h4 style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.8rem;">Attendee Bio</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-dim); line-height: 1.6;">
+                        Passionate event-goer with a love for live music and tech conferences. Frequently attends jazz
+                        festivals and networking events in the NY area.
+                    </p>
+                </div>
+
+                <div
+                    style="background: rgba(230, 57, 70, 0.05); padding: 1.2rem; border-radius: var(--radius-md); border: 1px dashed var(--border-red);">
+                    <h4 style="font-size: 0.85rem; color: var(--primary); margin-bottom: 0.5rem;"><i
+                            class="fa fa-info-circle"></i> Organizer Note</h4>
+                    <p style="font-size: 0.8rem; color: var(--text-muted);">Verified attendee with 100% attendance rate
+                        for past events.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" style="width: 100%;" onclick="closeModal()">Close Profile</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openProfileModal(name, email) {
+            document.getElementById('modalUserName').innerText = name;
+            document.getElementById('modalUserEmail').innerText = email;
+            document.getElementById('modalUserImg').src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${name}`;
+
+            const modal = document.getElementById('profileModal');
+            modal.style.display = 'flex';
+            setTimeout(() => {
+                modal.classList.add('active');
+            }, 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('profileModal');
+            modal.classList.remove('active');
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+        }
+
+        // Close on overlay click
+        window.onclick = function (event) {
+            const modal = document.getElementById('profileModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+    </script>
+
+</body>
+
+</html>
+
+
+

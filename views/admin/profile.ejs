@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', { title: 'My Profile | Admin Hub' }) %>
+
+<body>
+
+    <%- include('../partials/header-admin') %>
+
+    <div class="dashboard-layout">
+        <%- include('../partials/sidebar-admin') %>
+
+        <main class="dashboard-main animate">
+            <div class="d-flex align-items-center gap-3 mb-5">
+                <div>
+                    <h1 style="font-size: 1.8rem; margin-bottom: 0;">My <span class="text-gradient" style="color: #4facfe;">Profile</span></h1>
+                    <p style="color: var(--text-muted); margin-bottom: 0; margin-top: 0.2rem;">Manage your administrator account settings.</p>
+                </div>
+            </div>
+
+            <div class="card glass" style="padding: 3rem; max-width: 900px; margin: 0 auto; border-radius: 20px;">
+                <div style="display: grid; grid-template-columns: 200px 1fr; gap: 3rem;">
+
+                    <!-- Avatar -->
+                    <div style="text-align: center;">
+                        <div style="width: 150px; height: 150px; background: rgba(79, 172, 254, 0.05); border: 2px dashed rgba(79, 172, 254, 0.3); border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                            <i class="fa fa-user-shield" style="font-size: 3rem; color: #4facfe;"></i>
+                        </div>
+                        <span style="font-size: 0.8rem; color: #4facfe; font-weight: 500; padding: 0.3rem 0.8rem; background: rgba(79, 172, 254, 0.1); border-radius: 2rem;"><%= adminData.status || 'Active' %></span>
+                        <p style="color: var(--text-dim); font-size: 0.8rem; margin-top: 1rem;">Joined <%= new Date(adminData.createdAt).toLocaleDateString() %></p>
+                    </div>
+
+                    <!-- Editable Form -->
+                    <form class="ajax-form" action="/admin/profile" method="POST">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+                            <div class="form-group mb-0">
+                                <label class="label">Full Name</label>
+                                <input type="text" name="name" class="input glass-dark" value="<%= adminData.name %>" required>
+                            </div>
+                            <div class="form-group mb-0">
+                                <label class="label">Email Address</label>
+                                <input type="email" name="email" class="input glass-dark" value="<%= adminData.email %>" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="margin-bottom: 2rem;">
+                            <label class="label">Notes / Role Description</label>
+                            <textarea name="notes" class="input glass-dark" rows="4" style="resize: vertical;"><%= adminData.notes || '' %></textarea>
+                        </div>
+
+                        <div style="border-top: 1px solid var(--border); padding-top: 2rem;">
+                            <button type="submit" class="btn btn-primary" style="padding: 1rem 3rem;">
+                                <i class="fa fa-save"></i> Save Changes
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <%- include('partials/scripts') %>
+</body>
+</html>

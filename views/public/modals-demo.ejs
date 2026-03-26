@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', { title: 'Modals Showcase' }) %>
+
+<body class="bg-mesh">
+    <%- include('partials/header', { positionClass: 'position-absolute top-0 start-0 w-100 z-3 pt-3' }) %>
+
+
+    <!-- Header -->
+    <header>
+        <div class="container nav-container">
+            <a href="/" class="logo">EVENT<span>HUB</span></a>
+            <div style="font-weight: 600;">Components Showcase</div>
+        </div>
+    </header>
+
+    <main class="section">
+        <div class="container" style="max-width: 800px; padding-top: 5rem;">
+            <div class="text-center mb-5">
+                <h1 style="font-size: 2.5rem;" class="mb-3">Reusable <span class="text-gradient">Modals</span></h1>
+                <p style="color: var(--text-muted);">High-end, pre-styled modal components for destructive actions,
+                    edits, and confirmations.</p>
+            </div>
+
+            <div class="card p-5"
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem;">
+                <div class="text-center">
+                    <i class="fa fa-trash-alt mb-3" style="font-size: 2rem; color: var(--primary);"></i>
+                    <h3 class="mb-3">Delete Modal</h3>
+                    <button class="btn btn-outline" onclick="openModal('deleteModal')" style="width: 100%;">Show
+                        Delete</button>
+                </div>
+                <div class="text-center">
+                    <i class="fa fa-edit mb-3" style="font-size: 2rem; color: #3498db;"></i>
+                    <h3 class="mb-3">Edit Modal</h3>
+                    <button class="btn btn-outline" onclick="openModal('editModal')" style="width: 100%;">Show
+                        Edit</button>
+                </div>
+                <div class="text-center">
+                    <i class="fa fa-check-circle mb-3" style="font-size: 2rem; color: #2ecc71;"></i>
+                    <h3 class="mb-3">Confirm Modal</h3>
+                    <button class="btn btn-outline" onclick="openModal('confirmModal')" style="width: 100%;">Show
+                        Confirm</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Delete Modal Overlay -->
+    <div id="deleteModal" class="modal-overlay">
+        <div class="modal-container modal-delete animate">
+            <div class="modal-header">
+                <h3 style="font-size: 1.1rem;">Confirm Deletion</h3>
+                <i class="fa fa-times modal-close" onclick="closeModal('deleteModal')"></i>
+            </div>
+            <div class="modal-body text-center">
+                <div class="modal-icon">
+                    <i class="fa fa-exclamation-triangle"></i>
+                </div>
+                <h4 class="mb-2" style="font-size: 1.25rem;">Delete this event?</h4>
+                <p style="color: var(--text-muted); font-size: 0.95rem;">This action is permanent and cannot be undone.
+                    All associated bookings will be cancelled.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('deleteModal')"
+                    style="border-color: var(--border); color: var(--text-main);">Cancel</button>
+                <button class="btn btn-primary">Delete Permanently</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal Overlay -->
+    <div id="editModal" class="modal-overlay">
+        <div class="modal-container animate" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3 style="font-size: 1.1rem;">Edit Event Details</h3>
+                <i class="fa fa-times modal-close" onclick="closeModal('editModal')"></i>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label class="label">Event Title</label>
+                        <input type="text" class="input" value="Midnight Jazz Festival">
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                        <div class="form-group">
+                            <label class="label">Date</label>
+                            <input type="date" class="input" value="2026-10-24">
+                        </div>
+                        <div class="form-group">
+                            <label class="label">Time</label>
+                            <input type="time" class="input" value="20:00">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('editModal')"
+                    style="border-color: var(--border); color: var(--text-main);">Cancel</button>
+                <button class="btn btn-primary">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirm Modal Overlay -->
+    <div id="confirmModal" class="modal-overlay">
+        <div class="modal-container modal-confirm animate">
+            <div class="modal-header">
+                <h3 style="font-size: 1.1rem;">Action Required</h3>
+                <i class="fa fa-times modal-close" onclick="closeModal('confirmModal')"></i>
+            </div>
+            <div class="modal-body text-center">
+                <div class="modal-icon">
+                    <i class="fa fa-check"></i>
+                </div>
+                <h4 class="mb-2" style="font-size: 1.25rem;">Confirm Booking?</h4>
+                <p style="color: var(--text-muted); font-size: 0.95rem;">By confirming, you agree to the event terms and
+                    conditions. Your tickets will be issued immediately.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('confirmModal')"
+                    style="border-color: var(--border); color: var(--text-main);">Discard</button>
+                <button class="btn btn-primary" style="background: #2ecc71;">Yes, Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            modal.style.display = 'flex';
+            setTimeout(() => {
+                modal.classList.add('active');
+            }, 10);
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            modal.classList.remove('active');
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+        }
+
+        // Close on overlay click
+        window.onclick = function (event) {
+            if (event.target.classList.contains('modal-overlay')) {
+                closeModal(event.target.id);
+            }
+        }
+    </script>
+
+</body>
+
+</html>

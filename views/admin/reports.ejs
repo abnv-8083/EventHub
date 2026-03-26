@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', { title: 'Platform Reports | Admin Hub' }) %>
+
+<body>
+
+    <%- include('../partials/header-admin') %>
+
+    <div class="dashboard-layout">
+                <%- include('../partials/sidebar-admin') %>
+
+        <main class="dashboard-main animate">
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem;">
+                <div>
+                    <h1 style="font-size: 1.8rem;">Insights & <span class="text-gradient">Analytics</span></h1>
+                    <p style="color: var(--text-muted);">Deep dive into platform performance metrics.</p>
+                </div>
+                <button class="btn btn-outline"><i class="fa fa-file-export"></i> Download Full Report</button>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2.5rem;">
+                <!-- Revenue Trend -->
+                <div class="card" style="padding: 2rem;">
+                    <h3 style="margin-bottom: 2rem; font-size: 1.1rem;">Revenue Growth (6 Months)</h3>
+                    <div
+                        style="height: 250px; background: rgba(255,255,255,0.02); border: 1px dashed var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                        <span style="color: var(--text-dim);">[Line Chart: Revenue Trend]</span>
+                    </div>
+                </div>
+
+                <!-- Category Distribution -->
+                <div class="card" style="padding: 2rem;">
+                    <h3 style="margin-bottom: 2rem; font-size: 1.1rem;">Event Categories</h3>
+                    <div
+                        style="height: 250px; background: rgba(255,255,255,0.02); border: 1px dashed var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                        <span style="color: var(--text-dim);">[Pie Chart: Distribution]</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Stats Table -->
+            <div class="card" style="padding: 2rem;">
+                <h3 style="margin-bottom: 1.5rem; font-size: 1.1rem;">Top Performing Organizers</h3>
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                        <thead>
+                            <tr style="border-bottom: 1px solid var(--border);">
+                                <th style="padding: 1rem 0;">Organizer</th>
+                                <th style="padding: 1rem 0;">Events</th>
+                                <th style="padding: 1rem 0;">Avg. Rating</th>
+                                <th style="padding: 1rem 0;">Total Revenue</th>
+                            </tr>
+                        </thead>
+                        <tbody style="color: var(--text-muted); font-size: 0.9rem;">
+                            <tr style="border-bottom: 1px solid var(--border);">
+                                <td style="padding: 1rem 0; color: white;">Jazz Society NY</td>
+                                <td style="padding: 1rem 0;">45</td>
+                                <td style="padding: 1rem 0;"><i class="fa fa-star" style="color: var(--primary);"></i>
+                                    4.9</td>
+                                <td style="padding: 1rem 0;">$84,200</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--border);">
+                                <td style="padding: 1rem 0; color: white;">Tech World Expo</td>
+                                <td style="padding: 1rem 0;">12</td>
+                                <td style="padding: 1rem 0;"><i class="fa fa-star" style="color: var(--primary);"></i>
+                                    4.7</td>
+                                <td style="padding: 1rem 0;">$156,000</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <%- include('partials/scripts') %>
+</body>
+
+</html>
+
+
+

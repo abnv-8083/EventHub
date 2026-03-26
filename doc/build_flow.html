@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EventHub Build Flow & Implementation Roadmap</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --secondary: #a855f7;
+            --accent: #f43f5e;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --border: rgba(226, 232, 240, 0.8);
+            --glass: rgba(255, 255, 255, 0.7);
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            margin: 0;
+            padding: 40px;
+            background-color: #f1f5f9;
+            background-image: radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.05) 0, transparent 50%),
+                              radial-gradient(at 100% 100%, rgba(168, 85, 247, 0.05) 0, transparent 50%);
+            color: var(--dark);
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.04em;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .phase-section {
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .phase-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .phase-badge {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 0;
+            color: var(--dark);
+        }
+
+        .goal-text {
+            display: block;
+            margin-top: 5px;
+            font-size: 1rem;
+            color: var(--gray);
+            font-style: italic;
+        }
+
+        .table-container {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            background: rgba(241, 245, 249, 0.6);
+            padding: 18px 20px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--gray);
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 18px 20px;
+            border-bottom: 1px solid rgba(226, 232, 240, 0.4);
+            vertical-align: top;
+            font-size: 0.95rem;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .page-name {
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .code-pill {
+            display: inline-block;
+            background: #eef2ff;
+            color: #4338ca;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            margin: 2px;
+        }
+
+        .endpoint-pill {
+            display: block;
+            background: #faf5ff;
+            color: #7e22ce;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            margin: 4px 0;
+            border: 1px solid #f3e8ff;
+            width: fit-content;
+        }
+
+        .method {
+            font-weight: 800;
+            margin-right: 5px;
+        }
+
+        .method.post { color: #0891b2; }
+        .method.get { color: #059669; }
+        .method.put { color: #d97706; }
+
+        footer {
+            margin-top: 80px;
+            padding: 40px 0;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        @media print {
+            body { padding: 0; background: white; }
+            .phase-section { page-break-inside: avoid; }
+            .table-container { box-shadow: none; border: 1px solid #ddd; }
+            h1 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>EventHub Build Flow</h1>
+            <p class="subtitle">An exhaustive technical roadmap for full-stack platform implementation.</p>
+        </header>
+
+        <!-- Phase 1 -->
+        <section class="phase-section">
+            <div class="phase-header">
+                <span class="phase-badge">Phase 1</span>
+                <h2>Authentication & Security 🔒</h2>
+            </div>
+            <span class="goal-text">Goal: Establish the secure foundation and enable role-based portal access.</span>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 15%">Page Name</th>
+                            <th style="width: 20%">Logic & Reason</th>
+                            <th style="width: 25%">Core Features</th>
+                            <th style="width: 20%">Collections</th>
+                            <th style="width: 20%">API Endpoints</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="page-name">Login</span></td>
+                            <td>Entry point for all users.</td>
+                            <td>Social logins, role redirection, session handling.</td>
+                            <td><span class="code-pill">users</span> <span class="code-pill">admins</span></td>
+                            <td><div class="endpoint-pill"><span class="method post">POST</span> /api/auth/login</div></td>
+                        </tr>
+                        <tr>
+                            <td><span class="page-name">Register</span></td>
+                            <td>Initial user onboarding.</td>
+                            <td>Step-wise form, base profile creation.</td>
+                            <td><span class="code-pill">users</span> <span class="code-pill">otp</span></td>
+                            <td><div class="endpoint-pill"><span class="method post">POST</span> /api/auth/register</div></td>
+                        </tr>
+                        <tr>
+                            <td><span class="page-name">OTP Verification</span></td>
+                            <td>Security compliance.</td>
+                            <td>Multi-digit input, resend timer, verification logic.</td>
+                            <td><span class="code-pill">otp</span> <span class="code-pill">users</span></td>
+                            <td><div class="endpoint-pill"><span class="method post">POST</span> /api/auth/verify-otp</div></td>
+                        </tr>
+                        <tr>
+                            <td><span class="page-name">Org Registration</span></td>
+                            <td>Partner onboarding.</td>
+                            <td>Business detail collection, document upload.</td>
+                            <td><span class="code-pill">organizers</span></td>
+                            <td><div class="endpoint-pill"><span class="method post">POST</span> /api/auth/register-organizer</div></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Phase 2 -->
+        <section class="phase-section">
+            <div class="phase-header">
+                <span class="phase-badge">Phase 2</span>
+                <h2>Public Interface & Discovery 🌐</h2>
+            </div>
+            <span class="goal-text">Goal: Create the "Window Shop" experience to drive traffic and SEO.</span>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 15%">Page Name</th>
+                            <th style="width: 20%">Logic & Reason</th>
+                            <th style="width: 25%">Core Features</th>
+                            <th style="width: 20%">Collections</th>
+                            <th style="width: 20%">API Endpoints</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="page-name">Landing Page</span></td>
+                            <td>Brand identity.</td>
+                            <td>Hero search, featured categories, trending events.</td>
+                            <td><span class="code-pill">events</span> <span class="code-pill">categories</span></td>
+                            <td><div class="endpoint-pill"><span class="method get">GET</span> /api/public/events</div>
+                                <div class="endpoint-pill"><span class="method get">GET</span> /api/public/categories</div></td>
+                        </tr>
+                        <tr>
+                            <td><span class="page-name">Events Listing</span></td>
+                            <td>Core utility.</td>
+                            <td>Advanced glassmorphism filters, category sorting.</td>
+                            <td><span class="code-pill">events</span></td>
+                            <td><div class="endpoint-pill"><span class="method get">GET</span> /api/public/events</div></td>
+                        </tr>
+                        <tr>
+                            <td><span class="page-name">Event Details</span></td>
+                            <td>Conversion point.</td>
+                            <td>Pricing cards, organizer bio, location maps.</td>
+                            <td><span class="code-pill">events</span> <span class="code-pill">comments</span></td>
+                            <td><div class="endpoint-pill"><span class="method get">GET</span> /api/public/events/:id</div></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Phase 3 -->
+        <section class="phase-section">
+            <div class="phase-header">
+                <span class="phase-badge">Phase 3</span>
+                <h2>User Portal & Transaction Loop 🎟️</h2>
+            </div>
+            <span class="goal-text">Goal: Enable the primary business value - ticket purchasing and management.</span>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 15%">Page Name</th>
+                            <th style="width: 20%">Logic & Reason</th>
+                            <th style="width: 25%">Core Features</th>
+                            <th style="width: 20%">Collections</th>
+                            <th style="width: 20%">API Endpoints</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="page-name">User Dashboard</span></td>
+                            <td>User retention.</td>
+                            <td>Personal stats, upcoming event alerts.</td>
+                            <td><span class="code-pill">bookings</span> <span class="code-pill">users</span></td>
+                            <td><div class="endpoint-pill"><span class="method get">GET</span> /api/user/profile</div></td>
+                        </tr>
+                        <tr>
+                            <td><span class="page-name">Booking Flow</span></td>
+                            <td>Revenue cycle.</td>
+                            <td>Stepper UI, ticket selection, coupon engine.</td>
+                            <td><span class="code-pill">events</span> <span class="code-pill">bookings</span></td>
+                            <td><div class="endpoint-pill"><span class="method post">POST</span> /api/user/bookings</div></td>
+                        </tr>
+                        <tr>
+                            <td><span class="page-name">My Tickets</span></td>
+                            <td>Entry management.</td>
+                            <td>Digital ticket list, active/past filters.</td>
+                            <td><span class="code-pill">tickets</span></td>
+                            <td><div class="endpoint-pill"><span class="method get">GET</span> /api/user/tickets</div></td>
+                        </tr>
+                        <tr>
+                            <td><span class="page-name">Wishlist</span></td>
+                            <td>Engagement.</td>
+                            <td>Save-for-later logic, remove triggers.</td>
+                            <td><span class="code-pill">wishlists</span></td>
+                            <td><div class="endpoint-pill"><span class="method get">GET</span> /api/user/wishlist</div>
+                                <div class="endpoint-pill"><span class="method post">POST</span> /api/user/wishlist</div></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Phase 4 -->
+        <section class="phase-section">
+            <div class="phase-header">
+                <span class="phase-badge">Phase 4</span>
+                <h2>Organizer Management Portal 📈</h2>
+            </div>
+            <span class="goal-text">Goal: Empower partners to manage their events and revenue.</span>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 15%">Page Name</th>
+                            <th style="width: 20%">Logic & Reason</th>
+                            <th style="width: 25%">Core Features</th>
+                            <th style="width: 20%">Collections</th>
+                            <th style="width: 20%">API Endpoints</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="page-name">Create Event</span></td>
+                            <td>Content supply.</td>
+                            <td>Form validation, banner upload, ticketing logic.</td>
+                            <td><span class="code-pill">events</span> <span class="code-pill">categories</span></td>
+                            <td><div class="endpoint-pill"><span class="method post">POST</span> /api/organizer/events</div></td>
+                        </tr>
+                        <tr>
+                            <td><span class="page-name">Ticket Scanner</span></td>
+                            <td>Event execution.</td>
+                            <td>Camera-based QR scanning, entry validation.</td>
+                            <td><span class="code-pill">tickets</span></td>
+                            <td><div class="endpoint-pill"><span class="method post">POST</span> /api/organizer/scanner/verify</div></td>
+                        </tr>
+                        <tr>
+                            <td><span class="page-name">Org Profile</span></td>
+                            <td>Brand control.</td>
+                            <td>Logo management, team details, social proof.</td>
+                            <td><span class="code-pill">organizers</span></td>
+                            <td><div class="endpoint-pill"><span class="method get">GET</span> /api/organizer/profile</div></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Phase 5 -->
+        <section class="phase-section">
+            <div class="phase-header">
+                <span class="phase-badge">Phase 5</span>
+                <h2>Master Admin Governance 🛡️</h2>
+            </div>
+            <span class="goal-text">Goal: System-wide monitoring, compliance, and strategic control.</span>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 15%">Page Name</th>
+                            <th style="width: 20%">Logic & Reason</th>
+                            <th style="width: 25%">Core Features</th>
+                            <th style="width: 20%">Collections</th>
+                            <th style="width: 20%">API Endpoints</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="page-name">Admin Dashboard</span></td>
+                            <td>Oversight.</td>
+                            <td>Global revenue, health alerts, user stats.</td>
+                            <td><span class="code-pill">All</span></td>
+                            <td><div class="endpoint-pill">N/A</div></td>
+                        </tr>
+                        <tr>
+                            <td><span class="page-name">Approvals</span></td>
+                            <td>Quality control.</td>
+                            <td>Multi-tab approval queue (events/orgs).</td>
+                            <td><span class="code-pill">events</span> <span class="code-pill">organizers</span></td>
+                            <td><div class="endpoint-pill"><span class="method get">GET</span> /api/admin/approvals/events</div></td>
+                        </tr>
+                        <tr>
+                            <td><span class="page-name">Settings</span></td>
+                            <td>Configuration.</td>
+                            <td>Fee management, API keys, maintenance mode.</td>
+                            <td><span class="code-pill">system_logs</span></td>
+                            <td><div class="endpoint-pill"><span class="method post">POST</span> /api/admin/categories</div></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <footer>
+            EventHub Development Roadmap Index - &copy; 2026 Technical Implementation Guide
+        </footer>
+    </div>
+</body>
+</html>

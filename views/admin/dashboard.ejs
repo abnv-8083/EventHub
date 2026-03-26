@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', { title: 'Admin Dashboard' }) %>
+
+<body>
+    <%- include('../partials/header-admin') %>
+
+    <div class="dashboard-layout">
+        <%- include('../partials/sidebar-admin') %>
+
+        <main class="dashboard-main animate">
+            <div style="margin-bottom: 2.5rem;">
+                <h1 style="font-size: 1.8rem;">Platform <span class="text-gradient">Overview</span></h1>
+                <p style="color: var(--text-muted);">Real-time metrics and system health.</p>
+            </div>
+
+            <!-- Admin Stats -->
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 3rem;">
+                <div class="card" style="padding: 1.5rem;">
+                    <div style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.5rem;">Total Users</div>
+                    <div style="font-size: 1.8rem; font-weight: 700;">12,540</div>
+                </div>
+                <div class="card" style="padding: 1.5rem;">
+                    <div style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.5rem;">Active Organizers
+                    </div>
+                    <div style="font-size: 1.8rem; font-weight: 700;">482</div>
+                </div>
+                <div class="card" style="padding: 1.5rem;">
+                    <div style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.5rem;">Total Events</div>
+                    <div style="font-size: 1.8rem; font-weight: 700;">3,120</div>
+                </div>
+                <div class="card" style="padding: 1.5rem;">
+                    <div style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.5rem;">Net Revenue</div>
+                    <div style="font-size: 1.8rem; font-weight: 700; color: var(--primary);">$154,280</div>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem;">
+                <!-- Recent Approvals Needed -->
+                <div class="card" style="padding: 2rem;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                        <h3 style="font-size: 1.1rem;">Pending Approvals</h3>
+                        <a href="approvals" style="color: var(--primary); font-size: 0.85rem;">View All</a>
+                    </div>
+                    <div style="display: grid; gap: 1rem;">
+                        <div
+                            style="display: flex; align-items: center; justify-content: space-between; padding: 1rem; background: var(--bg-surface); border-radius: 8px;">
+                            <div style="display: flex; gap: 1rem; align-items: center;">
+                                <div
+                                    style="width: 40px; height: 40px; background: rgba(230,57,70,0.1); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: var(--primary);">
+                                    <i class="fa fa-calendar-alt"></i>
+                                </div>
+                                <div style="font-size: 0.9rem;">Midnight Jazz (Event)</div>
+                            </div>
+                            <button class="btn btn-outline"
+                                style="padding: 0.3rem 0.6rem; font-size: 0.75rem;">Review</button>
+                        </div>
+                        <div
+                            style="display: flex; align-items: center; justify-content: space-between; padding: 1rem; background: var(--bg-surface); border-radius: 8px;">
+                            <div style="display: flex; gap: 1rem; align-items: center;">
+                                <div
+                                    style="width: 40px; height: 40px; background: rgba(46,204,113,0.1); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #2ECC71;">
+                                    <i class="fa fa-briefcase"></i>
+                                </div>
+                                <div style="font-size: 0.9rem;">SoundWave Inc (Org)</div>
+                            </div>
+                            <button class="btn btn-outline"
+                                style="padding: 0.3rem 0.6rem; font-size: 0.75rem;">Review</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- System Logs -->
+                <div class="card" style="padding: 2rem;">
+                    <h3 style="margin-bottom: 2rem; font-size: 1.1rem;">Latest Activity</h3>
+                    <div style="display: grid; gap: 1.2rem; font-size: 0.85rem;">
+                        <div style="display: flex; gap: 0.8rem;">
+                            <span style="color: #2ECC71;">[SUCCESS]</span>
+                            <span style="color: var(--text-muted);">Payout #PAY-008124 issued.</span>
+                        </div>
+                        <div style="display: flex; gap: 0.8rem;">
+                            <span style="color: var(--primary);">[ALERT]</span>
+                            <span style="color: var(--text-muted);">Failed login attempt (Admin).</span>
+                        </div>
+                        <div style="display: flex; gap: 0.8rem;">
+                            <span style="color: #3498DB;">[INFO]</span>
+                            <span style="color: var(--text-muted);">New organizer registered.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <%- include('partials/scripts') %>
+</body>
+
+</html>
+
+
+

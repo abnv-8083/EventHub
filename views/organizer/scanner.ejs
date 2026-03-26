@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', { title: 'Ticket Scanner' }) %>
+
+<body style="background: var(--bg-dark);">
+
+    <%- include('../partials/header', { activePage: '', logoSuffix: 'SCANNER' }) %>
+
+    <main class="section" style="text-align: center;">
+        <div class="container">
+            <h2 style="margin-bottom: 2rem;">Scan <span class="text-gradient">Attendee Ticket</span></h2>
+
+            <div class="scanner-view">
+                <!-- Camera viewfinder placeholder -->
+                <div class="scan-overlay">
+                    <div class="scan-line"></div>
+                </div>
+                <div
+                    style="position: absolute; bottom: 2rem; left: 0; right: 0; color: white; display: flex; flex-direction: column; gap: 0.5rem;">
+                    <i class="fa fa-camera" style="font-size: 1.5rem;"></i>
+                    <span style="font-size: 0.8rem; letter-spacing: 1px;">ALIGN QR CODE WITHIN FRAME</span>
+                </div>
+            </div>
+
+            <!-- Pre-scan settings -->
+            <div style="margin-top: 2rem; color: var(--text-muted); display: flex; justify-content: center; gap: 2rem;">
+                <div><i class="fa fa-lightbulb"></i> Flash: OFF</div>
+                <div><i class="fa fa-sync"></i> Camera: BACK</div>
+            </div>
+
+            <!-- Example of a SUCCESS scan result -->
+            <div class="card scan-result"
+                style="display: block; border-left: 5px solid #2ECC71; max-width: 400px; margin: 3rem auto 0;">
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                    <div
+                        style="width: 45px; height: 45px; background: rgba(46,204,113,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #2ECC71;">
+                        <i class="fa fa-check"></i>
+                    </div>
+                    <div>
+                        <div style="font-weight: 700;">Valid Ticket Found</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">#EH-992841</div>
+                    </div>
+                </div>
+                <div
+                    style="background: var(--bg-surface); padding: 1rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem;">
+                    <div style="font-weight: 600;">John Doe</div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted);">Midnight Jazz Festival â€¢ General</div>
+                </div>
+                <a href="scan-confirmation" class="btn btn-primary"
+                    style="width: 100%; display: block; text-align: center;">View Attendee Details</a>
+            </div>
+
+            <div style="margin-top: 3rem;">
+                <a href="dashboard" style="color: var(--text-dim);"><i class="fa fa-arrow-left"></i> Exit
+                    Scanner</a>
+            </div>
+        </div>
+    </main>
+
+    <%- include('../partials/footer-scripts', { logoSuffix: 'SCANNER' }) %>
+</body>
+
+</html>
+
+
+

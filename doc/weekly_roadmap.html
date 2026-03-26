@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EventHub 4-Week Complete Roadmap</title>
+    <style>
+        :root {
+            --primary: #E63946;
+            --dark: #0f172a;
+            --gray: #64748b;
+            --border: #e2e8f0;
+            --bg: #f8fafc;
+        }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; padding: 36px; background: var(--bg); color: var(--dark); }
+        .container { max-width: 1080px; margin: 0 auto; }
+        header { text-align: center; margin-bottom: 36px; }
+        h1 {
+            font-size: 2.6rem;
+            margin-bottom: 6px;
+            background: linear-gradient(135deg, var(--primary), #ff8c00);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.04em;
+        }
+        .subtitle { font-size: 1rem; color: var(--gray); }
+        .stats { display: flex; justify-content: center; gap: 2rem; margin: 20px 0 30px; }
+        .stat { text-align: center; }
+        .stat-num { font-size: 2rem; font-weight: 900; color: var(--primary); line-height: 1; }
+        .stat-label { font-size: 0.75rem; color: var(--gray); text-transform: uppercase; letter-spacing: 0.1em; }
+        .note-banner { background: #fff8f8; border-left: 4px solid var(--primary); border-radius: 10px; padding: 12px 18px; margin-bottom: 28px; font-size: 0.85rem; color: #7f1d1d; }
+
+        .week-card { background: #fff; border-radius: 20px; padding: 28px 32px; margin-bottom: 22px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); border: 1px solid var(--border); }
+        .week-card.w1 { border-left: 10px solid #64748b; }
+        .week-card.w2 { border-left: 10px solid #f97316; }
+        .week-card.w3 { border-left: 10px solid var(--primary); }
+        .week-card.w4 { border-left: 10px solid #8b5cf6; }
+
+        .week-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 18px; gap: 20px; }
+        .week-meta { flex: 1; }
+        .week-label { font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: var(--gray); }
+        .week-title { font-size: 1.4rem; font-weight: 900; color: var(--dark); margin: 2px 0 6px; }
+        .week-desc { font-size: 0.82rem; color: var(--gray); line-height: 1.5; max-width: 500px; }
+        .week-count { font-size: 2.5rem; font-weight: 900; color: var(--border); line-height: 1; flex-shrink: 0; }
+
+        .portal-group { margin-bottom: 14px; }
+        .portal-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gray); margin-bottom: 8px; padding-bottom: 4px; border-bottom: 1px solid var(--border); }
+        .portal-label.auth { color: #0369a1; }
+        .portal-label.public { color: #059669; }
+        .portal-label.user { color: #7c3aed; }
+        .portal-label.organizer { color: #d97706; }
+        .portal-label.admin { color: var(--primary); }
+        .portal-label.core { color: #475569; }
+
+        .tasks-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 8px; }
+        .task-check {
+            width: 16px;
+            height: 16px;
+            margin-top: 2px;
+            cursor: pointer;
+            accent-color: var(--primary);
+            flex-shrink: 0;
+        }
+
+        .task-card {
+            background: #f9fafb;
+            padding: 10px 13px;
+            border-radius: 10px;
+            border: 1px solid #f1f5f9;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            transition: all 0.2s;
+        }
+
+        .task-card:hover {
+            border-color: var(--secondary);
+            background: #fff;
+        }
+
+        .task-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: 6px;
+        }
+        .dot-core { background: #94a3b8; }
+        .dot-auth { background: #0284c7; }
+        .dot-public { background: #10b981; }
+        .dot-user { background: #8b5cf6; }
+        .dot-organizer { background: #f59e0b; }
+        .dot-admin { background: var(--primary); }
+        .task-name { font-size: 0.83rem; font-weight: 600; color: #334155; }
+        .task-dep { font-size: 0.68rem; color: #94a3b8; margin-top: 1px; }
+        .task-card.done .task-dot { background: #10b981; }
+        .task-card.done .task-name { color: #059669; }
+        .task-card.done::after { content: '✓'; color: #10b981; font-size: 0.8rem; font-weight: 800; margin-left: auto; }
+
+        .footer { margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--border); text-align: center; color: var(--gray); font-size: 0.82rem; }
+        @media print { body { padding: 0; background: white; } .week-card { page-break-inside: avoid; box-shadow: none; margin-bottom: 22px; } }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>EventHub Complete Build Roadmap</h1>
+        <p class="subtitle">All 47 modules across 5 portals · Dependency-ordered · ~12 tasks per week</p>
+    </header>
+
+    <div class="stats">
+        <div class="stat"><div class="stat-num">47</div><div class="stat-label">Total Modules</div></div>
+        <div class="stat"><div class="stat-num">4</div><div class="stat-label">Weeks</div></div>
+        <div class="stat"><div class="stat-num">~12</div><div class="stat-label">Tasks / Week</div></div>
+        <div class="stat"><div class="stat-num">5</div><div class="stat-label">Portals</div></div>
+    </div>
+
+    <div class="note-banner">⚡ Dependency rule: Event Details cannot be built before Create Event. Booking cannot be built before Event Details. This order is non-negotiable.</div>
+
+    <!-- WEEK 1 -->
+    <div class="week-card w1">
+        <div class="week-header">
+            <div class="week-meta">
+                <div class="week-label">Week 01 · 12 tasks</div>
+                <div class="week-title">Foundation, Auth & Public Shell</div>
+                <div class="week-desc">Database, authentication flows, and all public-facing brochure pages. No portal or transactional work begins here.</div>
+            </div>
+            <div class="week-count">01</div>
+        </div>
+        <div class="portal-group">
+            <div class="portal-label core">⚙ Core Infrastructure</div>
+            <div class="tasks-grid">
+                <div class="task-card"><input type="checkbox" class="task-check"><div class="task-dot dot-core"></div><div><div class="task-name">DB Schema Init</div><div class="task-dep">No dependency</div></div></div>
+                <div class="task-card"><input type="checkbox" class="task-check"><div class="task-dot dot-core"></div><div><div class="task-name">Core UI & Modals</div><div class="task-dep">No dependency</div></div></div>
+            </div>
+        </div>
+        <div class="portal-group">
+            <div class="portal-label auth">🔐 Authentication (7)</div>
+            <div class="tasks-grid">
+                <div class="task-card"><input type="checkbox" class="task-check"><div class="task-dot dot-auth"></div><div><div class="task-name">Login & MFA</div><div class="task-dep">→ DB Schema</div></div></div>
+                <div class="task-card"><input type="checkbox" class="task-check"><div class="task-dot dot-auth"></div><div><div class="task-name">Register (Attendee)</div><div class="task-dep">→ DB Schema</div></div></div>
+                <div class="task-card"><input type="checkbox" class="task-check"><div class="task-dot dot-auth"></div><div><div class="task-name">Register (Organizer)</div><div class="task-dep">→ DB Schema</div></div></div>
+                <div class="task-card"><input type="checkbox" class="task-check"><div class="task-dot dot-auth"></div><div><div class="task-name">OTP Verification</div><div class="task-dep">→ Registration</div></div></div>
+                <div class="task-card"><input type="checkbox" class="task-check"><div class="task-dot dot-auth"></div><div><div class="task-name">Verify Email Success</div><div class="task-dep">→ OTP</div></div></div>
+                <div class="task-card"><input type="checkbox" class="task-check"><div class="task-dot dot-auth"></div><div><div class="task-name">Forgot Password</div><div class="task-dep">→ Login</div></div></div>
+                <div class="task-card"><input type="checkbox" class="task-check"><div class="task-dot dot-auth"></div><div><div class="task-name">Reset Password</div><div class="task-dep">→ Forgot Password</div></div></div>
+            </div>
+        </div>
+        <div class="portal-group">
+            <div class="portal-label public">🌐 Public Pages (3)</div>
+            <div class="tasks-grid">
+                <div class="task-card"><div class="task-dot dot-public"></div><div><div class="task-name">Landing Page</div><div class="task-dep">→ Core UI</div></div></div>
+                <div class="task-card"><div class="task-dot dot-public"></div><div><div class="task-name">About Us</div><div class="task-dep">→ Core UI</div></div></div>
+                <div class="task-card"><div class="task-dot dot-public"></div><div><div class="task-name">Contact Us</div><div class="task-dep">→ Core UI</div></div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- WEEK 2 -->
+    <div class="week-card w2">
+        <div class="week-header">
+            <div class="week-meta">
+                <div class="week-label">Week 02 · 12 tasks</div>
+                <div class="week-title">Organizer Portal & Admin Foundation</div>
+                <div class="week-desc">Organizers create events. Admins approve them. Everything in Week 3 depends on events existing first.</div>
+            </div>
+            <div class="week-count">02</div>
+        </div>
+        <div class="portal-group">
+            <div class="portal-label organizer">🎪 Organizer Portal (6)</div>
+            <div class="tasks-grid">
+                <div class="task-card"><div class="task-dot dot-organizer"></div><div><div class="task-name">Org Dashboard</div><div class="task-dep">→ Login</div></div></div>
+                <div class="task-card"><div class="task-dot dot-organizer"></div><div><div class="task-name">Create Event</div><div class="task-dep">→ Org Dashboard, DB Schema</div></div></div>
+                <div class="task-card"><div class="task-dot dot-organizer"></div><div><div class="task-name">Manage Events</div><div class="task-dep">→ Create Event</div></div></div>
+                <div class="task-card"><div class="task-dot dot-organizer"></div><div><div class="task-name">Org Profile</div><div class="task-dep">→ Login</div></div></div>
+                <div class="task-card"><div class="task-dot dot-organizer"></div><div><div class="task-name">Revenue & Payouts</div><div class="task-dep">→ Create Event</div></div></div>
+                <div class="task-card"><div class="task-dot dot-organizer"></div><div><div class="task-name">Organizer Refunds</div><div class="task-dep">→ Create Event</div></div></div>
+            </div>
+        </div>
+        <div class="portal-group">
+            <div class="portal-label admin">🛡 Admin Portal (5)</div>
+            <div class="tasks-grid">
+                <div class="task-card"><div class="task-dot dot-admin"></div><div><div class="task-name">Admin Dashboard</div><div class="task-dep">→ Create Event</div></div></div>
+                <div class="task-card"><div class="task-dot dot-admin"></div><div><div class="task-name">Approvals (Events & Orgs)</div><div class="task-dep">→ Admin Dashboard</div></div></div>
+                <div class="task-card"><div class="task-dot dot-admin"></div><div><div class="task-name">Manage Users</div><div class="task-dep">→ Admin Dashboard</div></div></div>
+                <div class="task-card"><div class="task-dot dot-admin"></div><div><div class="task-name">Manage Organizers</div><div class="task-dep">→ Admin Dashboard</div></div></div>
+                <div class="task-card"><div class="task-dot dot-admin"></div><div><div class="task-name">Admin Profile</div><div class="task-dep">→ Login</div></div></div>
+            </div>
+        </div>
+        <div class="portal-group">
+            <div class="portal-label public">🌐 Public Pages (1)</div>
+            <div class="tasks-grid">
+                <div class="task-card"><input type="checkbox" class="task-check"><div class="task-dot dot-public"></div><div><div class="task-name">Events Listing Page</div><div class="task-dep">→ Create Event, Approvals</div></div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- WEEK 3 -->
+    <div class="week-card w3">
+        <div class="week-header">
+            <div class="week-meta">
+                <div class="week-label">Week 03 · 12 tasks</div>
+                <div class="week-title">Attendee Journey, Booking & Operations</div>
+                <div class="week-desc">Events are live and approved. Build the full discovery → ticket purchase → on-site check-in pipeline.</div>
+            </div>
+            <div class="week-count">03</div>
+        </div>
+        <div class="portal-group">
+            <div class="portal-label public">🌐 Public Pages (1)</div>
+            <div class="tasks-grid">
+                <div class="task-card"><input type="checkbox" class="task-check"><div class="task-dot dot-public"></div><div><div class="task-name">Event Details Page</div><div class="task-dep">→ Events Listing</div></div></div>
+            </div>
+        </div>
+        <div class="portal-group">
+            <div class="portal-label user">👤 User Portal (9)</div>
+            <div class="tasks-grid">
+                <div class="task-card"><div class="task-dot dot-user"></div><div><div class="task-name">User Dashboard</div><div class="task-dep">→ Login</div></div></div>
+                <div class="task-card"><div class="task-dot dot-user"></div><div><div class="task-name">Manage Profile</div><div class="task-dep">→ Login</div></div></div>
+                <div class="task-card"><div class="task-dot dot-user"></div><div><div class="task-name">Wishlist</div><div class="task-dep">→ Login, Event Details</div></div></div>
+                <div class="task-card"><div class="task-dot dot-user"></div><div><div class="task-name">Booking Flow</div><div class="task-dep">→ Event Details</div></div></div>
+                <div class="task-card"><div class="task-dot dot-user"></div><div><div class="task-name">Add Attendees</div><div class="task-dep">→ Booking Flow</div></div></div>
+                <div class="task-card"><div class="task-dot dot-user"></div><div><div class="task-name">Payment</div><div class="task-dep">→ Add Attendees</div></div></div>
+                <div class="task-card"><div class="task-dot dot-user"></div><div><div class="task-name">Booking Success</div><div class="task-dep">→ Payment</div></div></div>
+                <div class="task-card"><div class="task-dot dot-user"></div><div><div class="task-name">My Tickets (List)</div><div class="task-dep">→ Payment</div></div></div>
+                <div class="task-card"><div class="task-dot dot-user"></div><div><div class="task-name">Ticket Details (QR)</div><div class="task-dep">→ My Tickets</div></div></div>
+            </div>
+        </div>
+        <div class="portal-group">
+            <div class="portal-label organizer">🎪 Organizer Portal (2)</div>
+            <div class="tasks-grid">
+                <div class="task-card"><div class="task-dot dot-organizer"></div><div><div class="task-name">Attendee List</div><div class="task-dep">→ Booking Flow</div></div></div>
+                <div class="task-card"><div class="task-dot dot-organizer"></div><div><div class="task-name">Ticket Scanner</div><div class="task-dep">→ Ticket Details (QR)</div></div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- WEEK 4 -->
+    <div class="week-card w4">
+        <div class="week-header">
+            <div class="week-meta">
+                <div class="week-label">Week 04 · 11 tasks</div>
+                <div class="week-title">Refunds, Personal Tools & Admin Strategy</div>
+                <div class="week-desc">Personal account utilities, the full refund lifecycle, and platform-wide admin analytics on top of the complete platform.</div>
+            </div>
+            <div class="week-count">04</div>
+        </div>
+        <div class="portal-group">
+            <div class="portal-label user">👤 User Portal (7)</div>
+            <div class="tasks-grid">
+                <div class="task-card"><div class="task-dot dot-user"></div><div><div class="task-name">My Calendar</div><div class="task-dep">→ My Tickets</div></div></div>
+                <div class="task-card"><div class="task-dot dot-user"></div><div><div class="task-name">My Coupons</div><div class="task-dep">→ Login</div></div></div>
+                <div class="task-card"><div class="task-dot dot-user"></div><div><div class="task-name">Refund Center (List)</div><div class="task-dep">→ Payment, My Tickets</div></div></div>
+                <div class="task-card"><div class="task-dot dot-user"></div><div><div class="task-name">Cancel Detail</div><div class="task-dep">→ Refund Center</div></div></div>
+                <div class="task-card"><div class="task-dot dot-user"></div><div><div class="task-name">Cancel Confirm</div><div class="task-dep">→ Cancel Detail</div></div></div>
+                <div class="task-card"><div class="task-dot dot-user"></div><div><div class="task-name">Cancel Success</div><div class="task-dep">→ Cancel Confirm</div></div></div>
+                <div class="task-card"><div class="task-dot dot-user"></div><div><div class="task-name">Refund Status Tracker</div><div class="task-dep">→ Cancel Success</div></div></div>
+            </div>
+        </div>
+        <div class="portal-group">
+            <div class="portal-label admin">🛡 Admin Portal (4)</div>
+            <div class="tasks-grid">
+                <div class="task-card"><div class="task-dot dot-admin"></div><div><div class="task-name">Coupons Admin</div><div class="task-dep">→ Admin Dashboard</div></div></div>
+                <div class="task-card"><div class="task-dot dot-admin"></div><div><div class="task-name">Global Refunds</div><div class="task-dep">→ Organizer Refunds</div></div></div>
+                <div class="task-card"><div class="task-dot dot-admin"></div><div><div class="task-name">Master Reports (BI)</div><div class="task-dep">→ Admin Dashboard</div></div></div>
+                <div class="task-card"><div class="task-dot dot-admin"></div><div><div class="task-name">System Logs & Settings</div><div class="task-dep">→ Admin Dashboard</div></div></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        EventHub · Complete 47-Module Roadmap · Dependency-Ordered 4-Week Sprint
+    </div>
+</div>
+</body>
+</html>

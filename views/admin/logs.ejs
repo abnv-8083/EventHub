@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', { title: 'System Logs | Admin Hub' }) %>
+
+<body>
+
+    <%- include('../partials/header-admin') %>
+
+    <div class="dashboard-layout">
+                <%- include('../partials/sidebar-admin') %>
+
+        <main class="dashboard-main animate">
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem;">
+                <div>
+                    <h1 style="font-size: 1.8rem;">System <span class="text-gradient">Logs</span></h1>
+                    <p style="color: var(--text-muted);">Real-time tracking of platform activities and errors.</p>
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <input type="text" class="log-search" placeholder="Search logs (e.g. error, login)...">
+                    <button class="btn btn-outline" style="padding: 0.5rem 1rem;"><i class="fa fa-download"></i>
+                        Export</button>
+                </div>
+            </div>
+
+            <div class="card" style="padding: 0; overflow: hidden; background: rgba(0,0,0,0.3);">
+                <div
+                    style="background: var(--bg-surface); padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); display: grid; grid-template-columns: 180px 100px 1fr; gap: 1.5rem; font-weight: 600; font-size: 0.8rem; color: var(--text-dim);">
+                    <span>TIMESTAMP</span>
+                    <span>LEVEL</span>
+                    <span>MESSAGE</span>
+                </div>
+
+                <div class="log-container">
+                    <div class="log-entry">
+                        <span class="log-time">2026-03-06 11:42:01</span>
+                        <span class="log-level level-success">Success</span>
+                        <span style="color: var(--text-muted);">Payout #PAY-008124 processed for Organizer 'Jazz Society
+                            NY'.</span>
+                    </div>
+                    <div class="log-entry">
+                        <span class="log-time">2026-03-06 11:40:15</span>
+                        <span class="log-level level-info">Info</span>
+                        <span style="color: var(--text-muted);">New user registration: 'Alice Smith'
+                            (alice@example.com).</span>
+                    </div>
+                    <div class="log-entry">
+                        <span class="log-time">2026-03-06 11:38:42</span>
+                        <span class="log-level level-error">Error</span>
+                        <span style="color: white;">Failed database connection attempt from IP 192.168.1.45.</span>
+                    </div>
+                    <div class="log-entry">
+                        <span class="log-time">2026-03-06 11:35:10</span>
+                        <span class="log-level level-warning">Warning</span>
+                        <span style="color: var(--text-muted);">High CPU usage detected on API primary node
+                            (85%).</span>
+                    </div>
+                    <div class="log-entry">
+                        <span class="log-time">2026-03-06 11:30:05</span>
+                        <span class="log-level level-success">Success</span>
+                        <span style="color: var(--text-muted);">System backup successfully uploaded to AWS S3 bucket:
+                            'eh-backups'.</span>
+                    </div>
+                    <div class="log-entry">
+                        <span class="log-time">2026-03-06 11:25:22</span>
+                        <span class="log-level level-info">Info</span>
+                        <span style="color: var(--text-muted);">Organizer 'Tech World' updated event: 'Vite Conf
+                            2026'.</span>
+                    </div>
+                    <div class="log-entry">
+                        <span class="log-time">2026-03-06 11:20:11</span>
+                        <span class="log-level level-error">Error</span>
+                        <span style="color: white;">Invalid SSL certificate handshake from client: 203.0.113.8.</span>
+                    </div>
+                    <div class="log-entry">
+                        <span class="log-time">2026-03-06 11:15:00</span>
+                        <span class="log-level level-info">Info</span>
+                        <span style="color: var(--text-muted);">Automated cleanup of pending tickets (Older than 2
+                            hours) completed.</span>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 2rem; display: flex; justify-content: center; gap: 0.5rem;">
+                <button class="btn btn-outline" style="padding: 0.5rem 1rem;">1</button>
+                <button class="btn btn-outline" style="padding: 0.5rem 1rem; opacity: 0.5;">2</button>
+                <button class="btn btn-outline" style="padding: 0.5rem 1rem; opacity: 0.5;">3</button>
+            </div>
+        </main>
+    </div>
+
+    <%- include('partials/scripts') %>
+</body>
+
+</html>
+
+
+

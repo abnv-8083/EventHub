@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', { title: 'Edit Admin | Admin Hub' }) %>
+
+<body>
+
+    <%- include('../partials/header-admin') %>
+
+    <div class="dashboard-layout">
+        <%- include('../partials/sidebar-admin') %>
+
+        <main class="dashboard-main animate">
+            <div class="d-flex align-items-center gap-3 mb-5">
+                <a href="/admin/admins" class="btn btn-outline"
+                    style="padding: 0.5rem; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fa fa-arrow-left"></i>
+                </a>
+                <div>
+                    <h1 style="font-size: 1.8rem; margin-bottom: 0;">Edit <span class="text-gradient" style="color: #E67E22;">Administrator</span></h1>
+                    <p style="color: var(--text-muted); margin-bottom: 0; margin-top: 0.2rem;">Modify records for <%= adminData.name %></p>
+                </div>
+            </div>
+
+            <div class="card glass" style="padding: 3rem; max-width: 900px; margin: 0 auto; border-radius: 20px;">
+                <form class="needs-validation" action="/admin/admins/edit/<%= adminData._id %>" method="POST">
+                    
+                    <div style="display: grid; grid-template-columns: 200px 1fr; gap: 3rem;">
+                        
+                        <!-- Auto-generated Identity Icon -->
+                        <div style="text-align: center;">
+                            <div style="width: 150px; height: 150px; background: rgba(230, 126, 34, 0.05); border: 2px dashed rgba(230, 126, 34, 0.3); border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                                <i class="fa fa-user-edit" style="font-size: 3rem; color: #E67E22; margin-bottom: 0.5rem;"></i>
+                            </div>
+                            <span style="font-size: 0.8rem; color: #E67E22; font-weight: 500; padding: 0.3rem 0.8rem; background: rgba(230, 126, 34, 0.1); border-radius: 2rem;">Database Edit</span>
+                        </div>
+
+                        <!-- Form Details -->
+                        <div>
+                            <div style="display: grid; grid-template-columns: 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+                                <div class="form-group mb-0">
+                                    <label class="label" style="font-size: 0.85rem;">Authorized Name</label>
+                                    <input type="text" name="name" class="input glass-dark" value="<%= adminData.name %>" required>
+                                </div>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+                                <div class="form-group mb-0">
+                                    <label class="label" style="font-size: 0.85rem;">Internal Email Address</label>
+                                    <input type="email" name="email" class="input glass-dark" value="<%= adminData.email %>" required>
+                                </div>
+                            </div>
+
+                            <!-- Passwords are not editable here for security. They should be reset differently. -->
+                            <!-- Or perhaps let's just omit them. -->
+                            
+                            <div class="form-group" style="margin-bottom: 2rem;">
+                                <label class="label" style="font-size: 0.85rem;">Administrator Notes (Optional)</label>
+                                <textarea class="input glass-dark" name="notes" style="min-height: 80px; resize: vertical;"
+                                    placeholder="Internal notes regarding this specific admin's jurisdiction..."><%= adminData.notes %></textarea>
+                            </div>
+
+                            <div style="display: flex; gap: 1rem; border-top: 1px solid var(--border); padding-top: 2rem;">
+                                <button type="submit" class="btn btn-primary" style="padding: 1rem 3rem;">
+                                    <i class="fa fa-save"></i> Save Changes
+                                </button>
+                                <a href="/admin/admins" class="btn btn-outline" style="padding: 1rem 2rem;">
+                                    Cancel
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+    <%- include('partials/scripts') %>
+</body>
+</html>

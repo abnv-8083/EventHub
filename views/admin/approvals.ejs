@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', { title: 'Event Appproval | Admin Hub' }) %>
+
+<body>
+
+    <%- include('../partials/header-admin') %>
+
+    <div class="dashboard-layout">
+                <%- include('../partials/sidebar-admin') %>
+
+        <main class="dashboard-main animate">
+            <h1 style="font-size: 1.8rem; margin-bottom: 2.5rem;">Event <span class="text-gradient">Approval</span></h1>
+
+            <div style="display: grid; gap: 1.5rem;">
+                <!-- Pending Event 1 -->
+                <div class="card"
+                    style="display: grid; grid-template-columns: 100px 1fr 200px; gap: 2rem; align-items: center; padding: 1.5rem;">
+                    <div
+                        style="width: 100px; height: 100px; background: url('https://images.unsplash.com/photo-1540575861501-7ad0582371f3?auto=format&fit=crop&q=80&w=200') center/cover; border-radius: 12px;">
+                    </div>
+                    <div>
+                        <div style="display: flex; gap: 0.8rem; margin-bottom: 0.5rem; align-items: center;">
+                            <h3 style="font-size: 1.2rem;">Tech Summit 2026</h3>
+                            <span
+                                style="background: rgba(230, 57, 70, 0.1); color: var(--primary); font-size: 0.7rem; padding: 0.2rem 0.6rem; border-radius: 10px;">PENDING</span>
+                        </div>
+                        <div
+                            style="font-size: 0.85rem; color: var(--text-muted); display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                            <span><i class="fa fa-user"></i> Org: New Sound Wave</span>
+                            <span><i class="fa fa-calendar"></i> Nov 12, 2026</span>
+                            <span><i class="fa fa-map-marker-alt"></i> San Francisco, CA</span>
+                            <span><i class="fa fa-tag"></i> $199.00 / Ticket</span>
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 0.8rem;">
+                        <button class="btn btn-primary" style="padding: 0.6rem;">Approve Event</button>
+                        <button class="btn btn-outline"
+                            style="padding: 0.6rem; border-color: #e74c3c; color: #e74c3c;">Reject</button>
+                    </div>
+                </div>
+
+                <!-- Pending Event 2 -->
+                <div class="card"
+                    style="display: grid; grid-template-columns: 100px 1fr 200px; gap: 2rem; align-items: center; padding: 1.5rem;">
+                    <div
+                        style="width: 100px; height: 100px; background: url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80&w=200') center/cover; border-radius: 12px;">
+                    </div>
+                    <div>
+                        <div style="display: flex; gap: 0.8rem; margin-bottom: 0.5rem; align-items: center;">
+                            <h3 style="font-size: 1.2rem;">Art Expo Gala</h3>
+                            <span
+                                style="background: rgba(230, 57, 70, 0.1); color: var(--primary); font-size: 0.7rem; padding: 0.2rem 0.6rem; border-radius: 10px;">PENDING</span>
+                        </div>
+                        <div
+                            style="font-size: 0.85rem; color: var(--text-muted); display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                            <span><i class="fa fa-user"></i> Org: Creative Minds</span>
+                            <span><i class="fa fa-calendar"></i> Dec 05, 2026</span>
+                            <span><i class="fa fa-map-marker-alt"></i> Paris, France</span>
+                            <span><i class="fa fa-tag"></i> Free Entry</span>
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 0.8rem;">
+                        <button class="btn btn-primary" style="padding: 0.6rem;">Approve Event</button>
+                        <button class="btn btn-outline"
+                            style="padding: 0.6rem; border-color: #e74c3c; color: #e74c3c;">Reject</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <%- include('../partials/footer-scripts') %>
+    <%- include('partials/scripts') %>
+</body>
+
+</html>
+
+
+

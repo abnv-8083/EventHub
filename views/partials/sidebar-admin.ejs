@@ -1,0 +1,38 @@
+<aside class="sidebar">
+    <nav class="sidebar-nav" id="adminSidebar">
+        <a href="/admin/dashboard"><i class="fa fa-tachometer-alt"></i> <span>Overview</span></a>
+        <a href="/admin/users"><i class="fa fa-users"></i> <span>Users</span></a>
+        <a href="/admin/organizer"><i class="fa fa-briefcase"></i> <span>Organizers</span></a>
+        <a href="/admin/approvals"><i class="fa fa-calendar-check"></i> <span>Approvals</span></a>
+        <a href="/admin/coupons"><i class="fa fa-tags"></i> <span>Coupons</span></a>
+        <a href="/admin/refunds"><i class="fa fa-undo"></i> <span>Refunds</span></a>
+        <a href="/admin/reports"><i class="fa fa-file-invoice-dollar"></i> <span>Reports</span></a>
+        <a href="/admin/logs"><i class="fa fa-terminal"></i> <span>System Logs</span></a>
+        <a href="/admin/admins"><i class="fa fa-user-shield"></i> <span>Administrators</span></a>
+        <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid var(--border);">
+        <a href="/admin/profile"><i class="fa fa-cog"></i> <span>Settings</span></a>
+    </nav>
+</aside>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const currentPath = window.location.pathname;
+        const navLinks = document.querySelectorAll('#adminSidebar a');
+        
+        let bestMatch = null;
+        let bestMatchLength = 0;
+
+        navLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            // Check if current path starts with the href, meaning we are under that section
+            if (currentPath.startsWith(href) && href.length > bestMatchLength) {
+                bestMatch = link;
+                bestMatchLength = href.length;
+            }
+        });
+
+        if (bestMatch) {
+            bestMatch.classList.add('active');
+        }
+    });
+</script>

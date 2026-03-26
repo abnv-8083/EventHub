@@ -1,0 +1,108 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../../partials/head', { title: 'Cancel Details' }) %>
+
+<body>
+
+    <%- include('../../partials/header') %>
+
+    <div class="dashboard-layout">
+                <%- include('../../partials/sidebar') %>
+
+        <main class="dashboard-main animate">
+            <div style="margin-bottom: 2.5rem; display: flex; align-items: center; gap: 1rem;">
+                <a href="cancel" style="color: var(--text-muted);"><i class="fa fa-arrow-left"></i></a>
+                <h1 style="font-size: 1.8rem;">Select <span class="text-gradient">Tickets</span> to Cancel</h1>
+            </div>
+
+            <div class="card"
+                style="margin-bottom: 2rem; padding: 1.5rem; display: flex; gap: 1.5rem; align-items: center;">
+                <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&q=80&w=200"
+                    style="width: 100px; height: 100px; border-radius: 12px; object-fit: cover;">
+                <div>
+                    <h2 style="font-size: 1.3rem; margin-bottom: 0.4rem;">Midnight Jazz Festival</h2>
+                    <p style="color: var(--text-dim); font-size: 0.9rem;"><i class="fa fa-map-marker-alt"></i> Blue Note
+                        Jazz Club, NY</p>
+                    <p style="color: var(--text-dim); font-size: 0.9rem;"><i class="fa fa-calendar-alt"></i> Oct 24,
+                        2026 â€¢ 08:00 PM</p>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 2rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h3 style="font-size: 1.1rem;">Attendees in this Booking</h3>
+                    <button id="select-all"
+                        style="background: none; border: none; color: var(--primary); font-size: 0.85rem; font-weight: 600; cursor: pointer;">Select
+                        Entire Booking</button>
+                </div>
+
+                <!-- Ticket Card 1 -->
+                <div class="ticket-selection-card selected" onclick="this.classList.toggle('selected')">
+                    <div style="padding: 1.2rem; display: flex; align-items: center; gap: 1.5rem;">
+                        <div class="checkbox-custom"></div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600;">Alice Johnson</div>
+                            <div style="font-size: 0.8rem; color: var(--text-dim);">Ticket #EH-992841-01 â€¢ General
+                                Admission</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-weight: 600; color: #2ECC71;">$45.00 Refundable</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ticket Card 2 -->
+                <div class="ticket-selection-card" onclick="this.classList.toggle('selected')">
+                    <div style="padding: 1.2rem; display: flex; align-items: center; gap: 1.5rem;">
+                        <div class="checkbox-custom"></div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600;">Bob Wilson</div>
+                            <div style="font-size: 0.8rem; color: var(--text-dim);">Ticket #EH-992841-02 â€¢ General
+                                Admission</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-weight: 600; color: #2ECC71;">$45.00 Refundable</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="padding: 2rem; background: var(--bg-surface);">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.2rem;">Refund Summary
+                        </div>
+                        <div style="font-size: 1.5rem; font-weight: 700;"><span id="ticket-count">1</span> Ticket(s)
+                            Selected</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.2rem;">Total Estimated
+                            Refund</div>
+                        <div style="font-size: 1.8rem; font-weight: 800; color: #2ECC71;">$45.00</div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 2rem; display: flex; justify-content: flex-end; gap: 1.5rem;">
+                    <a href="cancel" class="btn btn-outline"
+                        style="min-width: 150px; text-align: center;">Discard</a>
+                    <a href="cancel-confirm" class="btn btn-primary"
+                        style="min-width: 200px; text-align: center; background: #e74c3c;">Continue to Review</a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Simple toggle for demo purposes
+        document.getElementById('select-all').addEventListener('click', function () {
+            document.querySelectorAll('.ticket-selection-card').forEach(card => card.classList.add('selected'));
+        });
+    </script>
+</body>
+
+</html>
+
+
+
+

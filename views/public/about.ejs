@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', { title: 'About Us' }) %>
+
+<body>
+
+    <!-- Header -->
+    <%- include('../partials/header', { activePage: 'about' }) %>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="section hero"
+            style="padding: 8rem 0; text-align: center; background: radial-gradient(circle at top right, rgba(230, 57, 70, 0.1) 0%, transparent 60%);">
+            <div class="container animate">
+                <h1 style="font-size: 4rem;" class="mb-4">Our <span class="text-gradient">Story</span></h1>
+                <p style="color: var(--text-muted); font-size: 1.25rem; max-width: 800px; margin-inline: auto; line-height: 1.8;"
+                    class="mb-0">
+                    EventHub was born out of a simple idea: that connecting people through shared experiences should be
+                    effortless, inspiring, and beautiful. We're rebuilding the infrastructure of the event industry from
+                    the ground up.
+                </p>
+            </div>
+        </section>
+
+        <!-- Mission & Vision -->
+        <section class="section">
+            <div class="container"
+                style="display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center;">
+                <div class="animate stagger-1">
+                    <h2 style="font-size: 2.5rem;" class="mb-4">Redefining <span class="text-gradient">Gatherings</span>
+                    </h2>
+                    <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.8;" class="mb-4">
+                        Traditional event platforms are cluttered and complex. We believe in high-end aesthetics
+                        combined with powerful, intuitive tools that empower both organizers and attendees.
+                    </p>
+                    <div style="display: grid; gap: 1.5rem;">
+                        <div style="display: flex; gap: 1.5rem;">
+                            <div
+                                style="width: 50px; height: 50px; background: rgba(230, 57, 70, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <i class="fa fa-bolt" style="color: var(--primary); font-size: 1.5rem;"></i>
+                            </div>
+                            <div>
+                                <h4 style="margin-bottom: 0.5rem;">Lightning Fast</h4>
+                                <p style="color: var(--text-dim); font-size: 0.95rem;">Seamless ticket booking and
+                                    management in seconds.</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 1.5rem;">
+                            <div
+                                style="width: 50px; height: 50px; background: rgba(230, 57, 70, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <i class="fa fa-shield-alt" style="color: var(--primary); font-size: 1.5rem;"></i>
+                            </div>
+                            <div>
+                                <h4 style="margin-bottom: 0.5rem;">Secure & Reliable</h4>
+                                <p style="color: var(--text-dim); font-size: 0.95rem;">End-to-end encryption for every
+                                    transaction and user data.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="animate stagger-2"
+                    style="height: 500px; background: url('https://images.unsplash.com/photo-1540575861501-7ad0582371f3?auto=format&fit=crop&q=80&w=800') center/cover; border-radius: 32px; border: 1px solid var(--border);">
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="section" style="background: var(--bg-surface);">
+            <div class="container">
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; text-align: center;">
+                    <div class="animate stagger-1">
+                        <div style="font-size: 3rem; font-weight: 800; color: var(--primary); margin-bottom: 0.5rem;">
+                            500K+</div>
+                        <div
+                            style="color: var(--text-muted); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">
+                            Tickets Sold</div>
+                    </div>
+                    <div class="animate stagger-2">
+                        <div style="font-size: 3rem; font-weight: 800; color: var(--primary); margin-bottom: 0.5rem;">
+                            2K+</div>
+                        <div
+                            style="color: var(--text-muted); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">
+                            Organizers</div>
+                    </div>
+                    <div class="animate stagger-3">
+                        <div style="font-size: 3rem; font-weight: 800; color: var(--primary); margin-bottom: 0.5rem;">
+                            50+</div>
+                        <div
+                            style="color: var(--text-muted); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">
+                            Cities</div>
+                    </div>
+                    <div class="animate stagger-4">
+                        <div style="font-size: 3rem; font-weight: 800; color: var(--primary); margin-bottom: 0.5rem;">
+                            4.9</div>
+                        <div
+                            style="color: var(--text-muted); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">
+                            User Rating</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="section">
+            <div class="container">
+                <div class="card glass"
+                    style="padding: 5rem; text-align: center; border-radius: 40px; background: linear-gradient(135deg, rgba(230, 57, 70, 0.1), transparent);">
+                    <h2 style="font-size: 3rem; margin-bottom: 1.5rem;">Ready to <span
+                            class="text-gradient">Experience</span> More?</h2>
+                    <p style="color: var(--text-muted); font-size: 1.2rem; max-width: 600px; margin: 0 auto 3rem;">Join
+                        thousands of people discovering incredible events every day.</p>
+                    <div style="display: flex; gap: 1.5rem; justify-content: center;">
+                        <a href="events" class="btn btn-primary"
+                            style="padding: 1.2rem 3rem; font-size: 1.1rem;">Explore Events</a>
+                        <a href="/register" class="btn btn-outline"
+                            style="padding: 1.2rem 3rem; font-size: 1.1rem;">Create Account</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <a href="/" class="logo" style="margin-bottom: 1.5rem;">EVENT<span>HUB</span></a>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">The leading platform for managing and
+                        discovering world-class events.</p>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 1.5rem;">Quick Links</h4>
+                    <ul style="color: var(--text-muted); display: grid; gap: 0.8rem;">
+                        <li><a href="events">Browse Events</a></li>
+                        <li><a href="about">Our Story</a></li>
+                        <li><a href="contact">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 1.5rem;">Legal</h4>
+                    <ul style="color: var(--text-muted); display: grid; gap: 0.8rem;">
+                        <li><a href="../terms">Terms</a></li>
+                        <li><a href="../privacy">Privacy</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 1.5rem;">Social</h4>
+                    <div style="display: flex; gap: 1rem; font-size: 1.5rem;">
+                        <a href="#" style="color: var(--text-dim);"><i class="fab fa-twitter"></i></a>
+                        <a href="#" style="color: var(--text-dim);"><i class="fab fa-instagram"></i></a>
+                        <a href="#" style="color: var(--text-dim);"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 EventHub Inc. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <%- include('../partials/footer-scripts') %>
+</body>
+
+</html>

@@ -1,0 +1,14 @@
+<script src="/js/toast.js"></script>
+<script>
+    const successMsg = "<%= success_msg %>";
+    const errorMsg = "<%= error_msg %>";
+
+    document.addEventListener('DOMContentLoaded', () => {
+        if (successMsg && successMsg !== "null" && successMsg !== "") {
+            showToast(successMsg, 'success');
+        }
+        if (errorMsg && errorMsg !== "null" && errorMsg !== "") {
+            showToast(errorMsg, 'error');
+        }
+    });
+</script>

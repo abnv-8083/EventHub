@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', { title: 'Platform Users | Admin Hub' }) %>
+
+<body>
+
+    <%- include('../partials/header-admin') %>
+
+    <div class="dashboard-layout">
+        <%- include('../partials/sidebar-admin') %>
+
+        <main class="dashboard-main animate">
+            <!-- Header -->
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem;">
+                <div>
+                    <h1 style="font-size: 1.8rem; margin-bottom: 0.5rem;">Platform <span class="text-gradient">Users</span></h1>
+                    <p style="color: var(--text-muted); margin: 0;">Monitor and manage all registered accounts across the platform.</p>
+                </div>
+            </div>
+
+            <!-- Search Bar -->
+            <form method="GET" action="/admin/users" style="margin-bottom: 2rem; display: flex; gap: 1rem; max-width: 500px;">
+                <input type="text" name="search" value="<%= search %>" placeholder="Search by name or email..."
+                    class="input" style="flex: 1; background: var(--bg-surface);">
+                <button type="submit" class="btn btn-outline" style="padding: 0.8rem 1.5rem;"><i class="fa fa-search"></i></button>
+                <% if (search) { %>
+                    <a href="/admin/users" class="btn btn-outline" style="padding: 0.8rem 1rem; color: var(--text-muted);"><i class="fa fa-times"></i></a>
+                <% } %>
+            </form>
+
+            <!-- Table -->
+            <div class="card" style="overflow: hidden; padding: 0;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid var(--border); background: var(--bg-surface);">
+                            <th style="padding: 1rem 1.5rem; text-align: left; font-size: 0.8rem; font-weight: 600; color: var(--text-dim); text-transform: uppercase;">User</th>
+                            <th style="padding: 1rem 1.5rem; text-align: left; font-size: 0.8rem; font-weight: 600; color: var(--text-dim); text-transform: uppercase;">Contact</th>
+                            <th style="padding: 1rem 1.5rem; text-align: left; font-size: 0.8rem; font-weight: 600; color: var(--text-dim); text-transform: uppercase;">Role</th>
+                            <th style="padding: 1rem 1.5rem; text-align: left; font-size: 0.8rem; font-weight: 600; color: var(--text-dim); text-transform: uppercase;">Status</th>
+                            <th style="padding: 1rem 1.5rem; text-align: left; font-size: 0.8rem; font-weight: 600; color: var(--text-dim); text-transform: uppercase;">Joined</th>
+                            <th style="padding: 1rem 1.5rem; text-align: center; font-size: 0.8rem; font-weight: 600; color: var(--text-dim); text-transform: uppercase;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (users.length === 0) { %>
+                        <tr>
+                            <td colspan="6" style="text-align: center; padding: 4rem; color: var(--text-dim);">
+                                <i class="fa fa-users" style="font-size: 2rem; display: block; margin-bottom: 0.5rem;"></i>
+                                No users found<% if (search) { %> matching "<%= search %>"<% } %>
+                            </td>
+                        </tr>
+                        <% } else { %>
+                        <% users.forEach(u => { %>
+                        <tr style="border-bottom: 1px solid var(--border); transition: background 0.15s;"
+                            onmouseover="this.style.background='rgba(255,255,255,0.02)'"
+                            onmouseout="this.style.background='transparent'">
+                            <td style="padding: 1rem 1.5rem;">
+                                <div style="display: flex; align-items: center; gap: 1rem;">
+                                    <div style="width: 38px; height: 38px; border-radius: 50%; overflow: hidden; background: var(--bg-surface); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                        <% if (u.avatar_url && u.avatar_url !== 'None') { %>
+                                            <img src="<%= u.avatar_url %>" style="width: 100%; height: 100%; object-fit: cover;" referrerpolicy="no-referrer">
+                                        <% } else { %>
+                                            <i class="fa fa-user" style="color: var(--text-dim); font-size: 0.85rem;"></i>
+                                        <% } %>
+                                    </div>
+                                    <div>
+                                        <div style="font-weight: 500; color: #fff; font-size: 0.95rem;"><%= u.name %></div>
+                                        <div style="font-size: 0.78rem; color: var(--text-dim);">ID: <%= u._id.toString().slice(-8) %></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td style="padding: 1rem 1.5rem;">
+                                <div style="font-size: 0.9rem; color: var(--text-muted);"><%= u.email %></div>
+                                <div style="font-size: 0.8rem; color: var(--text-dim);"><%= u.phone || '—' %></div>
+                            </td>
+                            <td style="padding: 1rem 1.5rem;">
+                                <% if (u.isOrganizer) { %>
+                                    <span style="font-size: 0.78rem; background: rgba(52, 152, 219, 0.1); color: #3498DB; padding: 0.3rem 0.7rem; border-radius: 2rem; font-weight: 500;"><i class="fa fa-briefcase"></i> Organizer</span>
+                                <% } else { %>
+                                    <span style="font-size: 0.78rem; background: rgba(255,255,255,0.05); color: var(--text-dim); padding: 0.3rem 0.7rem; border-radius: 2rem;">User</span>
+                                <% } %>
+                            </td>
+                            <td style="padding: 1rem 1.5rem;">
+                                <% if (u.status === 'Active') { %>
+                                    <span style="font-size: 0.78rem; background: rgba(46, 204, 113, 0.1); color: #2ECC71; padding: 0.3rem 0.7rem; border-radius: 2rem; font-weight: 500;"><i class="fa fa-circle" style="font-size: 0.5rem; vertical-align: middle;"></i> Active</span>
+                                <% } else { %>
+                                    <span style="font-size: 0.78rem; background: rgba(231, 76, 60, 0.1); color: #E74C3C; padding: 0.3rem 0.7rem; border-radius: 2rem; font-weight: 500;"><i class="fa fa-ban" style="font-size: 0.75rem;"></i> <%= u.status %></span>
+                                <% } %>
+                            </td>
+                            <td style="padding: 1rem 1.5rem; color: var(--text-dim); font-size: 0.85rem;">
+                                <%= new Date(u.createdAt).toLocaleDateString() %>
+                            </td>
+                            <td style="padding: 1rem 1.5rem; text-align: center;">
+                                <div style="display: flex; gap: 0.5rem; justify-content: center;">
+                                    <a href="/admin/users/view/<%= u._id %>" class="btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" title="View">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                    <form class="ajax-form m-0" action="/admin/users/toggle-block/<%= u._id %>" method="POST">
+                                        <button type="submit" class="btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.8rem; color: <%= u.status === 'Active' ? '#E67E22' : '#2ECC71' %>;" title="<%= u.status === 'Active' ? 'Block' : 'Unblock' %>">
+                                            <i class="fa fa-<%= u.status === 'Active' ? 'ban' : 'check-circle' %>"></i>
+                                        </button>
+                                    </form>
+                                    <form class="ajax-form m-0" action="/admin/users/delete/<%= u._id %>" method="POST">
+                                        <button type="submit" class="btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.8rem; color: #E63946;" title="Delete">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        <% }) %>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <% if (totalPages > 1) { %>
+            <div style="display: flex; justify-content: center; align-items: center; gap: 0.75rem; margin-top: 2rem;">
+                <% if (currentPage > 1) { %>
+                    <a href="/admin/users?page=<%= currentPage - 1 %><%= search ? '&search=' + search : '' %>" class="btn btn-outline" style="padding: 0.6rem 1.2rem;">
+                        <i class="fa fa-chevron-left"></i>
+                    </a>
+                <% } %>
+                <% for (let i = 1; i <= totalPages; i++) { %>
+                    <a href="/admin/users?page=<%= i %><%= search ? '&search=' + search : '' %>" 
+                       class="btn <%= i === currentPage ? 'btn-primary' : 'btn-outline' %>" 
+                       style="padding: 0.6rem 1rem; min-width: 40px; text-align: center;"><%= i %></a>
+                <% } %>
+                <% if (currentPage < totalPages) { %>
+                    <a href="/admin/users?page=<%= currentPage + 1 %><%= search ? '&search=' + search : '' %>" class="btn btn-outline" style="padding: 0.6rem 1.2rem;">
+                        <i class="fa fa-chevron-right"></i>
+                    </a>
+                <% } %>
+            </div>
+            <% } %>
+
+        </main>
+    </div>
+
+    <%- include('partials/scripts') %>
+</body>
+</html>
