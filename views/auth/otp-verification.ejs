@@ -80,7 +80,12 @@
         const fullOtpInput = document.getElementById('fullOtp');
         const resendBtn = document.getElementById('resendBtn');
         const timerSpan = document.getElementById('timer');
-        let cooldown = 60;
+        let cooldown = <%= initialCooldown || 0 %>;
+
+        // Start cooldown automatically if there's an initial lock
+        if (cooldown > 0) {
+            startCooldown(cooldown);
+        }
 
         inputs.forEach((input, index) => {
             input.addEventListener('input', (e) => {
@@ -106,39 +111,46 @@
             });
             fullOtpInput.value = otp;
         });
+
         resendBtn.addEventListener('click', async () => {
-        if (resendBtn.style.pointerEvents === 'none') return;
-        // Perform AJAX resend
-        const response = await fetch('/user/otp-resend', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: "<%= email %>", name: "<%= name %>" })
-        });
-        const data = await response.json();
-        if (data.success) {
-            showToast(data.message, 'success');
-            startCooldown();
-        } else {
-            showToast(data.message, 'error');
-        }
-    });
-    function startCooldown() {
-        resendBtn.style.opacity = '0.5';
-        resendBtn.style.pointerEvents = 'none';
-        timerSpan.style.display = 'inline';
-        
-        let timeLeft = cooldown;
-        const interval = setInterval(() => {
-            timeLeft--;
-            timerSpan.innerText = `(${timeLeft}s)`;
-            if (timeLeft <= 0) {
-                clearInterval(interval);
-                resendBtn.style.opacity = '1';
-                resendBtn.style.pointerEvents = 'auto';
-                timerSpan.style.display = 'none';
+            if (resendBtn.style.pointerEvents === 'none') return;
+            // Perform AJAX resend
+            const response = await fetch('/user/otp-resend', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: "<%= email %>", name: "<%= name %>" })
+            });
+            const data = await response.json();
+            if (data.success) {
+                showToast(data.message, 'success');
+                startCooldown(60); // Reset to full minute on success
+            } else {
+                showToast(data.message, 'error');
+                if (data.retryAfter) {
+                    startCooldown(data.retryAfter);
+                }
             }
-        }, 1000);
-    }
+        });
+
+        function startCooldown(duration) {
+            resendBtn.style.opacity = '0.5';
+            resendBtn.style.pointerEvents = 'none';
+            timerSpan.style.display = 'inline';
+            
+            let timeLeft = duration;
+            timerSpan.innerText = `(${timeLeft}s)`;
+            
+            const interval = setInterval(() => {
+                timeLeft--;
+                timerSpan.innerText = `(${timeLeft}s)`;
+                if (timeLeft <= 0) {
+                    clearInterval(interval);
+                    resendBtn.style.opacity = '1';
+                    resendBtn.style.pointerEvents = 'auto';
+                    timerSpan.style.display = 'none';
+                }
+            }, 1000);
+        }
     </script>
     <%- include('../partials/footer-scripts') %>
 </body>

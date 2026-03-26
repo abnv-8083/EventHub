@@ -154,3 +154,11 @@ export const logoutUser = (req) => {
         }
     });
 }
+
+export const getOtpLockTime = async (email) => {
+    const data = await RedisHelper.getData(email, true);
+    if (!data || !data.resendLock) return 0;
+
+    const remainingSeconds = Math.ceil((data.resendLock - Date.now()) / 1000);
+    return remainingSeconds > 0 ? remainingSeconds : 0;
+}

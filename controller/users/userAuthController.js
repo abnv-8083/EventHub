@@ -62,9 +62,10 @@ export const postRegister = async (req, res) => {
     }
 }
 
-export const getOTPVerify = (req, res) => {
+export const getOTPVerify = async (req, res) => {
     const { email, name, purpose } = req.query;
-    res.render('auth/otp-verification', { email, name, purpose })
+    const initialCooldown = await userServices.getOtpLockTime(email);
+    res.render('auth/otp-verification', { email, name, purpose, initialCooldown })
 }
 
 export const postOTPVerify = async (req, res) => {
