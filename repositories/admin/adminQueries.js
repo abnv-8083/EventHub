@@ -40,3 +40,7 @@ export const updateAdminStatus = async (id, status) => {
 export const deleteAdminById = async (id) => {
     return await Admin.findByIdAndDelete(id);
 }
+
+export const updateAdminPassword = async (id, hashPassword) => {
+    return await Admin.findByIdAndUpdate(id, { $set: { password: hashPassword } }, { new: true });
+}

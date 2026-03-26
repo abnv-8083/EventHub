@@ -12,6 +12,18 @@ router.route('/login')
     .get(adminAuthController.getAdminLogin)
     .post(adminAuthController.postAdminLogin)
 
+router.route('/forgot-password')
+    .get(adminAuthController.getAdminForgotPassword)
+    .post(adminAuthController.postAdminForgotPassword)
+
+router.route('/otp-verify')
+    .get(adminAuthController.getAdminOTPVerify)
+    .post(adminAuthController.postAdminOTPVerify)
+
+router.route('/reset-password')
+    .get(adminAuthController.getAdminResetPassword)
+    .post(adminAuthController.postAdminResetPassword)
+
 router.post('/logout', adminAuthController.postAdminLogout)
 
 // Protect all admin routes following the login route
