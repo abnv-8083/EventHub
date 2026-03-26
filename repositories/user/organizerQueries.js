@@ -15,3 +15,7 @@ export const createOrganizerProfile = async (userId, organizationName, registrat
 export const getOrganizerByUserId = async (userId) => {
     return await Organizer.findOne({ userId });
 }
+
+export const deleteOrganizerProfile = async (userId) => {
+    return await Organizer.deleteOne({ userId });
+}

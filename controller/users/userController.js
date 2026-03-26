@@ -20,8 +20,27 @@ export const getContact =(req,res) =>{
     res.render('public/contact')
 }
 
-export const getBecomeOrganizer = (req,res) => {
-    res.render('public/become-organizer')
+export const getBecomeOrganizer = async (req, res) => {
+    try {
+        if (!req.session.user) {
+            return res.render('public/become-organizer');
+        }
+
+        const organizer = await organizerQuery.getOrganizerByUserId(req.session.user._id);
+        
+        if (organizer) {
+            if (organizer.status === 'Approved') {
+                return res.redirect('/organizer/dashboard');
+            }
+            // Pass the organizer details (Pending or Rejected)
+            return res.render('public/become-organizer', { organizer });
+        }
+
+        res.render('public/become-organizer', { organizer: null });
+    } catch (error) {
+        console.error("Error in getBecomeOrganizer:", error);
+        res.render('public/become-organizer', { organizer: null });
+    }
 }
 
 export const getRegisterOrganizer = async (req, res) => {
@@ -66,7 +85,7 @@ export const postRegisterOrganizer = async (req, res) => {
         // Flag session so navbar can show pending badge without a DB call
         req.session.user.hasPendingOrganizer = true;
 
-        return sendResponse(res, HTTP_STATUS.CREATED, true, 'Application submitted! Our team will review your details.', { redirect: '/user/organizer/register' });
+        return sendResponse(res, HTTP_STATUS.CREATED, true, 'Application submitted! Our team will review your details.', { redirect: '/become-organizer' });
     } catch (error) {
         console.error("Error creating organizer application:", error);
         return sendResponse(res, HTTP_STATUS.INTERNAL_SERVER_ERROR, false, 'Failed to submit application.');
@@ -157,5 +176,16 @@ export const editPassword = async (req, res) => {
         return sendResponse(res, HTTP_STATUS.ACCEPTED, true, 'Password Updated Successfully', { redirect: '/profile' })
     } catch (error) {
         return sendResponse(res, error.statusCode || HTTP_STATUS.INTERNAL_SERVER_ERROR, false, error.message)
+    }
+}
+
+export const postRetryOrganizer = async (req, res) => {
+    try {
+        const userId = req.session.user._id;
+        await organizerQuery.deleteOrganizerProfile(userId);
+        return sendResponse(res, HTTP_STATUS.OK, true, 'Previous application cleared. You can now apply again.', { redirect: '/user/organizer/register' });
+    } catch (error) {
+        console.error("Error in postRetryOrganizer:", error);
+        return sendResponse(res, HTTP_STATUS.INTERNAL_SERVER_ERROR, false, 'Failed to clear application.');
     }
 }

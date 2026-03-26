@@ -54,6 +54,8 @@ router.route('/organizer/register')
     .get(isAuthenticated, userAuthController.getOrganizerSignup)
     .post(isAuthenticated, userController.postRegisterOrganizer)
 
+router.post('/organizer/retry', isAuthenticated, userController.postRetryOrganizer)
+
 router.route('/organizer/login')
     .get(userAuthController.getOrganizerLogin)
 

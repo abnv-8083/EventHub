@@ -17,13 +17,48 @@
                     <i class="fa fa-star"></i> EventHub For Creators
                 </div>
                 <h1 style="font-size: 4.5rem;" class="mb-4">Host the <span class="text-gradient">Extraordinary</span></h1>
+                
+                <% if(locals.organizer) { %>
+                    <% if(organizer.status === 'Pending') { %>
+                        <div style="background: rgba(230, 87, 70, 0.1); border: 1px solid rgba(230, 87, 70, 0.2); padding: 1.5rem; border-radius: 16px; max-width: 600px; margin: 0 auto 3rem; display: flex; align-items: center; gap: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+                            <div style="width: 50px; height: 50px; background: rgba(230, 87, 70, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <i class="fa fa-hourglass-half" style="color: var(--primary); font-size: 1.5rem;"></i>
+                            </div>
+                            <div style="text-align: left;">
+                                <h4 style="margin: 0; font-size: 1.1rem; color: #fff;">Application Under Review</h4>
+                                <p style="margin: 0.2rem 0 0; font-size: 0.9rem; color: var(--text-muted);">We're verifying your details. You'll gain access once approved.</p>
+                            </div>
+                        </div>
+                    <% } else if(organizer.status === 'Rejected') { %>
+                        <div style="background: rgba(231, 76, 60, 0.1); border: 1px solid rgba(231, 76, 60, 0.2); padding: 1.5rem; border-radius: 16px; max-width: 600px; margin: 0 auto 3rem; display: flex; align-items: center; gap: 1.5rem;">
+                            <div style="width: 50px; height: 50px; background: rgba(231, 76, 60, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <i class="fa fa-times-circle" style="color: #e74c3c; font-size: 1.5rem;"></i>
+                            </div>
+                            <div style="text-align: left;">
+                                <h4 style="margin: 0; font-size: 1.1rem; color: #fff;">Application Refused</h4>
+                                <p style="margin: 0.2rem 0 0; font-size: 0.9rem; color: var(--text-muted);">Reason: <%= organizer.rejectionReason || 'Details do not meet platform criteria.' %></p>
+                            </div>
+                        </div>
+                    <% } %>
+                <% } %>
+
                 <p style="color: var(--text-muted); font-size: 1.25rem; max-width: 700px; margin-inline: auto; line-height: 1.8;"
-                    class="mb-4">
+                    class="mb-5">
                     Turn your vision into reality. EventHub provides world-class ticketing, marketing tools, and analytics to help you seamlessly host events that people will never forget.
                 </p>
-                <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 3rem;">
+                <div style="display: flex; gap: 1rem; justify-content: center;">
                     <% if(locals.user) { %>
-                        <a href="/user/organizer/register" class="btn btn-primary btn-glow" style="padding: 1.2rem 3rem; font-size: 1.1rem; border-radius: 3rem;">Become an Organizer</a>
+                        <% if(locals.organizer) { %>
+                            <% if(organizer.status === 'Pending') { %>
+                                <button class="btn btn-primary btn-glow" style="padding: 1.2rem 3rem; font-size: 1.1rem; border-radius: 3rem; opacity: 0.7; cursor: not-allowed;" disabled>Application Pending</button>
+                            <% } else if(organizer.status === 'Rejected') { %>
+                                <form action="/user/organizer/retry" method="POST" class="ajax-form">
+                                    <button type="submit" class="btn btn-primary btn-glow" style="padding: 1.2rem 3rem; font-size: 1.1rem; border-radius: 3rem;">Start New Application</button>
+                                </form>
+                            <% } %>
+                        <% } else { %>
+                            <a href="/user/organizer/register" class="btn btn-primary btn-glow" style="padding: 1.2rem 3rem; font-size: 1.1rem; border-radius: 3rem;">Become an Organizer</a>
+                        <% } %>
                     <% } else { %>
                         <a href="/user/login" class="btn btn-primary btn-glow" style="padding: 1.2rem 3rem; font-size: 1.1rem; border-radius: 3rem;">Login to Apply</a>
                     <% } %>

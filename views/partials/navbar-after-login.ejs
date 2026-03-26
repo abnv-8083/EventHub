@@ -17,10 +17,6 @@
                         <a class="nav-link" style="color: #3498DB; font-size: 1.15rem; font-weight: 600;" href="/organizer/dashboard">
                             <i class="fa fa-building" style="margin-right: 0.3rem;"></i>Organizer Portal
                         </a>
-                    <% } else if (locals.user && locals.user.hasPendingOrganizer) { %>
-                        <a class="nav-link" style="color: #E67E22; font-size: 1.1rem; font-weight: 500;" href="/user/organizer/register">
-                            <i class="fa fa-hourglass-half" style="margin-right: 0.3rem;"></i>Pending Approval
-                        </a>
                     <% } else { %>
                         <a class="nav-link" style="color: #ffffff; font-size: 1.15rem; font-weight: 500;" href="/become-organizer">Organizer</a>
                     <% } %>
