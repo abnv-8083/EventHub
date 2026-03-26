@@ -254,6 +254,47 @@ header {
     border-color: rgba(255, 255, 255, 0.05);
 }
 
+/* Password Visibility Toggle */
+.password-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-group .input {
+    padding-right: 3rem !important; /* Make room for the eye icon */
+}
+
+.password-toggle {
+    position: absolute;
+    right: 1rem;
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    padding: 0;
+    z-index: 10;
+    user-select: none;
+}
+
+.password-toggle:hover {
+    color: var(--primary);
+}
+
+.password-toggle svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
 /* Select Specific Styles */
 select.input {
     appearance: none;

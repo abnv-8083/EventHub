@@ -58,10 +58,17 @@
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
                         <label style="margin-bottom: 0; font-size: 0.9rem; color: var(--text-muted); font-weight: 500;">Password</label>
                     </div>
-                    <input type="password" name="password" required placeholder="••••••••"
-                           style="width: 100%; padding: 0.9rem 1rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; color: #ffffff; font-size: 1rem; transition: all 0.2s; outline: none;"
-                           onfocus="this.style.borderColor='#3498DB'; this.style.boxShadow='0 0 0 4px rgba(52, 152, 219, 0.1)';" 
-                           onblur="this.style.borderColor='var(--border)'; this.style.boxShadow='none';">
+                    <div class="password-group">
+                        <input type="password" name="password" required placeholder="••••••••"
+                               style="width: 100%; padding: 0.9rem 1rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; color: #ffffff; font-size: 1rem; transition: all 0.2s; outline: none;"
+                               onfocus="this.style.borderColor='#3498DB'; this.style.boxShadow='0 0 0 4px rgba(52, 152, 219, 0.1)';" 
+                               onblur="this.style.borderColor='var(--border)'; this.style.boxShadow='none';">
+                        <button type="button" class="password-toggle" aria-label="Show Password">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
 
                 <button type="submit" class="btn btn-primary"
