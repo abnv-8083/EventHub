@@ -3,7 +3,7 @@ import * as userServices from "../../services/users/userServices.js"
 import { sendResponse, sendConfirmation } from "../../utils/responseHandler.js"
 import { City } from "country-state-city"
 import * as cityConst from "../../constants/cityConstant.js"
-import { profileUpdateValidate, editEmailValidate, passwordUpdateValidate } from "../../validation/user/user.js"
+import { profileUpdateValidate, editEmailValidate, passwordUpdateValidate, organizerRegisterValidate } from "../../validation/user/user.js"
 import * as organizerQuery from "../../repositories/user/organizerQueries.js"
 
 export const getHome = (req, res) => {
@@ -42,9 +42,14 @@ export const getRegisterOrganizer = async (req, res) => {
 }
 
 export const postRegisterOrganizer = async (req, res) => {
+    const { error, value } = organizerRegisterValidate.validate(req.body, { abortEarly: false });
+    if (error) {
+        const errorMessage = error.details[0].message.replace(/"/g, '');
+        return sendResponse(res, HTTP_STATUS.BAD_REQUEST, false, errorMessage);
+    }
     try {
         const userId = req.session.user._id;
-        const { organizationName, industryCategory, operatingRegion } = req.body;
+        const { organizationName, industryCategory, operatingRegion } = value;
 
         // Ensure user hasn't already submitted
         const existingReq = await organizerQuery.getOrganizerByUserId(userId);

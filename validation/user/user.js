@@ -184,3 +184,27 @@ export const passwordUpdateValidate = Joi.object({
             'any.required': 'Please confirm your new password.'
         })
 })
+export const organizerRegisterValidate = Joi.object({
+    organizationName: Joi.string()
+        .min(3)
+        .max(100)
+        .required()
+        .messages({
+            'string.empty': 'Please enter your organization name.',
+            'any.required': 'Organization name is required.',
+            'string.min': 'Organization name must be at least 3 characters long.',
+            'string.max': 'Organization name cannot exceed 100 characters.'
+        }),
+    industryCategory: Joi.string()
+        .required()
+        .messages({
+            'string.empty': 'Please select an industry category.',
+            'any.required': 'Industry category is required.'
+        }),
+    operatingRegion: Joi.string()
+        .required()
+        .messages({
+            'string.empty': 'Please select an operating region.',
+            'any.required': 'Operating region is required.'
+        })
+});
