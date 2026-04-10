@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', { title: 'Admin Verification' }) %>
+
+<style>
+    .otp-input-group {
+        display: flex;
+        justify-content: center;
+        margin: 2rem 0;
+    }
+    .otp-main-input {
+        width: 100%;
+        max-width: 280px;
+        height: 60px;
+        text-align: center;
+        font-size: 2rem;
+        font-weight: 700;
+        letter-spacing: 0.8rem;
+        padding-left: 0.8rem; /* Offset for letter-spacing */
+        border-radius: 16px;
+        border: 2px solid var(--border);
+        background: var(--bg-surface);
+        color: var(--text-main);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .otp-main-input:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 4px rgba(230, 57, 70, 0.15);
+        transform: translateY(-2px);
+    }
+    .otp-main-input::placeholder {
+        letter-spacing: 0.8rem;
+        font-size: 2rem;
+        font-weight: 700;
+        color: rgba(255, 255, 255, 0.1);
+    }
+</style>
+
+<body class="bg-mesh"
+    style="height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+<div class="floating-blob" style="bottom: 10%; right: 10%; opacity: 0.15;"></div>
+
+    <div class="container" style="max-width: 500px; position: relative; z-index: 1;">
+        <div class="card glass animate" style="padding: 3.5rem; text-align: center; border-radius: 24px;">
+            <div
+                style="width: 80px; height: 80px; background: rgba(230, 57, 70, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; border: 1px solid var(--border-red);">
+                <i class="fa fa-shield-alt text-gradient glow-text" style="font-size: 1.8rem;"></i>
+            </div>
+            <h2 style="font-size: 1.8rem; margin-bottom: 1rem; letter-spacing: -1px;">Admin Verification</h2>
+            <p style="color: var(--text-muted); font-size: 1rem;">Enter the 6-digit code sent to your admin email: <br><strong>
+                    <%= email %>
+                </strong></p>
+
+            <form class="ajax-form" id="otpForm" action="/admin/otp-verify" method="POST" novalidate>
+                <input type="hidden" name="email" value="<%= email %>">
+                <input type="hidden" name="name" value="<%= name %>">
+                <input type="hidden" name="purpose" value="<%= purpose %>">
+                
+                <div class="otp-input-group animate stagger-1">
+                    <input type="text" id="otpInput" name="otp" class="otp-main-input" 
+                        maxlength="6" autocomplete="one-time-code" inputmode="numeric" 
+                        pattern="\d{6}" placeholder="000000" required autofocus>
+                </div>
+
+                <button type="submit" class="btn btn-primary glow-primary animate stagger-2"
+                    style="width: 100%; padding: 1.2rem; margin-top: 1.5rem; border-radius: 12px; font-size: 1.1rem;">Verify
+                    Admin Identity</button>
+            </form>
+
+            <div id="resendContainer" style="margin-top: 2rem;">
+                <p style="color: var(--text-muted);">
+                    Back to <a href="/admin/login" style="color: var(--primary); font-weight: 600;">Login</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const otpInput = document.getElementById('otpInput');
+        const otpForm = document.getElementById('otpForm');
+
+        // Sanitize input to only allow numbers
+        otpInput.addEventListener('input', (e) => {
+            const val = e.target.value;
+            const cleaned = val.replace(/\D/g, '').slice(0, 6);
+            e.target.value = cleaned;
+        });
+
+        // Basic validation on submit
+        otpForm.addEventListener('submit', (e) => {
+            const otp = otpInput.value;
+            if (!/^\d{6}$/.test(otp)) {
+                e.preventDefault();
+                if (typeof showToast === 'function') {
+                    showToast('Please enter all 6 digits of the verification code.', 'error');
+                }
+            }
+        });
+    </script>
+    <%- include('../partials/footer-scripts') %>
+</body>
+
+</html>

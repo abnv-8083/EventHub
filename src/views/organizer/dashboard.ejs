@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', { title: 'Organizer Portal | ' + organizer.organizationName }) %>
+
+<body>
+
+    <!-- Organizer-specific header (sticky on scroll) -->
+    <header class="header" style="position: sticky; top: 0; z-index: 999; background: rgba(10, 10, 10, 0.92); backdrop-filter: blur(8px); padding: 1rem 0; border-bottom: 1px solid var(--border);">
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+            <a href="/organizer/dashboard" class="logo">EVENT<span>HUB</span> <span style="font-size: 0.7rem; color: #3498DB; font-weight: 700; letter-spacing: 2px; vertical-align: middle;">CREATOR</span></a>
+            <div style="display: flex; align-items: center; gap: 1.5rem;">
+                <span style="color: var(--text-muted); font-size: 0.9rem;"><i class="fa fa-building" style="color: #3498DB; margin-right: 0.4rem;"></i><%= organizer.organizationName %></span>
+                <form class="ajax-form m-0" action="/organizer/logout" method="POST">
+                    <button type="submit" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
+                        <i class="fa fa-sign-out-alt"></i> Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+    </header>
+
+    <div class="dashboard-layout">
+        <%- include('../partials/sidebar-organizer') %>
+
+        <main class="dashboard-main animate">
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem;">
+                <div>
+                    <h1 style="font-size: 1.8rem;">Welcome back, <span class="text-gradient"><%= organizerSession.name %></span></h1>
+                    <p style="color: var(--text-muted);">Managing: <%= organizer.organizationName %> (ID: <%= organizer.registrationNumber %>)</p>
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <a href="create-event" class="btn btn-primary" style="padding: 0.8rem 1.5rem;">
+                        <i class="fa fa-plus"></i> Create Event
+                    </a>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 3rem;">
+                <!-- Quick Stats -->
+                <div class="card" style="padding: 1.5rem; display: flex; align-items: center; gap: 1.5rem;">
+                    <div style="width: 50px; height: 50px; border-radius: 12px; background: rgba(230, 57, 70, 0.1); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.25rem;">
+                        <i class="fa fa-calendar-check"></i>
+                    </div>
+                    <div>
+                        <h4 style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.25rem;">Live Events</h4>
+                        <div style="font-size: 1.5rem; font-weight: 600;">0</div>
+                    </div>
+                </div>
+                
+                <div class="card" style="padding: 1.5rem; display: flex; align-items: center; gap: 1.5rem;">
+                    <div style="width: 50px; height: 50px; border-radius: 12px; background: rgba(46, 204, 113, 0.1); color: #2ECC71; display: flex; align-items: center; justify-content: center; font-size: 1.25rem;">
+                        <i class="fa fa-ticket-alt"></i>
+                    </div>
+                    <div>
+                        <h4 style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.25rem;">Tickets Sold</h4>
+                        <div style="font-size: 1.5rem; font-weight: 600;">0</div>
+                    </div>
+                </div>
+                
+                <div class="card" style="padding: 1.5rem; display: flex; align-items: center; gap: 1.5rem;">
+                    <div style="width: 50px; height: 50px; border-radius: 12px; background: rgba(52, 152, 219, 0.1); color: #3498DB; display: flex; align-items: center; justify-content: center; font-size: 1.25rem;">
+                        <i class="fa fa-wallet"></i>
+                    </div>
+                    <div>
+                        <h4 style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.25rem;">Total Revenue</h4>
+                        <div style="font-size: 1.5rem; font-weight: 600;">$0.00</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coming Soon Prompt -->
+            <div class="card" style="padding: 3rem; text-align: center; border: 1px dashed var(--border); background: rgba(255, 255, 255, 0.02);">
+                <div style="width: 60px; height: 60px; border-radius: 50%; background: var(--bg-surface); display: flex; align-items: center; justify-content: center; color: var(--text-dim); font-size: 1.5rem; margin: 0 auto 1.5rem;">
+                    <i class="fa fa-paint-roller"></i>
+                </div>
+                <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem;">Your Dashboard is Ready</h3>
+                <p style="color: var(--text-muted); max-width: 500px; margin: 0 auto 1.5rem;">
+                    Congratulations on becoming a verified EventHub Organizer! You can now start drafting your first live events and monitoring ticket sales directly from this portal.
+                </p>
+                <a href="create-event" class="btn btn-outline" style="padding: 0.8rem 2rem;">Setup First Event</a>
+            </div>
+
+        </main>
+    </div>
+
+    <%- include('../partials/footer-scripts') %>
+</body>
+</html>
