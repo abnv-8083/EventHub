@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', { title: 'Verify Your Email' }) %>
+
+<style>
+    .otp-input-group {
+        display: flex;
+        justify-content: center;
+        margin: 2rem 0;
+    }
+    .otp-main-input {
+        width: 100%;
+        max-width: 280px;
+        height: 60px;
+        text-align: center;
+        font-size: 2rem;
+        font-weight: 700;
+        letter-spacing: 0.8rem;
+        padding-left: 0.8rem; /* Offset for letter-spacing */
+        border-radius: 16px;
+        border: 2px solid var(--border);
+        background: var(--bg-surface);
+        color: var(--text-main);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .otp-main-input:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 4px rgba(230, 57, 70, 0.15);
+        transform: translateY(-2px);
+    }
+    .otp-main-input::placeholder {
+        letter-spacing: 0.8rem;
+        font-size: 2rem;
+        font-weight: 700;
+        color: rgba(255, 255, 255, 0.1);
+    }
+    .otp-message {
+        min-height: 20px;
+        font-size: 0.9rem;
+        margin-top: 0.8rem;
+        color: var(--text-muted);
+    }
+    .otp-message.error { color: #e74c3c; }
+    .otp-message.success { color: #2ecc71; }
+</style>
+
+<body class="bg-mesh"
+    data-initial-cooldown="<%= initialCooldown || 0 %>"
+    style="height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+<div class="floating-blob" style="bottom: 10%; right: 10%; opacity: 0.15;"></div>
+
+    <div class="container" style="max-width: 500px; position: relative; z-index: 1;">
+        <div class="card glass animate" style="padding: 3.5rem; text-align: center; border-radius: 24px;">
+            <div
+                style="width: 80px; height: 80px; background: rgba(230, 57, 70, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; border: 1px solid var(--border-red);">
+                <i class="fa fa-shield-alt text-gradient glow-text" style="font-size: 1.8rem;"></i>
+            </div>
+            <h2 style="font-size: 1.8rem; margin-bottom: 1rem; letter-spacing: -1px;">Verification Code</h2>
+            <p style="color: var(--text-muted); font-size: 1rem;">We've sent a 6-digit secure code to <br><strong>
+                    <%= email %>
+                </strong></p>
+
+            <form id="otpForm" action="/user/otp-verify" method="POST" novalidate>
+                <input type="hidden" name="email" value="<%= email %>">
+                <input type="hidden" name="name" value="<%= name %>">
+                <input type="hidden" name="purpose" value="<%= purpose %>">
+                
+                <div class="otp-input-group animate stagger-1">
+                    <input type="text" id="otpInput" name="otp" class="otp-main-input" 
+                        maxlength="6" autocomplete="one-time-code" inputmode="numeric" 
+                        pattern="\d{6}" placeholder="000000" required autofocus>
+                </div>
+                
+                <p id="otpMessage" class="otp-message">Enter the 6-digit code sent to your email.</p>
+
+                <button type="submit" class="btn btn-primary glow-primary animate stagger-2"
+                    style="width: 100%; padding: 1.2rem; margin-top: 1.5rem; border-radius: 12px; font-size: 1.1rem;">Verify
+                    Identity</button>
+            </form>
+
+            <div id="resendContainer" style="margin-top: 2rem;">
+                <p style="color: var(--text-muted);">
+                    Didn't receive code? 
+                    <a href="javascript:void(0)" id="resendBtn" style="color: var(--primary); font-weight: 600;">Resend OTP</a>
+                    <span id="timer" style="display: none; color: var(--text-dim); margin-left: 5px;">(60s)</span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const otpInput = document.getElementById('otpInput');
+        const otpForm = document.getElementById('otpForm');
+        const otpMessage = document.getElementById('otpMessage');
+        const resendBtn = document.getElementById('resendBtn');
+        const timerSpan = document.getElementById('timer');
+        let cooldown = parseInt(document.body.getAttribute('data-initial-cooldown') || '0', 10);
+
+        if (cooldown > 0) startCooldown(cooldown);
+
+        // Sanitize input to only allow numbers
+        otpInput.addEventListener('input', (e) => {
+            const val = e.target.value;
+            const cleaned = val.replace(/\D/g, '').slice(0, 6);
+            e.target.value = cleaned;
+            
+            if (cleaned.length === 6) {
+                otpMessage.textContent = 'Code entered correctly. Submit to verify.';
+                otpMessage.className = 'otp-message success';
+            } else {
+                otpMessage.textContent = 'Enter the 6-digit code sent to your email.';
+                otpMessage.className = 'otp-message';
+            }
+        });
+
+        otpForm.addEventListener('submit', (e) => {
+            const otp = otpInput.value;
+            if (!/^\d{6}$/.test(otp)) {
+                e.preventDefault();
+                otpMessage.textContent = 'Please enter all 6 digits of the verification code.';
+                otpMessage.className = 'otp-message error';
+                showToast('Incomplete OTP. 6 digits required.', 'error');
+            }
+        });
+
+        resendBtn.addEventListener('click', async () => {
+            if (resendBtn.style.pointerEvents === 'none') return;
+            const response = await fetch('/user/otp-resend', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: "<%= email %>", name: "<%= name %>" })
+            });
+            const data = await response.json();
+            if (data.success) {
+                showToast(data.message, 'success');
+                startCooldown(60);
+            } else {
+                showToast(data.message, 'error');
+                if (data.retryAfter) startCooldown(data.retryAfter);
+            }
+        });
+
+        function startCooldown(duration) {
+            resendBtn.style.opacity = '0.5';
+            resendBtn.style.pointerEvents = 'none';
+            timerSpan.style.display = 'inline';
+            let timeLeft = duration;
+            timerSpan.innerText = `(${timeLeft}s)`;
+            const interval = setInterval(() => {
+                timeLeft--;
+                timerSpan.innerText = `(${timeLeft}s)`;
+                if (timeLeft <= 0) {
+                    clearInterval(interval);
+                    resendBtn.style.opacity = '1';
+                    resendBtn.style.pointerEvents = 'auto';
+                    timerSpan.style.display = 'none';
+                }
+            }, 1000);
+        }
+    </script>
+    <%- include('../partials/footer-scripts') %>
+</body>
+
+</html>

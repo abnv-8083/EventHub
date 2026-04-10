@@ -2,27 +2,27 @@ import "dotenv/config"
 import express from "express"
 import morgan from "morgan"
 import flash from "connect-flash-plus"
-import connectDB from "./config/db.js"
+import connectDB from "./src/config/db.js"
 import { fileURLToPath } from 'url'
 import path from "path"
 import passport from "passport"
-import passportConfig from "./config/passport.js"
+import passportConfig from "./src/config/passport.js"
 
 //Middlewares
-import toastMiddleware from "./middleware/toastMiddleware.js"
-import sessionMiddleware from "./middleware/session.js"
+import toastMiddleware from "./src/middleware/toastMiddleware.js"
+import appSession from "./src/middleware/session.js"
 
 // User Routes
-import userAuthRoute from "./router/user/authRoutes.js"
-import userRouter from "./router/user/protectedRoutes.js"
-import publicRouter from "./router/user/publicRoutes.js"
+import userAuthRoute from "./src/router/user/authRoutes.js"
+import userRouter from "./src/router/user/protectedRoutes.js"
+import publicRouter from "./src/router/user/publicRoutes.js"
 
 // Admin Routes
-import adminAuthRoute from "./router/admin/authRoutes.js"
+import adminAuthRoute from "./src/router/admin/authRoutes.js"
 
 // Organizer Routes
-import organizerAuthRoute from "./router/organizer/authRoutes.js"
-import organizerRouter from "./router/organizer/organizerRoutes.js"
+import organizerAuthRoute from "./src/router/organizer/authRoutes.js"
+import organizerRouter from "./src/router/organizer/organizerRoutes.js"
 
 const app = express()
 const PORT = process.env.PORT || 5000
@@ -32,28 +32,29 @@ const __dirname = path.dirname(__filename)
 passportConfig(passport);
 
 app.use(morgan('dev'))
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(__dirname, 'src', 'public')))
 app.set('view engine', 'ejs')
-app.set('views', path.join(__dirname, 'views'))
+app.set('views', path.join(__dirname, 'src', 'views'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-app.use(sessionMiddleware);
+// Helper for route chains that need session + flash + toast
+const withSession = (sessionMw) => [
+    sessionMw,
+    passport.initialize(),
+    passport.session(),
+    flash(),
+    toastMiddleware
+];
 
-app.use(passport.initialize())
-app.use(passport.session())
-app.use(flash())
+import checkBlocked from "./src/middleware/checkBlocked.js"
 
-
-app.use(toastMiddleware);
-
-
-app.use('/user', userAuthRoute)
-app.use('/admin', adminAuthRoute)
-app.use('/organizer', organizerAuthRoute)
-app.use('/organizer', organizerRouter)
-app.use('/', userRouter)
-app.use('/', publicRouter)
+app.use('/user', ...withSession(appSession), checkBlocked, userAuthRoute)
+app.use('/user', ...withSession(appSession), checkBlocked, userRouter)
+app.use('/admin', ...withSession(appSession), adminAuthRoute)
+app.use('/organizer', ...withSession(appSession), checkBlocked, organizerAuthRoute)
+app.use('/organizer', ...withSession(appSession), checkBlocked, organizerRouter)
+app.use('/', ...withSession(appSession), checkBlocked, publicRouter)
 
 connectDB()
 app.listen(PORT, () => {

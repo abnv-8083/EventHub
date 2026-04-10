@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', { title: 'My Profile' }) %>
+
+<body>
+
+    <!-- Header same as dashboard -->
+    <%- include('../partials/header') %>
+
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+                <%- include('../partials/sidebar') %>
+        <!-- Main Content -->
+        <main class="dashboard-main animate">
+            <h1 style="font-size: 1.8rem; margin-bottom: 2.5rem;">Manage <span class="text-gradient">Profile</span></h1>
+
+            <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 3rem; align-items: start;">
+                <!-- Left Column Container -->
+                <div style="display: flex; flex-direction: column; gap: 2rem;">
+                    <!-- Profile Picture Card -->
+                    <div class="card" style="padding: 2rem; text-align: center;">
+                        <div
+                            style="width: 150px; height: 150px; background: var(--bg-surface); border-radius: 50%; border: 4px solid var(--primary); margin: 0 auto 1.5rem; position: relative; overflow: hidden;">
+                            <img src="<%= user.avatar_url %>" alt="Profile"
+                                style="width: 100%; height: 100%; object-fit: cover;" referrerpolicy="no-referrer">
+                            <button id="mainEditAvatarBtn"
+                                style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.6); border: none; padding: 0.5rem; color: white; cursor: pointer; font-size: 0.8rem;"><i
+                                    class="fa fa-camera"></i> Edit</button>
+                        </div>
+                        <h3 style="margin-bottom: 0.5rem;"><%= user.name %></h3>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem;">Member since March 2026
+                        </p>
+                        <button class="btn btn-outline" id="viewProfileBtn" style="width: 100%;">View Public Profile</button>
+                    </div>
+
+                    <!-- Security Section -->
+                    <div class="card" style="padding: 2rem;">
+                        <h3 style="margin-bottom: 1.5rem; font-size: 1.1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.8rem;">
+                            Security</h3>
+                        
+                        <div style="margin-bottom: 1.5rem;">
+                            <% if(!user.password){ %>
+                                <div style="font-weight: 600; margin-bottom: 0.3rem;"><h5>Password</h5></div>
+                                <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">Add Password to keep your account secure.</p>
+                                <a href="/user/profile/edit/password" class="btn btn-outline" style="width: 100%; font-size: 0.85rem; padding: 0.6rem; text-decoration: none; text-align: center;"><i class="fa fa-sync"></i> Add Password</a>
+                            <% }else if(user.password){ %>
+                                <div style="font-weight: 600; margin-bottom: 0.3rem;"><h5>Password</h5></div>
+                                <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">Update your password to keep your account secure.</p>
+                                <a href="/user/profile/edit/password" class="btn btn-outline" style="width: 100%; font-size: 0.85rem; padding: 0.6rem; text-decoration: none; text-align: center;"><i class="fa fa-sync"></i> Change Password</a>
+                            <% } %>
+                        </div>
+                        
+                        <div>
+                            <div style="font-weight: 600; margin-bottom: 0.3rem;"><h5>Email</h5></div>
+                            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">Update your email address.</p>
+                            <a href="/user/profile/edit/email" class="btn btn-outline" style="width: 100%; font-size: 0.85rem; padding: 0.6rem; text-decoration: none; text-align: center;"><i class="fa fa-sync"></i> Change Email</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile Info Form -->
+                <div class="card" style="padding: 2.5rem;">
+                    <h3
+                        style="margin-bottom: 2rem; font-size: 1.2rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem;">
+                        Personal Details</h3>
+                    <form id="profileForm" action="/user/profile/edit" method="POST" class="ajax-form">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                            <input type="text" value="<%= user._id %>" name="id" hidden>
+                            <div class="form-group">
+                                <label class="label">Full Name</label>
+                                <input type="text" name="name" class="input" value="<%= user.name %>" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label class="label">Email Address</label>
+                                <input type="email" class="input" value="<%= user.email %>" disabled>
+                            </div>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                            <div class="form-group">
+                                <label class="label">Phone Number</label>
+                                <% if(user.isGoogle == true){ %>
+                                    <input type="tel" name="phone" class="input" value="" placeholder="None" disabled>
+                                <% }else{ %>
+                                    <input type="tel" name="phone" class="input" value="<%= user.phone %>" disabled>
+                                <% } %>
+                            </div>
+                            <div class="form-group">
+                                <label class="label">Location</label>
+                                    <select name="city" id="city" class="input" disabled>
+                                        <option value="" disabled <%= (!user.city || user.city === 'None') ? 'selected' : '' %>><%= user.city %></option>
+                                        <% sortedCity.forEach(city=>{ %>
+                                            <option value="<%= city.name %>" <%= user.city === city.name ? 'selected' : '' %>><%= city.name %></option>
+                                        <% }) %>
+                                    </select>
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem;">
+                            <div class="form-group">
+                                <label class="label">Gender</label>
+                                <select name="gender" class="input" disabled>
+                                    <option value="Prefer not to say" <%= (!user.gender || user.gender === 'Prefer not to say') ? 'selected' : '' %>>Prefer not to say</option>
+                                    <option value="Male" <%= user.gender === 'Male' ? 'selected' : '' %>>Male</option>
+                                    <option value="Female" <%= user.gender === 'Female' ? 'selected' : '' %>>Female</option>
+                                    <option value="Other" <%= user.gender === 'Other' ? 'selected' : '' %>>Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="label">Date of Birth</label>
+                                <% 
+                                    let dobValue = '';
+                                    if(user.dob) {
+                                        const d = new Date(user.dob);
+                                        const yy = d.getFullYear();
+                                        const mm = String(d.getMonth()+1).padStart(2,'0');
+                                        const dd = String(d.getDate()).padStart(2,'0');
+                                        dobValue = `${yy}-${mm}-${dd}`;
+                                    }
+                                %>
+                                <input type="date" name="dob" class="input" value="<%= dobValue %>" disabled>
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="margin-top: 1.5rem;">
+                            <label class="label">Occupation</label>
+                            <input type="text" name="occupation" class="input" value="<%= (user.occupation && user.occupation !== 'None') ? user.occupation : '' %>" placeholder="e.g. Software Engineer" disabled>
+                        </div>
+
+                        <div class="form-group" style="margin-top: 1.5rem; margin-bottom: 2.5rem;">
+                            <label class="label">Bio</label>
+                            <textarea class="input" name="bio" rows="2" disabled
+                                style="resize: none;"><%= (user.bio && user.bio !== 'None') ? user.bio : '' %></textarea>
+                        </div>
+                        <div
+                            style="border-top: 1px solid var(--border); padding-top: 2rem; display: flex; justify-content: flex-end; gap: 1rem;">
+                            <button type="button" class="btn btn-primary" id="editProfileBtn">Edit Profile</button>
+                            <button type="button" class="btn btn-outline" id="cancelEditBtn" style="display: none;">Cancel</button>
+                            <button type="submit" class="btn btn-primary" id="saveProfileBtn" style="display: none;">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Public Profile Preview Modal -->
+    <div class="modal-overlay" id="profilePreviewModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3>Public Profile Preview</h3>
+                <span class="modal-close"><i class="fa fa-times"></i></span>
+            </div>
+            <div class="modal-body" style="text-align: center;">
+                <div style="width: 200px; height: 200px; margin: 0 auto 1.5rem; border-radius: 50%; overflow: hidden; border: 4px solid var(--primary); box-shadow: var(--shadow);">
+                    <img src="<%= user.avatar_url %>" alt="Profile" style="width: 100%; height: 100%; object-fit: cover;" referrerpolicy="no-referrer">
+                </div>
+                <h2 style="margin-bottom: 0.5rem;"><%= user.name %></h2>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;"><i class="fa fa-map-marker-alt"></i> <%= (user.city && user.city !== 'None') ? user.city : 'Location not set' %></p>
+                <div class="glass" style="padding: 1.5rem; border-radius: var(--radius-md); text-align: left;">
+                    <h4 style="margin-bottom: 0.5rem; font-size: 0.9rem; color: var(--primary);">About</h4>
+                    <p style="font-size: 0.95rem; line-height: 1.5;"><%= (user.bio && user.bio !== 'None') ? user.bio : 'No bio available yet.' %></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="modalChangePhotoBtn"><i class="fa fa-camera"></i> Change</button>
+                <button class="btn btn-primary" id="modalEditBtn"><i class="fa fa-edit"></i> Crop Image</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden File Input for Avatar -->
+    <input type="file" id="avatarInput" accept="image/*" style="display: none;">
+
+    <!-- Crop Image Modal -->
+    <div class="modal-overlay" id="cropperModal">
+        <div class="modal-container" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3>Crop Profile Picture</h3>
+                <span class="modal-close" id="closeCropperModal"><i class="fa fa-times"></i></span>
+            </div>
+            <div class="modal-body">
+                <div style="max-height: 400px; width: 100%; overflow: hidden; background: #000;">
+                    <img id="cropperImage" src="" style="max-width: 100%;">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancelCropBtn">Cancel</button>
+                <button class="btn btn-primary" id="saveCropBtn"><i class="fa fa-save"></i> Save Cropped Image</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const editBtn = document.getElementById('editProfileBtn');
+            const cancelBtn = document.getElementById('cancelEditBtn');
+            const saveBtn = document.getElementById('saveProfileBtn');
+            const profileForm = document.getElementById('profileForm');
+            
+            // Allow editing of all inputs except the email address
+            const editableInputs = profileForm.querySelectorAll('input:not([type="email"]), textarea, select');
+            const originalValues = new Map();
+
+            editBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                // Toggle Buttons
+                editBtn.style.display = 'none';
+                cancelBtn.style.display = 'inline-flex';
+                saveBtn.style.display = 'inline-flex';
+                
+                // Enable inputs and store their original values
+                editableInputs.forEach(input => {
+                    originalValues.set(input, input.value);
+                    input.removeAttribute('disabled');
+                });
+                
+                if (editableInputs.length > 0) {
+                    editableInputs[0].focus();
+                }
+            });
+
+            cancelBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                // Toggle Buttons back
+                editBtn.style.display = 'inline-flex';
+                cancelBtn.style.display = 'none';
+                saveBtn.style.display = 'none';
+                
+                // Revert values and disable inputs
+                editableInputs.forEach(input => {
+                    input.value = originalValues.get(input) || '';
+                    input.setAttribute('disabled', 'true');
+                });
+            });
+
+            // Handle successful form submission
+            profileForm.addEventListener('ajax:success', (e) => {
+                // Toggle Buttons back
+                editBtn.style.display = 'inline-flex';
+                cancelBtn.style.display = 'none';
+                saveBtn.style.display = 'none';
+                
+                // Disable all inputs
+                editableInputs.forEach(input => {
+                    input.setAttribute('disabled', 'true');
+                });
+                
+                // Refresh originalValues to new values
+                editableInputs.forEach(input => {
+                    originalValues.set(input, input.value);
+                });
+            });
+        });
+
+        // Modal Logic
+        const profileModal = document.getElementById('profilePreviewModal');
+        const viewProfileBtn = document.getElementById('viewProfileBtn');
+        const closeModalBtn = document.querySelector('.modal-close');
+        const modalEditBtn = document.getElementById('modalEditBtn');
+
+        if (viewProfileBtn && profileModal) {
+            viewProfileBtn.addEventListener('click', () => {
+                profileModal.classList.add('active');
+            });
+
+            closeModalBtn.addEventListener('click', () => {
+                profileModal.classList.remove('active');
+            });
+
+            // Close on click outside
+            profileModal.addEventListener('click', (e) => {
+                if (e.target === profileModal) {
+                    profileModal.classList.remove('active');
+                }
+            });
+
+            // Handle Edit button in modal
+            modalEditBtn.addEventListener('click', () => {
+                if (modalEditBtn.innerText.includes('Crop')) {
+                    profileModal.classList.remove('active');
+                    cropperImage.crossOrigin = "anonymous";
+                    cropperImage.src = "<%= user.avatar_url %>";
+                    cropperModal.classList.add('active');
+                    if (cropper) cropper.destroy();
+                    cropper = new Cropper(cropperImage, {
+                        aspectRatio: 1,
+                        viewMode: 1,
+                    });
+                } else {
+                    profileModal.classList.remove('active');
+                    document.getElementById('editProfileBtn').click();
+                    document.getElementById('profileForm').scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        }
+
+        // --- Cropper Logic ---
+        let cropper;
+        const avatarInput = document.getElementById('avatarInput');
+        const cropperModal = document.getElementById('cropperModal');
+        const cropperImage = document.getElementById('cropperImage');
+        const saveCropBtn = document.getElementById('saveCropBtn');
+        const cancelCropBtn = document.getElementById('cancelCropBtn');
+        const closeCropperModal = document.getElementById('closeCropperModal');
+        const modalChangePhotoBtn = document.getElementById('modalChangePhotoBtn');
+        const mainEditAvatarBtn = document.getElementById('mainEditAvatarBtn'); // Add ID to the main camera button
+
+        function openCropper(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    cropperImage.src = event.target.result;
+                    cropperModal.classList.add('active');
+                    if (cropper) cropper.destroy();
+                    cropper = new Cropper(cropperImage, {
+                        aspectRatio: 1,
+                        viewMode: 1,
+                    });
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        if (avatarInput) {
+            avatarInput.addEventListener('change', openCropper);
+        }
+
+        if (modalChangePhotoBtn) {
+            modalChangePhotoBtn.addEventListener('click', () => avatarInput.click());
+        }
+
+        if (mainEditAvatarBtn) {
+            mainEditAvatarBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                avatarInput.click();
+            });
+        }
+
+        const closeCropper = () => {
+            cropperModal.classList.remove('active');
+            if (cropper) cropper.destroy();
+            avatarInput.value = '';
+        };
+
+        if (cancelCropBtn) cancelCropBtn.addEventListener('click', closeCropper);
+        if (closeCropperModal) closeCropperModal.addEventListener('click', closeCropper);
+
+        if (saveCropBtn) {
+            saveCropBtn.addEventListener('click', async () => {
+                const canvas = cropper.getCroppedCanvas({
+                    width: 400,
+                    height: 400
+                });
+
+                canvas.toBlob(async (blob) => {
+                    const formData = new FormData();
+                    formData.append('avatar', blob, 'avatar.png');
+
+                    saveCropBtn.disabled = true;
+                    saveCropBtn.innerText = 'Uploading...';
+
+                    try {
+                        const response = await fetch('/user/profile/avatar', {
+                            method: 'POST',
+                            body: formData
+                        });
+                        const result = await response.json();
+                        if (result.success) {
+                            showToast(result.message, 'success');
+                            location.reload(); // Refresh to show new avatar
+                        } else {
+                            showToast(result.message || 'Upload failed', 'error');
+                        }
+                    } catch (err) {
+                        console.error("Upload fetch error:", err);
+                        showToast('Network error or server failed', 'error');
+                    } finally {
+                        saveCropBtn.disabled = false;
+                        saveCropBtn.innerText = 'Save Cropped Image';
+                        closeCropper();
+                    }
+                }, 'image/png');
+            });
+        }
+    </script>
+    <%- include('../partials/footer-scripts') %>
+
+</body>
+
+</html>
+
+
+
