@@ -41,7 +41,7 @@ const eventSchema = new Schema({
         type: Date,
         required: true
     },
-    ticketing: {
+    ticketing: [{
         price: {
             type: Number,
             required: true,
@@ -62,7 +62,7 @@ const eventSchema = new Schema({
             required: true,
             min: 1
         }
-    },
+    }],
     banner: {
         type: String,
         default: null

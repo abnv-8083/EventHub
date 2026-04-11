@@ -1,7 +1,7 @@
 import HTTP_STATUS from "../../constants/statusCode.js"
 import * as adminAuthServices from "../../services/admin/adminAuthServices.js"
 import { sendResponse } from "../../utils/responseHandler.js"
-import { loginValidate, registerValidate, forgotPasswordValidate, resetPasswordValidate } from "../../validation/admin/admin.js"
+import { loginValidate, registerValidate, forgotPasswordValidate, resetPasswordValidate } from "../../validation/admin/admin.validation.js"
 
 export const getAdminLogin = (req, res) => {
     res.render('auth/login-admin')

@@ -1,18 +1,47 @@
 <aside class="sidebar">
-    <nav class="sidebar-nav" id="adminSidebar">
-        <a href="/admin/dashboard"><i class="fa fa-tachometer-alt"></i> <span>Overview</span></a>
-        <a href="/admin/users"><i class="fa fa-users"></i> <span>Users</span></a>
-        <a href="/admin/organizer"><i class="fa fa-briefcase"></i> <span>Organizers</span></a>
-        <a href="/admin/approvals"><i class="fa fa-calendar-check"></i> <span>Approvals</span></a>
-        <a href="/admin/coupons"><i class="fa fa-tags"></i> <span>Coupons</span></a>
-        <a href="/admin/refunds"><i class="fa fa-undo"></i> <span>Refunds</span></a>
-        <a href="/admin/reports"><i class="fa fa-file-invoice-dollar"></i> <span>Reports</span></a>
-        <a href="/admin/logs"><i class="fa fa-terminal"></i> <span>System Logs</span></a>
-        <a href="/admin/admins"><i class="fa fa-user-shield"></i> <span>Administrators</span></a>
-        <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid var(--border);">
-        <a href="/admin/profile"><i class="fa fa-cog"></i> <span>Settings</span></a>
+    <nav class="sidebar-nav" id="adminSidebar" style="display: flex; flex-direction: column; height: 100%; overflow-y: auto;">
+        <div style="flex-grow: 1; overflow-y: auto; padding-right: 0.5rem;">
+            <a href="/admin/dashboard"><i class="fa fa-tachometer-alt"></i> <span>Overview</span></a>
+            <a href="/admin/users"><i class="fa fa-users"></i> <span>Users</span></a>
+            <a href="/admin/organizer"><i class="fa fa-briefcase"></i> <span>Organizers</span></a>
+            <a href="/admin/approvals"><i class="fa fa-calendar-check"></i> <span>Approvals</span></a>
+            <a href="/admin/categories"><i class="fa fa-list"></i> <span>Categories</span></a>
+            <a href="/admin/coupons"><i class="fa fa-tags"></i> <span>Coupons</span></a>
+            <a href="/admin/refunds"><i class="fa fa-undo"></i> <span>Refunds</span></a>
+            <a href="/admin/reports"><i class="fa fa-file-invoice-dollar"></i> <span>Reports</span></a>
+            <a href="/admin/logs"><i class="fa fa-terminal"></i> <span>System Logs</span></a>
+            <a href="/admin/admins"><i class="fa fa-user-shield"></i> <span>Administrators</span></a>
+        </div>
+        <hr style="margin: 1rem 0; border: 0; border-top: 1px solid var(--border); flex-shrink: 0;">
+        <a href="/admin/profile" style="flex-shrink: 0;"><i class="fa fa-cog"></i> <span>Settings</span></a>
     </nav>
 </aside>
+
+<style>
+    /* Custom scrollbar for sidebar */
+    .sidebar-nav::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .sidebar-nav::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .sidebar-nav::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 3px;
+    }
+
+    .sidebar-nav::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Firefox scrollbar */
+    .sidebar-nav {
+        scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        scrollbar-width: thin;
+    }
+</style>
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {

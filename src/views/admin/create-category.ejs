@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', { title: 'Create Category | Admin Hub' }) %>
+
+    <body>
+
+        <%- include('../partials/header-admin') %>
+
+            <div class="dashboard-layout">
+                <%- include('../partials/sidebar-admin') %>
+
+                    <main class="dashboard-main animate">
+                        <div style="margin-bottom: 2.5rem;">
+                            <h1 style="font-size: 1.8rem; margin-bottom: 0.5rem;"><span
+                                    class="text-gradient">Create</span> Category</h1>
+                            <p style="color: var(--text-muted); margin: 0;">Add a new event category to the platform.
+                            </p>
+                        </div>
+
+                        <div class="card" style="max-width: 600px; padding: 2.5rem;">
+                            <form action="/admin/categories/create" method="post">
+                                <div class="form-group" style="margin-bottom: 1.5rem;">
+                                    <label class="label">Category Name</label>
+                                    <input type="text" name="name" class="input" placeholder="e.g. Technology" required>
+                                </div>
+
+                                <div class="form-group" style="margin-bottom: 1.5rem;">
+                                    <label class="label">Description</label>
+                                    <textarea name="description" class="input" rows="4"
+                                        placeholder="Brief description of this category..."></textarea>
+                                </div>
+
+                                <div
+                                    style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+                                    <div class="form-group">
+                                        <label class="label">Select Icon</label>
+                                        <div style="display: flex; gap: 0.5rem; align-items: flex-start;">
+                                            <input type="hidden" id="iconInput" name="icon" value="fa-tag">
+                                            <div style="flex: 1;">
+                                                <div id="selectedIconPreview"
+                                                    style="display: flex; align-items: center; justify-content: center; width: 50px; height: 50px; background: rgba(255,255,255,0.05); border-radius: 8px; cursor: pointer; border: 2px solid var(--border); transition: all 0.2s;"
+                                                    id="openIconPickerBtn" style="cursor: pointer;">
+                                                    <i class="fa fa-tag" id="previewIcon"
+                                                        style="font-size: 1.5rem; color: var(--primary);"></i>
+                                                </div>
+                                            </div>
+                                            <button type="button" id="openIconPickerBtnText" class="btn btn-primary"
+                                                style="padding: 0.8rem 1.5rem;">
+                                                <i class="fa fa-palette"></i> Pick
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="label">Color</label>
+                                        <input type="color" id="colorInput" name="color" class="input" value="#e63946"
+                                            style="height: 44px; width: 44px; cursor: pointer; padding: 6px;">
+                                    </div>
+                                </div>
+
+                                <div class="form-group" style="margin-bottom: 2rem;">
+                                    <label style="display: flex; align-items: center; gap: 1rem; cursor: pointer;">
+                                        <input type="checkbox" name="featured" value="true"
+                                            style="width: 18px; height: 18px; accent-color: var(--primary);">
+                                        <span style="color: #fff;">Mark as featured category</span>
+                                    </label>
+                                </div>
+
+                                <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                                    <a href="/admin/categories" class="btn btn-outline"
+                                        style="padding: 0.8rem 1.5rem;">Cancel</a>
+                                    <button type="submit" class="btn btn-primary" style="padding: 0.8rem 1.5rem;"><i
+                                            class="fa fa-save"></i> Create Category</button>
+                                </div>
+                            </form>
+                        </div>
+                    </main>
+            </div>
+
+            <!-- Icon Picker Modal -->
+            <div id="iconPickerModal"
+                style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9999; align-items: center; justify-content: center;">
+                <div
+                    style="background: var(--bg-surface); border-radius: var(--radius-md); padding: 2rem; max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                        <h3 style="margin: 0;">Select Icon</h3>
+                        <button type="button" id="closeIconPickerBtn"
+                            style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #fff;">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <input type="text" id="iconSearchInput" placeholder="Search icons..." class="input"
+                            style="background: var(--bg-surface); border: 1px solid var(--border);">
+                    </div>
+
+                    <div id="iconGrid"
+                        style="display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 1rem;">
+                        <!-- Icons will be populated here -->
+                    </div>
+                </div>
+            </div>
+
+            <%- include('partials/scripts') %>
+
+                <script>
+                    const icons = [
+                        'fa-music', 'fa-film', 'fa-microphone', 'fa-gamepad', 'fa-palette',
+                        'fa-book', 'fa-landmark', 'fa-heart', 'fa-star', 'fa-award',
+                        'fa-briefcase', 'fa-laptop', 'fa-code', 'fa-robot', 'fa-flask',
+                        'fa-microscope', 'fa-dumbbell', 'fa-football', 'fa-basketball', 'fa-volleyball',
+                        'fa-utensils', 'fa-wine-glass', 'fa-birthday-cake', 'fa-pizza-slice', 'fa-coffee',
+                        'fa-plane', 'fa-train', 'fa-car', 'fa-bus', 'fa-ship',
+                        'fa-mountain', 'fa-tree', 'fa-water', 'fa-sun', 'fa-moon',
+                        'fa-star-half-alt', 'fa-heart-broken', 'fa-handshake', 'fa-graduation-cap', 'fa-user-tie',
+                        'fa-camera', 'fa-image', 'fa-video', 'fa-headphones', 'fa-microphone-alt',
+                        'fa-gift', 'fa-shopping-cart', 'fa-tag', 'fa-tags', 'fa-percent',
+                        'fa-clock', 'fa-calendar', 'fa-bell', 'fa-envelope', 'fa-phone',
+                        'fa-feather', 'fa-pen', 'fa-pencil', 'fa-highlighter', 'fa-marker',
+                        'fa-hammer', 'fa-wrench', 'fa-screwdriver', 'fa-toolbox', 'fa-cog',
+                        'fa-magic', 'fa-sparkles', 'fa-fire', 'fa-water', 'fa-leaf',
+                        'fa-clover', 'fa-heart-pulse', 'fa-brain', 'fa-eye', 'fa-ear'
+                    ];
+
+                    const iconInput = document.getElementById('iconInput');
+                    const openIconPickerBtn = document.getElementById('selectedIconPreview');
+                    const openIconPickerBtnText = document.getElementById('openIconPickerBtnText');
+                    const closeIconPickerBtn = document.getElementById('closeIconPickerBtn');
+                    const iconPickerModal = document.getElementById('iconPickerModal');
+                    const iconGrid = document.getElementById('iconGrid');
+                    const iconSearchInput = document.getElementById('iconSearchInput');
+                    const previewIcon = document.getElementById('previewIcon');
+                    const colorInput = document.getElementById('colorInput');
+
+                    function renderIcons(filter = '') {
+                        iconGrid.innerHTML = '';
+                        const filteredIcons = icons.filter(icon => icon.includes(filter.toLowerCase()));
+
+                        filteredIcons.forEach(icon => {
+                            const iconElement = document.createElement('div');
+                            iconElement.style.cssText = `
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 60px;
+                    height: 60px;
+                    background: rgba(255,255,255,0.05);
+                    border: 2px solid transparent;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                `;
+                            iconElement.innerHTML = `<i class="fa ${icon}" style="font-size: 1.5rem; color: var(--primary);"></i>`;
+
+                            iconElement.addEventListener('mouseover', () => {
+                                iconElement.style.background = 'rgba(230, 57, 70, 0.1)';
+                                iconElement.style.borderColor = 'var(--primary)';
+                            });
+
+                            iconElement.addEventListener('mouseout', () => {
+                                iconElement.style.background = 'rgba(255,255,255,0.05)';
+                                iconElement.style.borderColor = 'transparent';
+                            });
+
+                            iconElement.addEventListener('click', () => {
+                                iconInput.value = icon;
+                                previewIcon.className = `fa ${icon}`;
+                                iconPickerModal.style.display = 'none';
+                            });
+
+                            iconGrid.appendChild(iconElement);
+                        });
+
+                        if (filteredIcons.length === 0) {
+                            iconGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted);">No icons found</div>';
+                        }
+                    }
+
+                    const openModal = (e) => {
+                        e.preventDefault();
+                        iconPickerModal.style.display = 'flex';
+                        renderIcons();
+                    };
+
+                    openIconPickerBtn.addEventListener('click', openModal);
+                    openIconPickerBtnText.addEventListener('click', openModal);
+
+                    closeIconPickerBtn.addEventListener('click', () => {
+                        iconPickerModal.style.display = 'none';
+                    });
+
+                    iconSearchInput.addEventListener('input', (e) => {
+                        renderIcons(e.target.value);
+                    });
+
+                    iconPickerModal.addEventListener('click', (e) => {
+                        if (e.target === iconPickerModal) {
+                            iconPickerModal.style.display = 'none';
+                        }
+                    });
+
+                    // Color input change listener
+                    colorInput.addEventListener('change', (e) => {
+                        previewIcon.style.color = e.target.value;
+                    });
+
+                    colorInput.addEventListener('input', (e) => {
+                        previewIcon.style.color = e.target.value;
+                    });
+
+                    // Initialize with preview
+                    renderIcons();
+                </script>
+    </body>
+
+</html>

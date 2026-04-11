@@ -80,4 +80,18 @@ router.route('/users/toggle-block/:id')
 router.route('/users/delete/:id')
     .post(adminController.postDeleteUser)
 
+router.route('/categories')
+    .get(adminController.getCategory)
+router.route('/categories/create')
+    .get(adminController.getCreateCategory)
+    .post(adminController.postCreateCategory)
+
+router.route('/categories/delete/:id')
+    .post(adminController.postDeleteCategory)
+
+router.route('/categories/edit/:id')
+    .post(adminController.postEditCategory)
+    .get(adminController.getEditCategory)
+
+
 export default router

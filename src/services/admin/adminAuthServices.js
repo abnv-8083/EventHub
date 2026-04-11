@@ -1,13 +1,13 @@
 import * as passwordUtil from "../../utils/password.js"
 import * as adminQuery from "../../repositories/admin/adminQueries.js"
+import * as categoryQurey from "../../repositories/admin/categoriesQueries.js"
 import AppError from "../../utils/AppError.js"
 import HTTP_STATUS from "../../constants/statusCode.js"
 import { generateOTP } from "../../utils/generateOtp.js"
 import RedisHelper from "../../utils/redisHelper.js"
 import * as otpConst from "../../constants/otpConstant.js"
-import { sendEmail } from "../../constants/sendEmail.js"
+import { sendEmail, sendAdminCredentials } from "../../constants/sendEmail.js"
 
-import { sendAdminCredentials } from "../../constants/sendEmail.js"
 
 export const loginAdmin = async (email, password) => {
     const checkAdmin = await adminQuery.checkByEmail(email)
@@ -101,4 +101,10 @@ export const resetPassword = async (email, newPassword) => {
     await adminQuery.updateAdminPassword(admin._id, hashPass);
 
     return true;
+}
+
+
+export const fetchCategories = async () =>{
+    const allCategories = categoryQurey.fetchAllCategories()
+    return allCategories
 }

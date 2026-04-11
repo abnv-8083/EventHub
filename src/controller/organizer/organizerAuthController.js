@@ -1,7 +1,7 @@
 import HTTP_STATUS from "../../constants/statusCode.js"
 import * as userServices from "../../services/users/userAuthServices.js"
 import { sendResponse } from "../../utils/responseHandler.js"
-import { loginValidate } from "../../validation/user/user.js"
+import { loginValidate } from "../../validation/user/user.validation.js"
 
 export const getLogin = (req, res) => {
     // If already logged in to organizer, redirect to dashboard

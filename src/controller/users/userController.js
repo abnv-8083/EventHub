@@ -3,7 +3,7 @@ import * as userServices from "../../services/users/userServices.js"
 import { sendResponse, sendConfirmation } from "../../utils/responseHandler.js"
 import { City } from "country-state-city"
 import * as cityConst from "../../constants/cityConstant.js"
-import { profileUpdateValidate, editEmailValidate, passwordUpdateValidate, organizerRegisterValidate } from "../../validation/user/user.js"
+import { profileUpdateValidate, editEmailValidate, passwordUpdateValidate, organizerRegisterValidate } from "../../validation/user/user.validation.js"
 import * as organizerQuery from "../../repositories/organizer/organizerQueries.js"
 
 export const getHome = (req, res) => {

@@ -1,7 +1,7 @@
 import HTTP_STATUS from "../../constants/statusCode.js"
 import * as userServices from "../../services/users/userAuthServices.js"
 import { sendResponse, sendConfirmation } from "../../utils/responseHandler.js"
-import { registerValidate, loginValidate, forgotePasswordValidate, resetPasswordValidate } from "../../validation/user/user.js"
+import { registerValidate, loginValidate, forgotePasswordValidate, resetPasswordValidate } from "../../validation/user/user.validation.js"
 import * as userQuery from "../../repositories/users/usersQueries.js"
 import { City } from "country-state-city"
 import * as cityConst from "../../constants/cityConstant.js"
