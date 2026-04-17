@@ -112,10 +112,41 @@
                                         <div style="display: grid; gap: 1rem;">
                                             <a href="/user/booking/<%= event._id %>" class="btn btn-primary"
                                                 style="width: 100%;">Book Ticket Now</a>
-                                            <button class="btn btn-outline" style="width: 100%;"><i
-                                                    class="fa fa-heart"></i> Add to
-                                                Wishlist</button>
+                                            <button id="wishlistBtn" class="btn btn-outline" style="width: 100%; transition: all 0.3s ease;">
+                                                <i class="fa<%= user && user.wishlist && user.wishlist.includes(event._id.toString()) ? 's' : '-regular' %> fa-heart" style="margin-right: 8px; color: <%= user && user.wishlist && user.wishlist.includes(event._id.toString()) ? 'var(--primary)' : 'inherit' %>;"></i>
+                                                <span><%= user && user.wishlist && user.wishlist.includes(event._id.toString()) ? 'Saved to Wishlist' : 'Add to Wishlist' %></span>
+                                            </button>
                                         </div>
+
+                                        <script>
+                                            document.getElementById('wishlistBtn').addEventListener('click', async function() {
+                                                if (typeof window.submitFormAjax === 'function') {
+                                                    const result = await window.submitFormAjax({
+                                                        action: '/user/wishlist/toggle/<%= event._id %>',
+                                                        method: 'POST',
+                                                        load: true
+                                                    });
+
+                                                    if (result && result.success) {
+                                                        const btn = this;
+                                                        const icon = btn.querySelector('i');
+                                                        const text = btn.querySelector('span');
+                                                        
+                                                        if (result.data.isAdded) {
+                                                            icon.classList.remove('fa-regular');
+                                                            icon.classList.add('fa');
+                                                            icon.style.color = 'var(--primary)';
+                                                            text.textContent = 'Saved to Wishlist';
+                                                        } else {
+                                                            icon.classList.remove('fa');
+                                                            icon.classList.add('fa-regular');
+                                                            icon.style.color = 'inherit';
+                                                            text.textContent = 'Add to Wishlist';
+                                                        }
+                                                    }
+                                                }
+                                            });
+                                        </script>
 
                                         <hr style="margin: 2rem 0; border: 0; border-top: 1px solid var(--border);">
 

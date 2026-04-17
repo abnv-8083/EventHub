@@ -64,7 +64,7 @@
                     <h3
                         style="margin-bottom: 2rem; font-size: 1.2rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem;">
                         Personal Details</h3>
-                    <form id="profileForm" action="/user/profile/edit" method="POST" class="ajax-form">
+                    <form id="profileForm" action="/user/profile/edit?_method=PATCH" method="POST" class="ajax-form">
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
                             <input type="text" value="<%= user._id %>" name="id" hidden>
                             <div class="form-group">
@@ -363,7 +363,7 @@
 
                     try {
                         const response = await fetch('/user/profile/avatar', {
-                            method: 'POST',
+                            method: 'PATCH',
                             body: formData
                         });
                         const result = await response.json();

@@ -65,7 +65,11 @@ const userSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Organizer',
         default: null
-    }
+    },
+    wishlist: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Event'
+    }]
 },{
     timestamps:true,
 })

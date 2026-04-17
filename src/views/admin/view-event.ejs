@@ -168,7 +168,7 @@
                     if (confirm('Are you sure you want to approve this event? It will be published immediately or on the scheduled date.')) {
                         window.submitFormAjax({
                             action: `/admin/events/approve/${id}`,
-                            method: 'POST'
+                            method: 'PATCH'
                         });
                     }
                 }
@@ -183,7 +183,7 @@
 
                     window.submitFormAjax({
                         action: `/admin/events/reject/<%= event._id %>`,
-                        method: 'POST',
+                        method: 'PATCH',
                         data: { reason }
                     });
                 });

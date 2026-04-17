@@ -26,6 +26,7 @@
     "express": "^5.2.1",
     "express-session": "^1.19.0",
     "joi": "^18.0.2",
+    "method-override": "^3.0.0",
     "mongoos": "^0.0.1-security",
     "mongoose": "^9.3.1",
     "morgan": "^1.10.1",

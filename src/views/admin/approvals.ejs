@@ -260,12 +260,12 @@
 
         function approveAction(type, id) {
             const message = type === 'event' ? 'Approve this event?' : 'Approve this organizer KYC?';
-            const url = type === 'event' ? `/admin/events/approve/${id}` : `/admin/organizer/approve/${id}`;
+            const url = type === 'event' ? `/admin/events/approve/${id}` : `/admin/organizer/approve-kyc/${id}`;
             
             if (confirm(message)) {
                 window.submitFormAjax({
                     action: url,
-                    method: 'POST'
+                    method: 'PATCH'
                 });
             }
         }
@@ -289,11 +289,11 @@
             const reason = document.getElementById('rejectionReason').value;
             if (!reason) return;
 
-            const url = type === 'event' ? `/admin/events/reject/${id}` : `/admin/organizer/reject/${id}`;
+            const url = type === 'event' ? `/admin/events/reject/${id}` : `/admin/organizer/reject-kyc/${id}`;
 
             window.submitFormAjax({
                 action: url,
-                method: 'POST',
+                method: 'PATCH',
                 data: { reason }
             });
         });

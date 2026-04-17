@@ -5,7 +5,7 @@ import * as userController from "../../controller/users/userController.js"
 
 router.get('/',userController.getHome)
 
-router.get('/events',userController.getEvent)
+router.get('/events',userController.getEvents)
 router.get('/events/:id', userController.getEventDetails)
 router.post('/events/:id/review', userController.postReview)
 router.delete('/review/:id', userController.deleteReview)

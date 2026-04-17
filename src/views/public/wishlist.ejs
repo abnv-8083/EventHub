@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', { title: 'My Wishlist' }) %>
+
+    <body style="background: #000; color: #fff; min-height: 100vh;">
+
+        <%- include('../partials/header') %>
+
+            <main style="padding-top: 8rem; padding-bottom: 6rem;">
+                <div class="container animate">
+                    <div style="margin-bottom: 3rem; display: flex; justify-content: space-between; align-items: flex-end;">
+                        <div>
+                            <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem;">My <span class="text-gradient">Wishlist</span></h1>
+                            <p style="color: var(--text-dim);">Your curated collection of upcoming experiences.</p>
+                        </div>
+                        <a href="/events" class="btn btn-outline">Explore More Events</a>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2.5rem;">
+                        <% if (wishlist && wishlist.length > 0) { %>
+                            <% wishlist.forEach(event => { %>
+                                <div class="card glass animate" style="padding: 0; overflow: hidden; border: 1px solid var(--border); transition: transform 0.3s ease;">
+                                    <a href="/events/<%= event._id %>" style="text-decoration: none; color: inherit;">
+                                        <div style="height: 200px; position: relative; overflow: hidden;">
+                                            <img src="<%= event.bannerImage.startsWith('http') ? event.bannerImage : '/' + event.bannerImage %>" 
+                                                 style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;"
+                                                 onmouseover="this.style.transform='scale(1.1)'"
+                                                 onmouseout="this.style.transform='scale(1)'">
+                                            
+                                            <div style="position: absolute; top: 1rem; right: 1rem; z-index: 10;">
+                                                <button onclick="event.preventDefault(); toggleWishlist('<%= event._id %>', this)" 
+                                                        style="width: 40px; height: 40px; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; color: var(--primary); display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                                                    <i class="fas fa-heart"></i>
+                                                </button>
+                                            </div>
+
+                                            <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); padding: 2rem 1.5rem 1rem;">
+                                                <span style="font-size: 0.75rem; background: var(--primary); padding: 0.25rem 0.75rem; border-radius: 50px; text-transform: uppercase; font-weight: 700; letter-spacing: 1px;">
+                                                    <%= event.category %>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div style="padding: 1.5rem;">
+                                            <h3 style="font-size: 1.25rem; margin-bottom: 1rem; font-weight: 700;"><%= event.title %></h3>
+                                            
+                                            <div style="display: grid; gap: 0.75rem; color: var(--text-dim); font-size: 0.9rem; margin-bottom: 1.5rem;">
+                                                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                                    <i class="fa fa-calendar-alt" style="width: 15px; color: var(--primary);"></i>
+                                                    <span><%= new Date(event.startDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) %> • <%= event.startTime %></span>
+                                                </div>
+                                                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                                    <i class="fa fa-map-marker-alt" style="width: 15px; color: var(--primary);"></i>
+                                                    <span style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;">
+                                                        <%= event.venueLocation.address %>
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 1.5rem;">
+                                                <div>
+                                                    <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Starting from</div>
+                                                    <div style="font-size: 1.25rem; font-weight: 700; color: var(--primary);">₹<%= event.ticketing[0].price %></div>
+                                                </div>
+                                                <div class="btn btn-outline" style="padding: 0.5rem 1rem;">View Details</div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            <% }) %>
+                        <% } else { %>
+                            <div style="grid-column: 1 / -1; text-align: center; padding: 8rem 2rem; background: rgba(255,255,255,0.02); border-radius: 20px; border: 1px dashed var(--border);">
+                                <div style="width: 100px; height: 100px; background: rgba(255,255,255,0.03); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 2.5rem;">
+                                    <i class="fa-regular fa-heart" style="font-size: 3rem; color: var(--text-dim);"></i>
+                                </div>
+                                <h2 style="font-size: 1.5rem; color: var(--text-muted); margin-bottom: 1rem;">Your wishlist is empty</h2>
+                                <p style="color: var(--text-dim); max-width: 400px; margin: 0 auto 2.5rem; line-height: 1.6;">
+                                    Explore upcoming events and save your favorites to keep track of experiences you don't want to miss.
+                                </p>
+                                <a href="/events" class="btn btn-primary glow-primary">Discover Events</a>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+            </main>
+
+            <%- include('../partials/footer-scripts') %>
+
+            <script>
+                async function toggleWishlist(eventId, btn) {
+                    if (typeof window.submitFormAjax === 'function') {
+                        const result = await window.submitFormAjax({
+                            action: `/user/wishlist/toggle/${eventId}`,
+                            method: 'POST',
+                            load: true
+                        });
+
+                        if (result && result.success) {
+                            // On the wishlist page, we probably want to remove the card if it's removed from wishlist
+                            const card = btn.closest('.card');
+                            card.style.opacity = '0';
+                            card.style.transform = 'scale(0.9)';
+                            setTimeout(() => {
+                                card.remove();
+                                // Check if list is empty now
+                                const remaining = document.querySelectorAll('.card.glass').length;
+                                if (remaining === 0) {
+                                    window.location.reload(); // Show the empty state
+                                }
+                            }, 300);
+                        }
+                    }
+                }
+            </script>
+    </body>
+
+</html>

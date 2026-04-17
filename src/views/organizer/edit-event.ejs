@@ -16,7 +16,7 @@
                             <h1 style="font-size: 1.8rem; margin: 0;">Edit <span class="text-gradient">Experience</span></h1>
                         </div>
 
-                        <form action="/organizer/event/<%= event._id %>/edit" method="post" id="editEventForm"
+                        <form action="/organizer/event/<%= event._id %>/edit?_method=PATCH" method="post" id="editEventForm"
                             class="needs-validation" enctype="multipart/form-data">
                             <input type="hidden" name="status" id="eventStatus" value="<%= event.status %>">
                             <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2.5rem;">

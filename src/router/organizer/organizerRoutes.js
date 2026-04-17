@@ -16,7 +16,7 @@ router.route('/dashboard')
 
 router.route('/profile')
     .get(organizerController.getProfile)
-    .post(organizerController.postProfile)
+    .patch(organizerController.postProfile)
 
 router.route('/event')
     .get(organizerController.getEventMangement)
@@ -30,7 +30,7 @@ router.get('/event/:id/reviews', organizerController.getEventReviews)
 
 router.route('/event/:id/edit')
     .get(organizerController.getEditEvent)
-    .post(uploadBanner.single('banner'), organizerController.postEditEvent)
+    .patch(uploadBanner.single('banner'), organizerController.postEditEvent)
 
 router.delete('/event/:id', organizerController.deleteEvent)
 

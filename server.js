@@ -6,6 +6,7 @@ import connectDB from "./src/config/db.js"
 import { fileURLToPath } from 'url'
 import path from "path"
 import passport from "passport"
+import methodOverride from "method-override"
 import passportConfig from "./src/config/passport.js"
 
 //Middlewares
@@ -37,6 +38,7 @@ app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'src', 'views'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(methodOverride('_method'))
 
 // Helper for route chains that need session + flash + toast
 const withSession = (sessionMw) => [

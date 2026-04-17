@@ -305,7 +305,7 @@
                             document.getElementById('editIconPreview').className = `fa ${dataset.icon || 'fa-hashtag'}`;
                             
                             // Set action URL dynamically
-                            document.getElementById('editCategoryForm').action = `/admin/categories/edit/${dataset.id}`;
+                            document.getElementById('editCategoryForm').action = `/admin/categories/edit/${dataset.id}?_method=PATCH`;
                             document.getElementById('editModal').classList.add('active');
                 
                         } catch (err) {
@@ -388,7 +388,7 @@
                         if (confirmed) {
                             try {
                                 const response = await fetch(`/admin/categories/delete/${id}`, {
-                                    method: 'POST',
+                                    method: 'DELETE',
                                     headers: {
                                         'Content-Type': 'application/json',
                                     }

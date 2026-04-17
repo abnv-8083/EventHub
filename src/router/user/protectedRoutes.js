@@ -6,19 +6,23 @@ import {uploadAvatar} from "../../middleware/multer.js"
 
 router.get('/profile', isAuthenticated, userController.getProfile)
 
-router.post('/profile/edit', isAuthenticated, userController.editProfile)
+router.patch('/profile/edit', isAuthenticated, userController.editProfile)
 
-router.post('/profile/avatar', isAuthenticated, uploadAvatar.single('avatar'), userController.updateAvatar)
+router.patch('/profile/avatar', isAuthenticated, uploadAvatar.single('avatar'), userController.updateAvatar)
 
 router.get('/profile/edit/email', isAuthenticated, userController.getEditEmail)
-router.post('/profile/edit/email', isAuthenticated, userController.editEmail)
+router.patch('/profile/edit/email', isAuthenticated, userController.editEmail)
 
 
 router.get('/profile/edit/password', isAuthenticated, userController.getEditPassword)
-router.post('/profile/edit/password', isAuthenticated, userController.editPassword)
+router.patch('/profile/edit/password', isAuthenticated, userController.editPassword)
 
 // Booking Routes
 router.get('/booking/:id', isAuthenticated, userController.getBookingPage)
+
+// Wishlist Routes
+router.post('/wishlist/toggle/:id', isAuthenticated, userController.toggleWishlist)
+router.get('/wishlist', isAuthenticated, userController.getWishlist)
 
 
 export default router

@@ -7,7 +7,6 @@ import * as eventQuery from "../../repositories/admin/eventQueries.js"
 import AppError from "../../utils/AppError.js"
 import HTTP_STATUS from "../../constants/statusCode.js"
 import { sendOrganizerCredentials } from "../../constants/sendEmail.js"
-import User from "../../models/users/user.js"
 import crypto from "crypto"
 
 export const fetchApprovalsDashboardData = async (filters = {}, page = 1, limit = 10) => {
@@ -190,7 +189,7 @@ export const approveOrganizerApplication = async (id) => {
 
         // Send credentials via email
         try {
-            const user = await User.findById(organizer.userId).select('name email');
+            const user = await userQuery.getUserById(organizer.userId);
             if (user && user.email) {
                 await sendOrganizerCredentials({
                     email: user.email,

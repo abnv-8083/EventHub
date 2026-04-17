@@ -79,7 +79,7 @@
                                             <i class="fa fa-edit"></i>
                                         </a>
                                         <!-- Block / Unblock -->
-                                        <form class="ajax-form d-inline" action="/admin/admins/toggle-block/<%= admin._id %>" method="POST" style="margin: 0;">
+                                        <form class="ajax-form d-inline" action="/admin/admins/toggle-block/<%= admin._id %>?_method=PATCH" method="POST" style="margin: 0;">
                                             <% if (admin.status === 'Active') { %>
                                                 <button type="submit" class="btn btn-outline" style="padding: 0.4rem 0.6rem; font-size: 0.85rem; border-color: #E67E22; color: #E67E22;" title="Block Administrator">
                                                     <i class="fa fa-ban"></i>
@@ -91,7 +91,7 @@
                                             <% } %>
                                         </form>
                                         <!-- Delete -->
-                                        <form class="ajax-form d-inline" action="/admin/admins/delete/<%= admin._id %>" method="POST" style="margin: 0;">
+                                        <form class="ajax-form d-inline" action="/admin/admins/delete/<%= admin._id %>?_method=DELETE" method="POST" style="margin: 0;">
                                             <button type="submit" class="btn btn-outline" style="padding: 0.4rem 0.6rem; font-size: 0.85rem; border-color: #E74C3C; color: #E74C3C;" title="Delete Administrator">
                                                 <i class="fa fa-trash"></i>
                                             </button>

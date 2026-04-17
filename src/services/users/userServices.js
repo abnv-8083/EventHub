@@ -4,9 +4,22 @@ import { sendEmail } from "../../constants/sendEmail.js"
 import * as otpConst from "../../constants/otpConstant.js"
 import * as passwordUtil from "../../utils/password.js"
 import * as userQuery from "../../repositories/users/usersQueries.js"
+import * as wishlistRepo from "../../repositories/users/wishlistQueries.js"
 import AppError from "../../utils/AppError.js"
 import HTTP_STATUS from "../../constants/statusCode.js"
 
+export const toggleWishlist = async (userId, eventId) => {
+    return await wishlistRepo.toggleWishlist(userId, eventId);
+}
+
+export const getWishlist = async (userId) => {
+    return await wishlistRepo.fetchUserWishlist(userId);
+}
+
+
+export const getUserProfile = async (userId) => {
+    return await userQuery.fetchUserById(userId);
+}
 
 export const profileUpdate = async (id, name, phone, city, bio, gender, dob, occupation) =>{
     const editedUser = await userQuery.editUser(id, name, phone, city, bio, gender, dob, occupation)

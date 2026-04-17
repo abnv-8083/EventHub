@@ -81,15 +81,15 @@
                         </p>
 
                         <div style="display: flex; flex-direction: column; gap: 1rem;">
-                            <!-- Approve Form -->
-                            <form class="ajax-form" action="/admin/organizer/approve-kyc/<%= organizer._id %>" method="POST">
+                             <!-- Approve Form -->
+                            <form class="ajax-form" action="/admin/organizer/approve-kyc/<%= organizer._id %>?_method=PATCH" method="POST">
                                 <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1rem; background: #2ECC71; border-color: #2ECC71; box-shadow: 0 4px 15px rgba(46, 204, 113, 0.2);">
                                     <i class="fa fa-check-circle"></i> Approve Registration
                                 </button>
                             </form>
-
-                            <!-- Reject Form -->
-                            <form class="ajax-form" action="/admin/organizer/reject-kyc/<%= organizer._id %>" method="POST">
+ 
+                             <!-- Reject Form -->
+                            <form class="ajax-form" action="/admin/organizer/reject-kyc/<%= organizer._id %>?_method=PATCH" method="POST">
                                 <div style="margin-bottom: 1rem;">
                                     <label style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem; display: block;">Rejection Reason</label>
                                     <select name="reason" class="input" style="width: 100%; background: var(--bg-surface); appearance: none;" required>

@@ -43,15 +43,15 @@ router.route('/admins/view/:id')
     .get(adminController.getAdminView)
 
 router.get('/admins/edit/:id', adminController.getAdminEdit)
-router.post('/admins/edit/:id', adminController.postAdminEdit)
-router.post('/admins/toggle-block/:id', adminController.postToggleBlockAdmin)
-router.post('/admins/delete/:id', adminController.postDeleteAdmin)
+router.patch('/admins/edit/:id', adminController.postAdminEdit)
+router.patch('/admins/toggle-block/:id', adminController.postToggleBlockAdmin)
+router.delete('/admins/delete/:id', adminController.postDeleteAdmin)
 
 // --- Events management ---
 // router.get('/events', adminController.getEventsList) (Removed)
 router.get('/events/view/:id', adminController.getEventView)
-router.post('/events/approve/:id', adminController.postApproveEvent)
-router.post('/events/reject/:id', adminController.postRejectEvent)
+router.patch('/events/approve/:id', adminController.postApproveEvent)
+router.patch('/events/reject/:id', adminController.postRejectEvent)
 router.get('/approvals', adminController.getApprovalsDashboard)
 
 // --- Categories management ---
@@ -64,14 +64,14 @@ router.route('/organizer/verify-kyc/:id')
     .get(adminController.getVerifyKyc)
 
 router.route('/organizer/approve-kyc/:id')
-    .post(adminController.postApproveKyc)
+    .patch(adminController.postApproveKyc)
 
 router.route('/organizer/reject-kyc/:id')
-    .post(adminController.postRejectKyc)
+    .patch(adminController.postRejectKyc)
 
 router.route('/profile')
     .get(adminController.getAdminProfile)
-    .post(adminController.postAdminProfile)
+    .patch(adminController.postAdminProfile)
 
 router.route('/users')
     .get(adminController.getUsersList)
@@ -80,10 +80,10 @@ router.route('/users/view/:id')
     .get(adminController.getUserView)
 
 router.route('/users/toggle-block/:id')
-    .post(adminController.postToggleBlockUser)
+    .patch(adminController.postToggleBlockUser)
 
 router.route('/users/delete/:id')
-    .post(adminController.postDeleteUser)
+    .delete(adminController.postDeleteUser)
 
 router.route('/categories')
     .get(adminController.getCategory)
@@ -92,10 +92,10 @@ router.route('/categories/create')
     .post(adminController.postCreateCategory)
 
 router.route('/categories/delete/:id')
-    .post(adminController.postDeleteCategory)
+    .delete(adminController.postDeleteCategory)
 
 router.route('/categories/edit/:id')
-    .post(adminController.postEditCategory)
+    .patch(adminController.postEditCategory)
 
 
 export default router
