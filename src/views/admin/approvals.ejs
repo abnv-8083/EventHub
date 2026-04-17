@@ -1,80 +1,303 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<%- include('../partials/head', { title: 'Event Appproval | Admin Hub' }) %>
+<%- include('../partials/head', { title: 'Pending Approvals | Admin Hub' }) %>
 
 <body>
 
     <%- include('../partials/header-admin') %>
 
     <div class="dashboard-layout">
-                <%- include('../partials/sidebar-admin') %>
+        <%- include('../partials/sidebar-admin') %>
 
         <main class="dashboard-main animate">
-            <h1 style="font-size: 1.8rem; margin-bottom: 2.5rem;">Event <span class="text-gradient">Approval</span></h1>
-
-            <div style="display: grid; gap: 1.5rem;">
-                <!-- Pending Event 1 -->
-                <div class="card"
-                    style="display: grid; grid-template-columns: 100px 1fr 200px; gap: 2rem; align-items: center; padding: 1.5rem;">
-                    <div
-                        style="width: 100px; height: 100px; background: url('https://images.unsplash.com/photo-1540575861501-7ad0582371f3?auto=format&fit=crop&q=80&w=200') center/cover; border-radius: 12px;">
-                    </div>
-                    <div>
-                        <div style="display: flex; gap: 0.8rem; margin-bottom: 0.5rem; align-items: center;">
-                            <h3 style="font-size: 1.2rem;">Tech Summit 2026</h3>
-                            <span
-                                style="background: rgba(230, 57, 70, 0.1); color: var(--primary); font-size: 0.7rem; padding: 0.2rem 0.6rem; border-radius: 10px;">PENDING</span>
-                        </div>
-                        <div
-                            style="font-size: 0.85rem; color: var(--text-muted); display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
-                            <span><i class="fa fa-user"></i> Org: New Sound Wave</span>
-                            <span><i class="fa fa-calendar"></i> Nov 12, 2026</span>
-                            <span><i class="fa fa-map-marker-alt"></i> San Francisco, CA</span>
-                            <span><i class="fa fa-tag"></i> $199.00 / Ticket</span>
-                        </div>
-                    </div>
-                    <div style="display: flex; flex-direction: column; gap: 0.8rem;">
-                        <button class="btn btn-primary" style="padding: 0.6rem;">Approve Event</button>
-                        <button class="btn btn-outline"
-                            style="padding: 0.6rem; border-color: #e74c3c; color: #e74c3c;">Reject</button>
-                    </div>
+            <div style="margin-bottom: 2.5rem; display: flex; justify-content: space-between; align-items: flex-end;">
+                <div>
+                    <h1 style="font-size: 1.8rem; margin: 0;">Event <span class="text-gradient">Approval</span></h1>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">Review and verify pending event submissions across the platform.</p>
                 </div>
-
-                <!-- Pending Event 2 -->
-                <div class="card"
-                    style="display: grid; grid-template-columns: 100px 1fr 200px; gap: 2rem; align-items: center; padding: 1.5rem;">
-                    <div
-                        style="width: 100px; height: 100px; background: url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80&w=200') center/cover; border-radius: 12px;">
-                    </div>
-                    <div>
-                        <div style="display: flex; gap: 0.8rem; margin-bottom: 0.5rem; align-items: center;">
-                            <h3 style="font-size: 1.2rem;">Art Expo Gala</h3>
-                            <span
-                                style="background: rgba(230, 57, 70, 0.1); color: var(--primary); font-size: 0.7rem; padding: 0.2rem 0.6rem; border-radius: 10px;">PENDING</span>
-                        </div>
-                        <div
-                            style="font-size: 0.85rem; color: var(--text-muted); display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
-                            <span><i class="fa fa-user"></i> Org: Creative Minds</span>
-                            <span><i class="fa fa-calendar"></i> Dec 05, 2026</span>
-                            <span><i class="fa fa-map-marker-alt"></i> Paris, France</span>
-                            <span><i class="fa fa-tag"></i> Free Entry</span>
-                        </div>
-                    </div>
-                    <div style="display: flex; flex-direction: column; gap: 0.8rem;">
-                        <button class="btn btn-primary" style="padding: 0.6rem;">Approve Event</button>
-                        <button class="btn btn-outline"
-                            style="padding: 0.6rem; border-color: #e74c3c; color: #e74c3c;">Reject</button>
+                <div style="display: flex; gap: 1rem;">
+                    <div class="stat-mini">
+                        <span class="label">Total Pending</span>
+                        <span class="value"><%= pendingEvents.length %></span>
                     </div>
                 </div>
             </div>
+
+            <!-- Filter Bar -->
+            <div class="card filter-bar" style="margin-bottom: 2.5rem; padding: 1.25rem; background: rgba(255, 255, 255, 0.02); border-color: var(--border); border-radius: 16px;">
+                <form action="/admin/approvals" method="GET" style="display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 1rem; align-items: center;">
+                    <div style="position: relative;">
+                        <i class="fa fa-search" style="position: absolute; left: 1.1rem; top: 50%; transform: translateY(-50%); color: var(--text-dim); font-size: 0.9rem;"></i>
+                        <input type="text" name="search" class="input" placeholder="Search events or organizers..." value="<%= currentSearch %>" style="padding-left: 3rem; width: 100%; border-radius: 10px;">
+                    </div>
+                    
+                    <div>
+                        <select name="category" class="input" style="border-radius: 10px;" onchange="this.form.submit()">
+                            <option value="">All Categories</option>
+                            <% categories.forEach(cat => { %>
+                                <option value="<%= cat.name %>" <%= currentCategory === cat.name ? 'selected' : '' %>>
+                                    <%= cat.name %>
+                                </option>
+                            <% }) %>
+                        </select>
+                    </div>
+
+                    <div>
+                        <select name="sort" class="input" style="border-radius: 10px;" onchange="this.form.submit()">
+                            <option value="newest" <%= currentSort === 'newest' ? 'selected' : '' %>>Newest First</option>
+                            <option value="oldest" <%= currentSort === 'oldest' ? 'selected' : '' %>>Oldest First</option>
+                            <option value="alphabetical" <%= currentSort === 'alphabetical' ? 'selected' : '' %>>Alphabetical (A-Z)</option>
+                        </select>
+                    </div>
+
+                    <div style="display: flex; gap: 0.75rem;">
+                        <button type="submit" class="btn btn-primary" style="padding: 0.7rem 1.5rem; border-radius: 10px; font-weight: 600;">
+                            <i class="fa fa-filter"></i> Apply
+                        </button>
+
+                        <% if (currentSearch || currentCategory || currentSort !== 'newest') { %>
+                            <a href="/admin/approvals" class="btn btn-outline" style="padding: 0.7rem 1.2rem; text-decoration: none; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        <% } %>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Tab Navigation (Simplified) -->
+            <div class="tabs-container" style="margin-bottom: 2rem;">
+                <div style="display: flex; gap: 2rem; border-bottom: 1px solid var(--border);">
+                    <div id="tab-events" class="tab-btn active">
+                        Events <span class="count-badge"><%= pendingEvents.length %></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Events Tab -->
+            <div id="content-events" class="tab-content active">
+                <div class="card" style="padding: 0; overflow: hidden;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Event Details</th>
+                                <th>Organizer</th>
+                                <th>Date & Location</th>
+                                <th style="text-align: right;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (pendingEvents && pendingEvents.length > 0) { %>
+                                <% pendingEvents.forEach(event => { %>
+                                    <tr>
+                                        <td>
+                                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                                <div style="width: 48px; height: 32px; border-radius: 4px; overflow: hidden; background: var(--bg-surface);">
+                                                    <% let bannerSrc = event.bannerImage ? (event.bannerImage.startsWith('http') ? event.bannerImage : '/' + event.bannerImage.replace(/\\/g, '/')) : '/img/placeholder.png'; %>
+                                                    <img src="<%= bannerSrc %>" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+                                                </div>
+                                                <div>
+                                                    <div style="font-weight: 600; font-size: 0.95rem;"><%= event.title %></div>
+                                                    <div style="font-size: 0.75rem; color: var(--text-dim);"><%= event.category %></div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div style="font-size: 0.9rem;"><%= event.organizerId ? event.organizerId.organizationName : 'Unknown' %></div>
+                                            <div style="font-size: 0.75rem; color: var(--text-dim);"><%= event.organizerId ? event.organizerId.operatingRegion : 'N/A' %></div>
+                                        </td>
+                                        <td>
+                                            <div style="font-size: 0.9rem;"><%= new Date(event.startDate).toLocaleDateString() %></div>
+                                            <div style="font-size: 0.75rem; color: var(--text-dim);"><%= event.location || 'Online' %></div>
+                                        </td>
+                                        <td style="text-align: right;">
+                                            <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
+                                                <a href="/admin/events/view/<%= event._id %>" class="btn btn-outline" style="padding: 0.4rem; border-radius: 8px;" title="View Submssion">
+                                                    <i class="fa fa-eye"></i>
+                                                </a>
+                                                <button onclick="approveAction('event', '<%= event._id %>')" class="btn btn-primary" style="padding: 0.4rem 0.8rem; background: #2ecc71; border-color: #2ecc71; border-radius: 8px;">
+                                                    <i class="fa fa-check"></i> Approve
+                                                </button>
+                                                <button onclick="openRejectModal('event', '<%= event._id %>')" class="btn btn-outline" style="padding: 0.4rem 0.8rem; color: #e74c3c; border-color: #e74c3c; border-radius: 8px;">
+                                                    <i class="fa fa-times"></i> Reject
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                            <% } else { %>
+                                <tr>
+                                    <td colspan="4" style="text-align: center; padding: 4rem; color: var(--text-dim);">
+                                        <i class="fa fa-check-circle" style="font-size: 2.5rem; opacity: 0.2; display: block; margin-bottom: 1rem;"></i>
+                                        All events are up to date!
+                                    </td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+
+                    <!-- Pagination Footer -->
+                    <% if (totalPages > 1) { %>
+                        <div style="padding: 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                            <div style="font-size: 0.85rem; color: var(--text-dim);">
+                                Showing page <strong><%= currentPage %></strong> of <strong><%= totalPages %></strong> (<%= total %> pending items)
+                            </div>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <% if (currentPage > 1) { %>
+                                    <a href="?page=<%= currentPage - 1 %><%= currentSearch ? '&search=' + currentSearch : '' %><%= currentCategory ? '&category=' + currentCategory : '' %><%= currentSort ? '&sort=' + currentSort : '' %>" 
+                                       class="btn btn-outline" style="padding: 0.5rem 1rem; border-radius: 8px; font-size: 0.85rem;">
+                                        <i class="fa fa-chevron-left" style="font-size: 0.75rem;"></i> Previous
+                                    </a>
+                                <% } %>
+
+                                <% for(let i = 1; i <= totalPages; i++) { %>
+                                    <% if (i === currentPage) { %>
+                                        <button class="btn btn-primary" style="padding: 0.5rem 1rem; border-radius: 8px; font-size: 0.85rem;"><%= i %></button>
+                                    <% } else if (i <= 3 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) { %>
+                                        <a href="?page=<%= i %><%= currentSearch ? '&search=' + currentSearch : '' %><%= currentCategory ? '&category=' + currentCategory : '' %><%= currentSort ? '&sort=' + currentSort : '' %>" 
+                                           class="btn btn-outline" style="padding: 0.5rem 1rem; border-radius: 8px; font-size: 0.85rem;"><%= i %></a>
+                                    <% } else if (i === 4 || i === totalPages - 1) { %>
+                                        <span style="color: var(--text-dim); padding: 0.5rem;">...</span>
+                                    <% } %>
+                                <% } %>
+
+                                <% if (currentPage < totalPages) { %>
+                                    <a href="?page=<%= currentPage + 1 %><%= currentSearch ? '&search=' + currentSearch : '' %><%= currentCategory ? '&category=' + currentCategory : '' %><%= currentSort ? '&sort=' + currentSort : '' %>" 
+                                       class="btn btn-outline" style="padding: 0.5rem 1rem; border-radius: 8px; font-size: 0.85rem;">
+                                        Next <i class="fa fa-chevron-right" style="font-size: 0.75rem;"></i>
+                                    </a>
+                                <% } %>
+                            </div>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+
+
         </main>
     </div>
+
+    <!-- Universal Reject Modal -->
+    <div id="rejectModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9999; align-items: center; justify-content: center;">
+        <div class="card animate" style="width: 100%; max-width: 500px; padding: 2.5rem; margin: 1rem;">
+            <h2 id="rejectModalTitle" style="margin-top: 0; margin-bottom: 0.5rem;">Reject Submission</h2>
+            <p id="rejectModalSub" style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Please provide a reason for rejection.</p>
+            
+            <form id="rejectForm">
+                <input type="hidden" id="targetType">
+                <input type="hidden" id="targetId">
+                <div class="form-group">
+                    <label class="label">Rejection Reason</label>
+                    <textarea class="input" id="rejectionReason" name="reason" rows="4" required placeholder="Describe what needs to be fixed..."></textarea>
+                </div>
+                <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2rem;">
+                    <button type="button" class="btn btn-outline" onclick="closeRejectModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary" style="background: var(--error);">Confirm Reject</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <style>
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            padding: 1rem 0;
+            cursor: pointer;
+            font-weight: 500;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            transition: all 0.3s ease;
+        }
+        .tab-btn:hover { color: #fff; }
+        .tab-btn.active { color: var(--primary); }
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary);
+        }
+        .count-badge {
+            background: rgba(255,255,255,0.05);
+            padding: 0.1rem 0.5rem;
+            border-radius: 10px;
+            font-size: 0.75rem;
+        }
+        .tab-btn.active .count-badge {
+            background: rgba(230, 57, 70, 0.1);
+            color: var(--primary);
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        .stat-mini {
+            background: rgba(255,255,255,0.03);
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            text-align: right;
+        }
+        .stat-mini .label { display: block; font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; }
+        .stat-mini .value { font-size: 1.2rem; font-weight: 700; color: #fff; }
+    </style>
+
     <%- include('../partials/footer-scripts') %>
-    <%- include('partials/scripts') %>
+    <script src="/js/ajax-handler.js"></script>
+    <script>
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            
+            document.getElementById('tab-' + tabId).classList.add('active');
+            document.getElementById('content-' + tabId).classList.add('active');
+        }
+
+        function approveAction(type, id) {
+            const message = type === 'event' ? 'Approve this event?' : 'Approve this organizer KYC?';
+            const url = type === 'event' ? `/admin/events/approve/${id}` : `/admin/organizer/approve/${id}`;
+            
+            if (confirm(message)) {
+                window.submitFormAjax({
+                    action: url,
+                    method: 'POST'
+                });
+            }
+        }
+
+        function openRejectModal(type, id) {
+            document.getElementById('targetType').value = type;
+            document.getElementById('targetId').value = id;
+            document.getElementById('rejectModalTitle').innerText = type === 'event' ? 'Reject Event' : 'Reject KYC';
+            document.getElementById('rejectModalSub').innerText = type === 'event' ? 'Explain what needs fixing in the event details.' : 'Provide feedback on missing documents or invalid data.';
+            document.getElementById('rejectModal').style.display = 'flex';
+        }
+
+        function closeRejectModal() {
+            document.getElementById('rejectModal').style.display = 'none';
+        }
+
+        document.getElementById('rejectForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const type = document.getElementById('targetType').value;
+            const id = document.getElementById('targetId').value;
+            const reason = document.getElementById('rejectionReason').value;
+            if (!reason) return;
+
+            const url = type === 'event' ? `/admin/events/reject/${id}` : `/admin/organizer/reject/${id}`;
+
+            window.submitFormAjax({
+                action: url,
+                method: 'POST',
+                data: { reason }
+            });
+        });
+    </script>
 </body>
 
 </html>
-
-
-

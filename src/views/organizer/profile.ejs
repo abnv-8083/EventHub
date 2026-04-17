@@ -5,19 +5,8 @@
 
 <body>
 
-    <header class="header" style="position: relative; padding: 1rem 0; border-bottom: 1px solid var(--border);">
-        <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
-            <a href="/organizer/dashboard" class="logo">EVENT<span>HUB</span> <span style="font-size: 0.7rem; color: #3498DB; font-weight: 700; letter-spacing: 2px; vertical-align: middle;">CREATOR</span></a>
-            <div style="display: flex; align-items: center; gap: 1.5rem;">
-                <span style="color: var(--text-muted); font-size: 0.9rem;"><i class="fa fa-building" style="color: #3498DB; margin-right: 0.4rem;"></i><%= organizer.organizationName %></span>
-                <form class="ajax-form m-0" action="/organizer/logout" method="POST">
-                    <button type="submit" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
-                        <i class="fa fa-sign-out-alt"></i> Logout
-                    </button>
-                </form>
-            </div>
-        </div>
-    </header>
+    <!-- Unified User Navbar -->
+    <%- include('../partials/header') %>
 
     <div class="dashboard-layout">
         <%- include('../partials/sidebar-organizer') %>
@@ -109,7 +98,7 @@
                     </div>
 
                     <!-- Personal Account Link -->
-                    <a href="/profile" class="card" style="padding: 1.2rem 1.5rem; border-radius: 16px; display: flex; align-items: center; gap: 1rem; text-decoration: none; transition: all 0.2s;" onmouseover="this.style.background='rgba(52,152,219,0.05)'" onmouseout="this.style.background=''">
+                    <a href="/user/profile" class="card" style="padding: 1.2rem 1.5rem; border-radius: 16px; display: flex; align-items: center; gap: 1rem; text-decoration: none; transition: all 0.2s;" onmouseover="this.style.background='rgba(52,152,219,0.05)'" onmouseout="this.style.background=''">
                         <i class="fa fa-user-circle" style="font-size: 1.5rem; color: #3498DB;"></i>
                         <div>
                             <p style="margin: 0; font-weight: 500; color: #fff; font-size: 0.9rem;">Personal Account</p>

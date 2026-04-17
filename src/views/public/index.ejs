@@ -48,66 +48,44 @@
                             class="fa fa-arrow-right"></i></a>
                 </div>
 
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
-                    <!-- Event Card 1 -->
-                    <div class="card animate">
-                        <div class="card-img"
-                            style="background-image: url('https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&q=80&w=800');">
-                            <span class="card-badge">LIVE</span>
-                        </div>
-                        <div class="card-content">
-                            <h3 class="card-title">Midnight Jazz Festival</h3>
-                            <div class="card-meta">
-                                <span><i class="fa fa-calendar-alt"></i> Oct 24, 2026</span>
-                                <span><i class="fa fa-map-marker-alt"></i> New York, NY</span>
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2.5rem;">
+                    <% if (events && events.length > 0) { %>
+                        <% events.forEach((event, index) => { %>
+                            <div class="card animate" style="animation-delay: <%= index * 0.2 %>s; border-radius: 24px; overflow: hidden; display: flex; flex-direction: column;">
+                                <div class="card-img"
+                                    style="padding-top: 100%; position: relative; height: 0; background-image: url('<%= event.bannerImage || 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&q=80&w=800' %>');">
+                                    <span class="card-badge" style="border-radius: 8px;"><%= event.category || 'EVENT' %></span>
+                                </div>
+                                <div class="card-content" style="padding: 1.75rem; flex: 1; display: flex; flex-direction: column; background: rgba(255, 255, 255, 0.02);">
+                                    <h3 class="card-title text-truncate" style="font-size: 1.4rem; margin-bottom: 0.75rem; color: white;"><%= event.title %></h3>
+                                    <div class="card-meta" style="margin-bottom: 1.5rem; color: rgba(255,255,255,0.7); font-size: 0.82rem; margin-top: auto; display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap;">
+                                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                            <i class="fa fa-calendar-alt" style="color: var(--primary);"></i>
+                                            <span><%= event.startDate ? new Date(event.startDate).toLocaleDateString('en-IN', { month: 'short', day: 'numeric' }) : 'Date TBD' %></span>
+                                        </div>
+                                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                            <i class="fa fa-map-marker-alt" style="color: var(--primary);"></i>
+                                            <span><%= (event.venueLocation && event.venueLocation.address) ? event.venueLocation.address.split(',')[0] : 'Location TBD' %></span>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: auto;">
+                                        <% let minPrice = event.ticketing && event.ticketing.length > 0 ? Math.min(...event.ticketing.map(t => t.price)) : 0; %>
+                                        <span style="font-weight: 800; font-size: 1.4rem; color: var(--primary);">
+                                            <%= minPrice === 0 ? 'FREE' : '₹' + minPrice.toFixed(0) %>
+                                        </span>
+                                        <a href="/events/<%= event._id %>" class="btn btn-primary"
+                                            style="padding: 0.6rem 1.5rem; border-radius: 12px; font-weight: 700;">Book Now</a>
+                                    </div>
+                                </div>
                             </div>
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <span style="font-weight: 700; font-size: 1.2rem; color: var(--primary);">$45.00</span>
-                                <a href="/event-details" class="btn btn-outline"
-                                    style="padding: 0.5rem 1rem;">View Details</a>
-                            </div>
+                        <% }) %>
+                    <% } else { %>
+                        <div style="grid-column: 1/-1; text-align: center; padding: 4rem; background: var(--bg-surface); border-radius: var(--radius-lg); border: 1px dashed var(--border);">
+                            <i class="fa fa-calendar-times" style="font-size: 3rem; color: var(--text-dim); margin-bottom: 1rem;"></i>
+                            <h3>No Events Found</h3>
+                            <p style="color: var(--text-muted);">Check back later for exciting new experiences.</p>
                         </div>
-                    </div>
-
-                    <!-- Event Card 2 -->
-                    <div class="card animate" style="animation-delay: 0.2s;">
-                        <div class="card-img"
-                            style="background-image: url('https://images.unsplash.com/photo-1540575861501-7ad0582371f3?auto=format&fit=crop&q=80&w=800');">
-                            <span class="card-badge" style="background: #2ECC71;">UPCOMING</span>
-                        </div>
-                        <div class="card-content">
-                            <h3 class="card-title">Tech Innovators Summit</h3>
-                            <div class="card-meta">
-                                <span><i class="fa fa-calendar-alt"></i> Nov 12, 2026</span>
-                                <span><i class="fa fa-map-marker-alt"></i> SF, CA</span>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <span style="font-weight: 700; font-size: 1.2rem; color: var(--primary);">$120.00</span>
-                                <a href="/event-details" class="btn btn-outline"
-                                    style="padding: 0.5rem 1rem;">View Details</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Event Card 3 -->
-                    <div class="card animate" style="animation-delay: 0.4s;">
-                        <div class="card-img"
-                            style="background-image: url('https://images.unsplash.com/photo-1514525253361-bee8718a74a2?auto=format&fit=crop&q=80&w=800');">
-                            <span class="card-badge">LIVE</span>
-                        </div>
-                        <div class="card-content">
-                            <h3 class="card-title">Glow-in-the-Dark EDM</h3>
-                            <div class="card-meta">
-                                <span><i class="fa fa-calendar-alt"></i> Oct 31, 2026</span>
-                                <span><i class="fa fa-map-marker-alt"></i> Miami, FL</span>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <span style="font-weight: 700; font-size: 1.2rem; color: var(--primary);">$60.00</span>
-                                <a href="/event-details" class="btn btn-outline"
-                                    style="padding: 0.5rem 1rem;">View Details</a>
-                            </div>
-                        </div>
-                    </div>
+                    <% } %>
                 </div>
             </div>
         </section>

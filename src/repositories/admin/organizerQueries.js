@@ -49,3 +49,17 @@ export const approveOrganizer = async (id, hashedPassword = null) => {
 export const deleteOrganizerById = async (id) => {
     return await Organizer.findByIdAndDelete(id);
 }
+
+/**
+ * Fetch all pending KYC organizations.
+ */
+export const getPendingOrganizers = async () => {
+    return await Organizer.find({ status: 'Pending' }).populate('userId', 'email name');
+}
+
+/**
+ * Count all pending KYC organizations.
+ */
+export const countPendingOrganizers = async () => {
+    return await Organizer.countDocuments({ status: 'Pending' });
+}

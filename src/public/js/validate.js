@@ -8,58 +8,81 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const inputs = form.querySelectorAll('input, textarea');
 
-        // Store original placeholders and set up "clear error on typing"
+        // Store original placeholders and set up inline events
         inputs.forEach(input => {
-            if (input.type !== 'checkbox' && input.type !== 'radio' && input.type !== 'submit') {
+            if (input.type !== 'checkbox' && input.type !== 'radio' && input.type !== 'submit' && input.type !== 'button') {
                 input.dataset.originalPlaceholder = input.placeholder || '';
+                
+                // Clear error immediately when they start typing
                 input.addEventListener('input', () => clearError(input));
+
+                // NEW: Inline Validation - Only if form has been marked as 'was-validated'
+                input.addEventListener('blur', () => {
+                    if (form.classList.contains('was-validated')) {
+                        if (input.hasAttribute('required') || input.value.trim() !== '') {
+                            validateSingleInput(input, form);
+                        }
+                    }
+                });
             }
         });
 
         form.addEventListener('submit', (e) => {
-            let isValid = true;
+            const submitter = e.submitter || window.event?.submitter;
+            const skipValidation = submitter && submitter.hasAttribute('formnovalidate');
 
-            inputs.forEach(input => {
-                if (input.type === 'submit' || input.type === 'button') return;
+            if (!skipValidation) {
+                let isValid = true;
+                inputs.forEach(input => {
+                    if (input.type === 'submit' || input.type === 'button') return;
+                    const isInputValid = validateSingleInput(input, form);
+                    if (!isInputValid) isValid = false;
+                });
 
-                // Special check for Confirm Password fields using a custom data attribute
-                const matchName = input.dataset.match;
-                if (matchName) {
-                    const matchTarget = form.querySelector(`[name="${matchName}"]`);
-                    if (matchTarget && input.value !== matchTarget.value) {
-                        showError(input, input.dataset.errorMsg || 'Does not match');
-                        isValid = false;
-                        return; // Skip the rest of the checks for this field
-                    }
+                if (!isValid) {
+                    e.preventDefault();
+                    form.classList.add('was-validated');
+                    return;
                 }
-
-                // Skip OTP digit boxes - those are handled by custom OTP logic in their own scripts.
-                if (input.classList.contains('otp-box')) return;
-
-                // Check standard HTML5 validity (required, minlength, email, etc.)
-                if (!input.checkValidity()) {
-                    // Use custom error message if provided, otherwise generate one
-                    const errorMessage = input.dataset.errorMsg || getErrorMessage(input);
-                    showError(input, errorMessage);
-                    isValid = false;
-                }
-            });
-
-            if (!isValid) {
-                e.preventDefault();
-                return;
             }
 
-            // --- Hand over to AJAX Handler ---
+            // Hand over to AJAX Handler for BOTH draft and final submissions
             e.preventDefault();
             if (typeof window.submitFormAjax === 'function') {
                 window.submitFormAjax(form);
             } else {
-                console.error('AJAX Handler (ajax-handler.js) not loaded!');
-                form.submit(); // Fallback to normal submission
+                form.submit();
             }
         });
     });
+
+    // NEW: Extracted validation logic for a single input
+    function validateSingleInput(input, form) {
+        // Clear any existing errors first so we have a clean slate
+        clearError(input);
+
+        // Skip OTP digit boxes
+        if (input.classList.contains('otp-box')) return true;
+
+        // Special check for Confirm Password fields using a custom data attribute
+        const matchName = input.dataset.match;
+        if (matchName) {
+            const matchTarget = form.querySelector(`[name="${matchName}"]`);
+            if (matchTarget && input.value !== matchTarget.value && input.value !== '') {
+                showError(input, input.dataset.errorMsg || 'Does not match');
+                return false;
+            }
+        }
+
+        // Check standard HTML5 validity (required, minlength, email, pattern, etc.)
+        if (!input.checkValidity()) {
+            const errorMessage = input.dataset.errorMsg || getErrorMessage(input);
+            showError(input, errorMessage);
+            return false;
+        }
+
+        return true;
+    }
 
     // Helper: Generate clean error messages based on the specific error
     function getErrorMessage(input) {
@@ -73,19 +96,24 @@ document.addEventListener('DOMContentLoaded', () => {
         return 'Invalid input'; // Fallback
     }
 
-    // Helper: Show Error (same as before)
+    // Helper: Show Error (NON-DESTRUCTIVE - No more clearing input.value!)
     function showError(input, message) {
-        if (input.type === 'checkbox') return; // Handle checkboxes differently if needed
-        input.value = '';
+        if (input.type === 'checkbox') return;
         input.classList.add('input-error');
-        input.placeholder = message;
+        
+        // We only change placeholder if the input is actually empty
+        if (input.value === '') {
+            input.placeholder = message;
+        }
     }
 
-    // Helper: Clear Error (same as before)
+    // Helper: Clear Error
     function clearError(input) {
         if (input.classList.contains('input-error')) {
             input.classList.remove('input-error');
-            input.placeholder = input.dataset.originalPlaceholder;
+            if (input.dataset.originalPlaceholder !== undefined) {
+                input.placeholder = input.dataset.originalPlaceholder;
+            }
         }
     }
 });

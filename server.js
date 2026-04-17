@@ -19,9 +19,9 @@ import publicRouter from "./src/router/user/publicRoutes.js"
 
 // Admin Routes
 import adminAuthRoute from "./src/router/admin/authRoutes.js"
+import adminViewMiddleware from "./src/middleware/adminViewMiddleware.js"
 
 // Organizer Routes
-import organizerAuthRoute from "./src/router/organizer/authRoutes.js"
 import organizerRouter from "./src/router/organizer/organizerRoutes.js"
 
 const app = express()
@@ -51,8 +51,7 @@ import checkBlocked from "./src/middleware/checkBlocked.js"
 
 app.use('/user', ...withSession(appSession), checkBlocked, userAuthRoute)
 app.use('/user', ...withSession(appSession), checkBlocked, userRouter)
-app.use('/admin', ...withSession(appSession), adminAuthRoute)
-app.use('/organizer', ...withSession(appSession), checkBlocked, organizerAuthRoute)
+app.use('/admin', ...withSession(appSession), adminViewMiddleware, adminAuthRoute)
 app.use('/organizer', ...withSession(appSession), checkBlocked, organizerRouter)
 app.use('/', ...withSession(appSession), checkBlocked, publicRouter)
 
@@ -62,3 +61,5 @@ app.listen(PORT, () => {
 })
 
 
+
+// Admin UI Updated

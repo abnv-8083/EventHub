@@ -58,8 +58,6 @@ router.route('/organizer/register')
 
 router.post('/organizer/retry', isAuthenticated, userController.postRetryOrganizer)
 
-router.route('/organizer/login')
-    .get(userAuthController.getOrganizerLogin)
 
 router.get('/email-verify-success', userAuthController.getEmailVerified)
 export default router

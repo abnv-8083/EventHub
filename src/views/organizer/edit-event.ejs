@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', { title: 'Edit Event | ' + event.title }) %>
+
+    <body>
+
+        <%- include('../partials/header') %>
+
+            <div class="dashboard-layout">
+                <%- include('../partials/sidebar-organizer') %>
+
+                    <main class="dashboard-main animate">
+                        <div style="margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem;">
+                            <a href="/organizer/event" style="color: var(--text-muted);"><i class="fa fa-arrow-left"></i></a>
+                            <h1 style="font-size: 1.8rem; margin: 0;">Edit <span class="text-gradient">Experience</span></h1>
+                        </div>
+
+                        <form action="/organizer/event/<%= event._id %>/edit" method="post" id="editEventForm"
+                            class="needs-validation" enctype="multipart/form-data">
+                            <input type="hidden" name="status" id="eventStatus" value="<%= event.status %>">
+                            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2.5rem;">
+
+                                <!-- Form Main Body -->
+                                <div style="display: grid; gap: 2rem;">
+                                    <div class="card" style="padding: 2.5rem;">
+                                        <h3
+                                            style="margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem;">
+                                            Basic Information</h3>
+                                        <div class="form-group">
+                                            <label class="label">Event Title</label>
+                                            <input type="text" name="title" class="input"
+                                                value="<%= event.title %>" required minlength="3"
+                                                maxlength="100">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="label">Event Description</label>
+                                            <textarea class="input" name="description" rows="6"
+                                                required minlength="20" maxlength="2000"><%= event.description %></textarea>
+                                        </div>
+                                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                                            <div class="form-group">
+                                                <label class="label">Category</label>
+                                                <select class="input" name="category" required>
+                                                    <% category.forEach(cat => { %>
+                                                        <option value="<%= cat.name %>" <%= event.category === cat.name ? 'selected' : '' %>>
+                                                            <%= cat.name %>
+                                                        </option>
+                                                    <% }) %>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="label" style="color: #f0f0f0;">Venue Location</label>
+                                                <input type="text" id="locationInput" class="input"
+                                                    value="<%= event.venueLocation.address %>" readonly
+                                                    style="color: #000000;">
+                                                <input type="hidden" name="latitude" id="latitude" value="<%= event.venueLocation.latitude %>">
+                                                <input type="hidden" name="longitude" id="longitude" value="<%= event.venueLocation.longitude %>">
+                                                <input type="hidden" name="address" id="address" value="<%= event.venueLocation.address %>">
+                                                <button type="button" id="selectVenueBtn" class="btn btn-primary"
+                                                    style="margin-top: 0.5rem; width: 100%;">
+                                                    <i class="fa fa-map-marker-alt"></i> Update Venue
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Modal for Map -->
+                                    <div id="venueModal"
+                                        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9999; align-items: center; justify-content: center;">
+                                        <div
+                                            style="background: white; border-radius: var(--radius-md); width: 90%; max-width: 800px; height: 80vh; display: flex; flex-direction: column;">
+                                            <div
+                                                style="padding: 1.5rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                                                <h3 style="margin: 0;">Update Venue Location</h3>
+                                                <button type="button" id="closeModalBtn"
+                                                    style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">
+                                                    <i class="fa fa-times"></i>
+                                                </button>
+                                            </div>
+                                            <div id="modalMapContainer" style="flex: 1; overflow: hidden;"></div>
+                                            <div
+                                                style="padding: 1.5rem; border-top: 1px solid var(--border); display: flex; gap: 1rem; justify-content: flex-end;">
+                                                <button type="button" id="cancelVenueBtn"
+                                                    class="btn btn-outline">Cancel</button>
+                                                <button type="button" id="confirmVenueBtn"
+                                                    class="btn btn-primary">Confirm Location</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card" style="padding: 2.5rem;">
+                                        <h3
+                                            style="margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem;">
+                                            Date & Time</h3>
+                                        <% 
+                                            const formatDate = (date) => new Date(date).toISOString().split('T')[0];
+                                        %>
+                                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                                            <div class="form-group">
+                                                <label class="label">Start Date</label>
+                                                <input type="date" name="startDate" class="input" value="<%= formatDate(event.startDate) %>" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="label">Start Time</label>
+                                                <input type="time" name="startTime" class="input" value="<%= event.startTime %>" required>
+                                            </div>
+                                        </div>
+                                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                                            <div class="form-group">
+                                                <label class="label">End Date</label>
+                                                <input type="date" name="endDate" class="input" value="<%= formatDate(event.endDate) %>" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="label">End Time</label>
+                                                <input type="time" name="endTime" class="input" value="<%= event.endTime %>" required>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card" style="padding: 2.5rem;">
+                                        <div
+                                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem;">
+                                            <h3 style="margin-bottom: 0;">Ticketing</h3>
+                                            <button type="button" id="addTicketBtn" class="btn btn-primary"
+                                                style="padding: 0.5rem; width: 32px; height: 32px; border-radius: 50%;"
+                                                title="Add Ticket Type">
+                                                <i class="fa fa-plus" style="font-size: 0.8rem;"></i>
+                                            </button>
+                                        </div>
+
+                                        <div id="ticketsContainer">
+                                            <% event.ticketing.forEach((ticket, index) => { %>
+                                                <div class="ticket-row"
+                                                    style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr auto; gap: 1rem; margin-bottom: 1.5rem; align-items: end;">
+                                                    <div class="form-group" style="margin: 0;">
+                                                        <label class="label">Ticket Name</label>
+                                                        <input type="text" class="input" name="tickets[<%= index %>][name]"
+                                                            value="<%= ticket.name %>" required minlength="2"
+                                                            maxlength="50">
+                                                    </div>
+                                                    <div class="form-group" style="margin: 0;">
+                                                        <label class="label">Price (₹)</label>
+                                                        <input type="number" step="0.01" class="input"
+                                                            name="tickets[<%= index %>][price]" value="<%= ticket.price %>" required min="0">
+                                                    </div>
+                                                    <div class="form-group" style="margin: 0;">
+                                                        <label class="label">Total Seats</label>
+                                                        <input type="number" class="input" name="tickets[<%= index %>][availableSeats]"
+                                                            value="<%= ticket.availableSeats %>" required min="1">
+                                                    </div>
+                                                    <div class="form-group" style="margin: 0;">
+                                                        <label class="label">Max per User</label>
+                                                        <input type="number" class="input" name="tickets[<%= index %>][maxPerUser]"
+                                                            value="<%= ticket.maxPerUser %>" required min="1">
+                                                    </div>
+                                                    <div class="form-group" style="margin: 0;">
+                                                        <button type="button" class="btn btn-outline"
+                                                            style="padding: 0.5rem; width: 42px; height: 42px; color: #e74c3c;"
+                                                            <%= index === 0 ? 'disabled' : '' %>
+                                                            onclick="<%= index !== 0 ? "this.closest('.ticket-row').remove()" : "" %>">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            <% }) %>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Sidebar -->
+                                <div style="display: grid; gap: 2rem; align-content: flex-start;">
+                                    <div class="card" style="padding: 2rem;">
+                                        <h4 style="margin-bottom: 1.5rem;">Event Banner</h4>
+                                        <div id="bannerUploadBox"
+                                            style="position: relative; height: 180px; background: var(--bg-surface); border: 2px dashed var(--border); border-radius: var(--radius-md); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; cursor: pointer; transition: var(--transition); overflow: hidden;">
+                                            <input type="file" name="banner" id="bannerInput"
+                                                accept="image/jpeg, image/png"
+                                                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; z-index: 2;">
+                                            
+                                            <% 
+                                                let bannerSrc = "";
+                                                if (event.bannerImage) {
+                                                    bannerSrc = event.bannerImage.startsWith('http') ? event.bannerImage : "/" + event.bannerImage.replace(/\\/g, '/');
+                                                }
+                                            %>
+                                            <div id="bannerPlaceholder" style="text-align: center; pointer-events: none; <%= bannerSrc ? 'display: none;' : '' %>">
+                                                <i class="fa fa-cloud-upload-alt" style="font-size: 2rem; color: var(--primary);"></i>
+                                                <span style="display: block; font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">Change Banner</span>
+                                            </div>
+
+                                            <img id="bannerPreview" src="<%= bannerSrc %>" alt="Banner Preview"
+                                                style="<%= bannerSrc ? 'display: block;' : 'display: none;' %> position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;">
+                                        </div>
+                                    </div>
+
+                                    <div class="card" style="padding: 2rem;">
+                                        <h4 style="margin-bottom: 1.5rem;">Tags</h4>
+                                        <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                                            <input type="text" id="tagInput" class="input" placeholder="Add a tag..." style="flex: 1;">
+                                            <button type="button" id="addTagBtn" class="btn btn-primary"><i class="fa fa-plus"></i></button>
+                                        </div>
+                                        <div id="tagsContainer" style="display: flex; flex-wrap: wrap; gap: 0.5rem;"></div>
+                                        <input type="hidden" name="tags" id="tagsInput" value='<%- JSON.stringify(event.tags) %>'>
+                                    </div>
+
+                                    <div class="card" style="padding: 2rem;">
+                                        <h4 style="margin-bottom: 1.5rem;">Visibility & Promotion</h4>
+                                        <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+                                            <label style="display: flex; align-items: center; gap: 1rem; cursor: pointer; color: #FFFFFF;">
+                                                <input type="radio" value="Public" name="visibility" <%= event.visibility === 'Public' ? 'checked' : '' %> style="accent-color: var(--primary); width: 18px; height: 18px;">
+                                                <div style="display: flex; flex-direction: column;">
+                                                    <span style="font-size: 0.95rem; font-weight: 600;">Public</span>
+                                                    <span style="font-size: 0.75rem; color: var(--text-dim);">Visible to all attendees</span>
+                                                </div>
+                                            </label>
+                                            <label style="display: flex; align-items: center; gap: 1rem; cursor: pointer; color: #FFFFFF;">
+                                                <input type="radio" value="Private" name="visibility" <%= event.visibility === 'Private' ? 'checked' : '' %> style="accent-color: var(--primary); width: 18px; height: 18px;">
+                                                <div style="display: flex; flex-direction: column;">
+                                                    <span style="font-size: 0.95rem; font-weight: 600;">Private</span>
+                                                    <span style="font-size: 0.75rem; color: var(--text-dim);">Only accessible via direct link</span>
+                                                </div>
+                                            </label>
+
+                                            <hr style="border: 0; border-top: 1px solid var(--border); margin: 0.5rem 0;">
+
+                                            <label style="display: flex; align-items: center; gap: 1rem; cursor: pointer; color: #FFFFFF; padding: 0.75rem; background: rgba(230, 57, 70, 0.05); border-radius: 12px; border: 1px solid rgba(230, 57, 70, 0.1);">
+                                                <input type="checkbox" name="isFeatured" value="true" <%= event.isFeatured ? 'checked' : '' %> style="accent-color: var(--primary); width: 20px; height: 20px;">
+                                                <div style="display: flex; flex-direction: column;">
+                                                    <span style="font-size: 0.95rem; font-weight: 700; color: var(--primary);">Feature this Event</span>
+                                                    <span style="font-size: 0.75rem; color: var(--text-muted);">Shown in the home page's featured section</span>
+                                                </div>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div style="display: grid; gap: 1rem; margin-top: 2rem;">
+                                        <% if (event.status === 'Draft') { %>
+                                            <button type="submit" class="btn btn-primary" onclick="document.getElementById('eventStatus').value='Pending'" style="padding: 1rem;"><i class="fa fa-paper-plane"></i> Submit for Approval</button>
+                                            <button type="submit" class="btn btn-outline" onclick="document.getElementById('eventStatus').value='Draft'" formnovalidate style="padding: 1rem;"><i class="fa fa-save"></i> Save as Draft</button>
+                                        <% } else { %>
+                                            <button type="submit" class="btn btn-primary" style="padding: 1rem;"><i class="fa fa-save"></i> Save Changes</button>
+                                        <% } %>
+                                        <button type="button" class="btn btn-outline" style="border-color: #e74c3c; color: #e74c3c;" onclick="window.location.href='/organizer/event'">Discard Changes</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </main>
+            </div>
+
+            <!-- Scripts -->
+            <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+            <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+            <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
+            <script>
+                let map;
+                let marker;
+                let selectedLocation = {
+                    lat: <%= event.venueLocation.latitude %>,
+                    lng: <%= event.venueLocation.longitude %>,
+                    address: "<%= event.venueLocation.address %>"
+                };
+
+                document.getElementById('selectVenueBtn').addEventListener('click', function () {
+                    document.getElementById('venueModal').style.display = 'flex';
+                    if (!map) initMap([selectedLocation.lat, selectedLocation.lng]);
+                });
+
+                function closeModal() { document.getElementById('venueModal').style.display = 'none'; }
+                document.getElementById('closeModalBtn').addEventListener('click', closeModal);
+                document.getElementById('cancelVenueBtn').addEventListener('click', closeModal);
+
+                document.getElementById('confirmVenueBtn').addEventListener('click', function () {
+                    if (selectedLocation) {
+                        document.getElementById('locationInput').value = selectedLocation.address;
+                        document.getElementById('latitude').value = selectedLocation.lat;
+                        document.getElementById('longitude').value = selectedLocation.lng;
+                        document.getElementById('address').value = selectedLocation.address;
+                        closeModal();
+                    }
+                });
+
+                function initMap(center) {
+                    map = L.map('modalMapContainer').setView(center, 13);
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+                    marker = L.marker(center, { draggable: true }).addTo(map);
+
+                    function reverseGeocode(lat, lng) {
+                        fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`)
+                            .then(r => r.json())
+                            .then(data => {
+                                selectedLocation = { lat, lng, address: data.display_name };
+                            });
+                    }
+
+                    marker.on('dragend', () => reverseGeocode(marker.getLatLng().lat, marker.getLatLng().lng));
+                    map.on('click', (e) => { marker.setLatLng(e.latlng); reverseGeocode(e.latlng.lat, e.latlng.lng); });
+                }
+
+                // --- Tags Logic ---
+                let tagsArray = <%- JSON.stringify(event.tags) %>;
+                function renderTags() {
+                    const container = document.getElementById('tagsContainer');
+                    container.innerHTML = '';
+                    tagsArray.forEach(tag => {
+                        const el = document.createElement('span');
+                        el.style.cssText = 'background: var(--primary); color: white; padding: 0.4rem 0.8rem; border-radius: 20px; font-size: 0.8rem; display: flex; align-items: center; gap: 0.5rem;';
+                        el.innerHTML = `${tag} <i class="fa fa-times" style="cursor:pointer"></i>`;
+                        el.querySelector('i').onclick = () => { tagsArray = tagsArray.filter(t => t !== tag); renderTags(); };
+                        container.appendChild(el);
+                    });
+                    document.getElementById('tagsInput').value = JSON.stringify(tagsArray);
+                }
+
+                document.getElementById('addTagBtn').onclick = () => {
+                    const val = document.getElementById('tagInput').value.trim();
+                    if (val && !tagsArray.includes(val)) { tagsArray.push(val); renderTags(); document.getElementById('tagInput').value = ''; }
+                };
+                renderTags();
+
+                // --- Ticket Logic ---
+                let ticketIndex = <%= event.ticketing.length %>;
+                document.getElementById('addTicketBtn').onclick = () => {
+                    const row = document.createElement('div');
+                    row.className = 'ticket-row';
+                    row.style.cssText = 'display: grid; grid-template-columns: 2fr 1fr 1fr 1fr auto; gap: 1rem; margin-bottom: 1.5rem; align-items: end;';
+                    row.innerHTML = `
+                        <div class="form-group"><label class="label">Ticket Name</label><input type="text" class="input" name="tickets[${ticketIndex}][name]" required></div>
+                        <div class="form-group"><label class="label">Price (₹)</label><input type="number" class="input" name="tickets[${ticketIndex}][price]" required min="0"></div>
+                        <div class="form-group"><label class="label">Total Seats</label><input type="number" class="input" name="tickets[${ticketIndex}][availableSeats]" required min="1"></div>
+                        <div class="form-group"><label class="label">Max per User</label><input type="number" class="input" name="tickets[${ticketIndex}][maxPerUser]" value="5" required min="1"></div>
+                        <div class="form-group"><button type="button" class="btn btn-outline" style="color:#e74c3c" onclick="this.closest('.ticket-row').remove()"><i class="fa fa-trash"></i></button></div>
+                    `;
+                    document.getElementById('ticketsContainer').appendChild(row);
+                    ticketIndex++;
+                };
+
+                // --- Banner Logic ---
+                document.getElementById('bannerInput').onchange = (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (ev) => {
+                            document.getElementById('bannerPreview').src = ev.target.result;
+                            document.getElementById('bannerPreview').style.display = 'block';
+                            document.getElementById('bannerPlaceholder').style.display = 'none';
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                };
+            </script>
+
+            <%- include('../partials/footer-scripts') %>
+    </body>
+</html>

@@ -31,9 +31,6 @@ export const getOrganizerSignup = async (req, res) => {
     }
 }
 
-export const getOrganizerLogin = (req,res) =>{
-    res.render('auth/login-organizer')
-}
 
 export const getEmailVerified = (req,res) =>{
     res.render('auth/verify-email-success')

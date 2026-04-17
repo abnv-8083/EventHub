@@ -22,7 +22,7 @@ export const updateStatusByEmail = async (email, status) => {
 }
 
 export const fetchUserById = async (id, excludeField='')=>{
-    return await Organizer.findById({id}).select(excludeField)
+    return await User.findById(id).select(excludeField)
 }
 
 export const editUser = async (id,name, phone, city, bio, gender, dob, occupation)=>{

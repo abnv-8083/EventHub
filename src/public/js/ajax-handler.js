@@ -1,26 +1,46 @@
 /**
  * Handles form submission via AJAX (Fetch API)
- * Expects a JSON response with { success, message, redirect }
+ * Supports both HTMLFormElement and programmatic configuration objects.
+ * @param {HTMLFormElement|Object} target - The form to submit or a config object {action, method, data}
  */
-async function submitFormAjax(form) {
-    const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries());
+async function submitFormAjax(target) {
+    let action, method, body, isMultipart = false;
+    let headers = {};
+    let submitBtn, originalBtnText;
 
-    // UI Feedback: Disable submit button
-    const submitBtn = form.querySelector('[type="submit"]');
-    const originalBtnText = submitBtn ? submitBtn.innerText : 'Submit';
+    if (target instanceof HTMLFormElement) {
+        action = target.action;
+        method = target.method || 'POST';
+        isMultipart = target.enctype === 'multipart/form-data';
+        const formData = new FormData(target);
+        
+        if (isMultipart) {
+            body = formData;
+        } else {
+            const data = Object.fromEntries(formData.entries());
+            body = JSON.stringify(data);
+            headers['Content-Type'] = 'application/json';
+        }
+
+        submitBtn = target.querySelector('[type="submit"]');
+        originalBtnText = submitBtn ? submitBtn.innerText : 'Submit';
+    } else {
+        action = target.action;
+        method = target.method || 'POST';
+        body = target.data ? JSON.stringify(target.data) : null;
+        if (body) headers['Content-Type'] = 'application/json';
+    }
+
     if (submitBtn) {
         submitBtn.disabled = true;
         submitBtn.innerText = 'Processing...';
     }
 
     try {
-        const response = await fetch(form.action, {
-            method: form.method || 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
+        const response = await fetch(action, {
+            method: method,
+            headers: headers,
+            body: body
         });
 
         let result = await response.json();
@@ -38,10 +58,14 @@ async function submitFormAjax(form) {
             if (confirmed) {
                 if (submitBtn) submitBtn.innerText = 'Processing...';
 
-                const retryResponse = await fetch(form.action, {
-                    method: form.method || 'POST',
+                const retryBody = (target instanceof HTMLFormElement && !isMultipart) 
+                    ? JSON.stringify({ ...Object.fromEntries(new FormData(target)), confirmed: true })
+                    : JSON.stringify({ ...(target.data || {}), confirmed: true });
+
+                const retryResponse = await fetch(action, {
+                    method: method,
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ ...data, confirmed: true })
+                    body: retryBody
                 });
                 result = await retryResponse.json();
             } else {
@@ -56,7 +80,9 @@ async function submitFormAjax(form) {
         // --- ORIGINAL TOAST LOGIC ---
         if (result.success) {
             // Dispatch a custom success event for page-specific logic
-            form.dispatchEvent(new CustomEvent('ajax:success', { detail: result }));
+            if (target instanceof HTMLFormElement) {
+                target.dispatchEvent(new CustomEvent('ajax:success', { detail: result }));
+            }
 
             if (result.redirect) {
                 sessionStorage.setItem('pendingToast', JSON.stringify({

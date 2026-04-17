@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', { title: 'Book Tickets - ' + event.title }) %>
+
+    <body style="background: #000; color: #fff; min-height: 100vh;">
+
+        <%- include('../partials/header') %>
+
+            <main style="padding-top: 8rem; padding-bottom: 6rem;">
+                <div class="container animate">
+                    <!-- Progress Bar -->
+                    <div style="max-width: 600px; margin: 0 auto 4rem; display: flex; justify-content: space-between; position: relative;">
+                        <div style="position: absolute; top: 15px; left: 0; width: 100%; height: 2px; background: var(--border); z-index: 1;">
+                            <div style="width: 50%; height: 100%; background: var(--primary);"></div>
+                        </div>
+                        <div style="position: relative; z-index: 2; text-align: center;">
+                            <div style="width: 32px; height: 32px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.5rem; font-weight: 700; font-size: 0.8rem; box-shadow: 0 0 20px rgba(255, 46, 99, 0.4);">1</div>
+                            <span style="font-size: 0.8rem; font-weight: 600; color: var(--primary);">Ticket Selection</span>
+                        </div>
+                        <div style="position: relative; z-index: 2; text-align: center;">
+                            <div style="width: 32px; height: 32px; background: #222; border: 2px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.5rem; font-weight: 700; font-size: 0.8rem; color: var(--text-dim);">2</div>
+                            <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-dim);">Checkout</span>
+                        </div>
+                        <div style="position: relative; z-index: 2; text-align: center;">
+                            <div style="width: 32px; height: 32px; background: #222; border: 2px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.5rem; font-weight: 700; font-size: 0.8rem; color: var(--text-dim);">3</div>
+                            <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-dim);">Confirmation</span>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 3rem;">
+                        <!-- Left Side: Ticket Selection -->
+                        <div>
+                            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem;">
+                                <a href="/events/<%= event._id %>" class="btn btn-outline" style="width: 40px; height: 40px; padding: 0; display: flex; align-items: center; justify-content: center; border-radius: 50%;" title="Back to Event">
+                                    <i class="fa fa-arrow-left"></i>
+                                </a>
+                                <h2 style="font-size: 2rem; margin: 0;">Select <span class="text-gradient">Tickets</span></h2>
+                            </div>
+                            
+                            <div style="display: grid; gap: 1.5rem;">
+                                <% event.ticketing.forEach((tier, index) => { %>
+                                    <div class="card glass ticket-card" data-id="<%= tier._id %>" data-price="<%= tier.price %>" data-name="<%= tier.name %>" style="padding: 2rem; cursor: pointer; border: 1px solid var(--border); transition: all 0.3s ease;">
+                                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                                            <div>
+                                                <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem; color: white;"><%= tier.name %></h3>
+                                                <div style="display: flex; align-items: center; gap: 1rem;">
+                                                    <span style="font-size: 1.5rem; font-weight: 700; color: var(--primary);">₹<%= tier.price %></span>
+                                                    <span style="font-size: 0.85rem; color: var(--text-dim);">
+                                                        <% if (tier.availableSeats > tier.bookedSeats) { %>
+                                                            <i class="fa fa-users" style="margin-right: 4px;"></i> <%= tier.availableSeats - tier.bookedSeats %> seats left
+                                                        <% } else { %>
+                                                            <span style="color: #e74c3c;">Sold Out</span>
+                                                        <% } %>
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <div class="quantity-selector" style="display: flex; align-items: center; gap: 1rem; background: rgba(255,255,255,0.05); padding: 0.5rem; border-radius: 8px; border: 1px solid var(--border);">
+                                                <button type="button" class="qty-btn minus" style="width: 32px; height: 32px; border: none; background: rgba(255,255,255,0.1); color: white; border-radius: 4px; cursor: pointer;"><i class="fa fa-minus"></i></button>
+                                                <span class="qty-val" style="font-weight: 700; min-width: 20px; text-align: center;">0</span>
+                                                <button type="button" class="qty-btn plus" style="width: 32px; height: 32px; border: none; background: var(--primary); color: white; border-radius: 4px; cursor: pointer;"><i class="fa fa-plus"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <% }) %>
+                            </div>
+                        </div>
+
+                        <!-- Right Side: Order Summary -->
+                        <div style="position: sticky; top: 10rem; height: fit-content;">
+                            <div class="card glass" style="padding: 2rem; border: 1px solid var(--border);">
+                                <h3 style="margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem;">Order <span class="text-gradient">Summary</span></h3>
+                                
+                                <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
+                                    <div style="width: 80px; height: 60px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border);">
+                                        <img src="<%= event.bannerImage.startsWith('http') ? event.bannerImage : '/' + event.bannerImage %>" style="width: 100%; height: 100%; object-fit: cover;">
+                                    </div>
+                                    <div>
+                                        <div style="font-weight: 700; font-size: 1rem; margin-bottom: 0.25rem;"><%= event.title %></div>
+                                        <div style="font-size: 0.8rem; color: var(--text-dim);"><i class="fa fa-calendar-alt"></i> <%= new Date(event.startDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) %>, <%= event.startTime %></div>
+                                    </div>
+                                </div>
+
+                                <div id="selectedTickets" style="display: grid; gap: 1rem; margin-bottom: 2rem;">
+                                    <div style="text-align: center; color: var(--text-dim); padding: 1rem; font-style: italic; border: 1px dashed var(--border); border-radius: 8px;">
+                                        No tickets selected yet
+                                    </div>
+                                </div>
+
+                                <div style="border-top: 1px solid var(--border); padding-top: 1.5rem;">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                                        <span style="color: var(--text-dim);">Subtotal</span>
+                                        <span id="subtotal" style="font-weight: 600;">₹0</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
+                                        <span style="color: var(--text-dim);">Platform Fee (5%)</span>
+                                        <span id="fee" style="font-weight: 600;">₹0</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; padding-top: 1.5rem; border-top: 1px solid var(--border); margin-bottom: 2.5rem;">
+                                        <span style="font-size: 1.25rem; font-weight: 700;">Total</span>
+                                        <span id="totalAmount" style="font-size: 1.5rem; font-weight: 700; color: var(--primary);">₹0</span>
+                                    </div>
+
+                                    <form action="/user/checkout" method="POST" id="bookingForm">
+                                        <input type="hidden" name="eventId" value="<%= event._id %>">
+                                        <input type="hidden" name="tickets" id="ticketsData">
+                                        <button type="submit" id="checkoutBtn" disabled class="btn btn-primary glow-primary" style="width: 100%; padding: 1rem; font-weight: 700; font-size: 1.1rem;">
+                                            <i class="fa fa-credit-card" style="margin-right: 8px;"></i> Proceed to Checkout
+                                        </button>
+                                    </form>
+                                    
+                                    <p style="text-align: center; font-size: 0.75rem; color: var(--text-dim); margin-top: 1rem;">
+                                        By proceeding, you agree to our <a href="#" style="color: var(--primary);">Terms of Service</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <%- include('../partials/footer-scripts') %>
+
+            <style>
+                .ticket-card:hover {
+                    border-color: var(--primary) !important;
+                    background: rgba(255, 46, 99, 0.05) !important;
+                    transform: translateY(-5px);
+                }
+                .ticket-card.selected {
+                    border-color: var(--primary) !important;
+                    background: rgba(255, 46, 99, 0.08) !important;
+                    box-shadow: 0 0 30px rgba(255, 46, 99, 0.1);
+                }
+            </style>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const ticketCards = document.querySelectorAll('.ticket-card');
+                    const summaryContainer = document.getElementById('selectedTickets');
+                    const subtotalEl = document.getElementById('subtotal');
+                    const feeEl = document.getElementById('fee');
+                    const totalEl = document.getElementById('totalAmount');
+                    const checkoutBtn = document.getElementById('checkoutBtn');
+                    const ticketsDataInput = document.getElementById('ticketsData');
+
+                    let selection = {};
+
+                    ticketCards.forEach(card => {
+                        const id = card.getAttribute('data-id');
+                        const price = parseFloat(card.getAttribute('data-price'));
+                        const name = card.getAttribute('data-name');
+                        const minusBtn = card.querySelector('.minus');
+                        const plusBtn = card.querySelector('.plus');
+                        const qtyVal = card.querySelector('.qty-val');
+
+                        plusBtn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            let current = selection[id]?.qty || 0;
+                            if (current < 10) { // Max 10 per tier
+                                updateQty(id, name, price, current + 1, qtyVal, card);
+                            }
+                        });
+
+                        minusBtn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            let current = selection[id]?.qty || 0;
+                            if (current > 0) {
+                                updateQty(id, name, price, current - 1, qtyVal, card);
+                            }
+                        });
+                    });
+
+                    function updateQty(id, name, price, qty, qtyDisplay, card) {
+                        if (qty === 0) {
+                            delete selection[id];
+                            card.classList.remove('selected');
+                        } else {
+                            selection[id] = { name, price, qty };
+                            card.classList.add('selected');
+                        }
+                        qtyDisplay.textContent = qty;
+                        renderSummary();
+                    }
+
+                    function renderSummary() {
+                        let subtotal = 0;
+                        let count = 0;
+                        
+                        if (Object.keys(selection).length === 0) {
+                            summaryContainer.innerHTML = `
+                                <div style="text-align: center; color: var(--text-dim); padding: 1rem; font-style: italic; border: 1px dashed var(--border); border-radius: 8px;">
+                                    No tickets selected yet
+                                </div>
+                            `;
+                            checkoutBtn.disabled = true;
+                        } else {
+                            summaryContainer.innerHTML = '';
+                            for (const id in selection) {
+                                const item = selection[id];
+                                subtotal += item.price * item.qty;
+                                count += item.qty;
+                                
+                                summaryContainer.innerHTML += `
+                                    <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.03); padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid var(--border);">
+                                        <div>
+                                            <div style="font-weight: 600; font-size: 0.9rem;">${item.name}</div>
+                                            <div style="font-size: 0.8rem; color: var(--text-dim);">₹${item.price} x ${item.qty}</div>
+                                        </div>
+                                        <div style="font-weight: 700;">₹${item.price * item.qty}</div>
+                                    </div>
+                                `;
+                            }
+                            checkoutBtn.disabled = false;
+                        }
+
+                        const fee = subtotal * 0.05;
+                        const total = subtotal + fee;
+
+                        subtotalEl.textContent = `₹${subtotal.toLocaleString('en-IN')}`;
+                        feeEl.textContent = `₹${fee.toLocaleString('en-IN')}`;
+                        totalEl.textContent = `₹${total.toLocaleString('en-IN')}`;
+                        
+                        // Prep data for hidden input
+                        ticketsDataInput.value = JSON.stringify(selection);
+                    }
+                });
+            </script>
+    </body>
+
+</html>

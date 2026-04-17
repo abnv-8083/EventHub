@@ -1,100 +1,324 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <%- include('../partials/head', { title: 'Manage Events' }) %>
 
-<body>
+    <body>
 
-    <%- include('../partials/header') %>
+        <%- include('../partials/header') %>
 
-    <div class="dashboard-layout">
+            <div class="dashboard-layout">
                 <%- include('../partials/sidebar-organizer') %>
 
-        <main class="dashboard-main animate">
-            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem;">
-                <div>
-                    <h1 style="font-size: 1.8rem;">My <span class="text-gradient">Events</span></h1>
-                    <p style="color: var(--text-muted);">Manage your active, pending, and past events.</p>
-                </div>
+                    <main class="dashboard-main animate">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem;">
+                            <div>
+                                <h1 style="font-size: 1.8rem;">My <span class="text-gradient">Events</span></h1>
+                                <p style="color: var(--text-muted);">Manage your active, pending, and past experiences.</p>
+                            </div>
+                            <a href="/organizer/event/create">
+                                <button class="btn btn-primary">
+                                    <i class="fa fa-plus"></i> Create New Event
+                                </button>
+                            </a>
+                        </div>
+
+                        <!-- Stats Ribbon -->
+                        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2.5rem;">
+                            <div class="card" style="padding: 1.25rem; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border);">
+                                <h4 style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">Total Events</h4>
+                                <div style="font-size: 1.5rem; font-weight: 700;"><%= stats.totalEvents %></div>
+                            </div>
+                            <div class="card" style="padding: 1.25rem; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border);">
+                                <h4 style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">Live Now</h4>
+                                <div style="font-size: 1.5rem; font-weight: 700; color: #2ECC71;"><%= stats.liveEvents %></div>
+                            </div>
+                            <div class="card" style="padding: 1.25rem; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border);">
+                                <h4 style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">Tickets Sold</h4>
+                                <div style="font-size: 1.5rem; font-weight: 700;"><%= stats.ticketsSold %></div>
+                            </div>
+                            <div class="card" style="padding: 1.25rem; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border);">
+                                <h4 style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">Total Revenue</h4>
+                                <div style="font-size: 1.5rem; font-weight: 700; color: var(--primary);">₹<%= stats.totalRevenue.toLocaleString('en-IN') %></div>
+                            </div>
+                        </div>
+
+                        <!-- Search and Filter -->
+                        <div class="card filter-bar" style="margin-bottom: 2rem; padding: 1.25rem; background: rgba(255, 255, 255, 0.02); border-color: var(--border); border-radius: 12px;">
+                            <form action="/organizer/event" method="GET" style="display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 1rem; align-items: center;">
+                                <div style="position: relative;">
+                                    <i class="fa fa-search" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-dim);"></i>
+                                    <input type="text" name="search" placeholder="Search events by title..." class="input" value="<%= currentSearch %>" style="padding: 0.5rem 1rem 0.5rem 2.8rem; height: 45px; background: rgba(255,255,255,0.02); border-radius: 8px; color: #fff;">
+                                </div>
+                                
+                                <div>
+                                    <select name="status" class="input" style="height: 45px; padding: 0 1rem; background: rgba(255,255,255,0.02); border-radius: 8px; color: #fff;" onchange="this.form.submit()">
+                                        <option value="">All Statuses</option>
+                                        <option value="Published" <%= currentStatus === 'Published' ? 'selected' : '' %>>Published</option>
+                                        <option value="Approved" <%= currentStatus === 'Approved' ? 'selected' : '' %>>Approved</option>
+                                        <option value="Pending" <%= currentStatus === 'Pending' ? 'selected' : '' %>>Pending</option>
+                                        <option value="Draft" <%= currentStatus === 'Draft' ? 'selected' : '' %>>Draft</option>
+                                        <option value="Rejected" <%= currentStatus === 'Rejected' ? 'selected' : '' %>>Rejected</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <select name="sort" class="input" style="height: 45px; padding: 0 1rem; background: rgba(255,255,255,0.02); border-radius: 8px; color: #fff;" onchange="this.form.submit()">
+                                        <option value="newest" <%= currentSort === 'newest' ? 'selected' : '' %>>Newest First</option>
+                                        <option value="oldest" <%= currentSort === 'oldest' ? 'selected' : '' %>>Oldest First</option>
+                                        <option value="alphabetical" <%= currentSort === 'alphabetical' ? 'selected' : '' %>>Alphabetical (A-Z)</option>
+                                        <option value="revenue" <%= currentSort === 'revenue' ? 'selected' : '' %>>Best Selling</option>
+                                    </select>
+                                </div>
+
+                                <div style="display: flex; gap: 0.5rem;">
+                                    <button type="submit" class="btn btn-primary" style="height: 45px; border-radius: 8px;">
+                                        Apply
+                                    </button>
+                                    <% if (currentSearch || currentStatus || currentSort !== 'newest') { %>
+                                        <a href="/organizer/event" class="btn btn-outline" style="height: 45px; width: 45px; padding: 0; display: flex; align-items: center; justify-content: center; border-radius: 8px;" title="Clear Filters">
+                                            <i class="fa fa-times"></i>
+                                        </a>
+                                    <% } %>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Event Table -->
+                        <div class="card" style="padding: 0; overflow: hidden; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border);">
+                            <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                                <thead>
+                                    <tr style="background: rgba(255, 255, 255, 0.03); border-bottom: 1px solid var(--border);">
+                                        <th style="padding: 1.2rem 1.5rem; font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">EVENT DETAILS</th>
+                                        <th style="padding: 1.2rem 1.5rem; font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">STATUS</th>
+                                        <th style="padding: 1.2rem 1.5rem; font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">ENGAGEMENT</th>
+                                        <th style="padding: 1.2rem 1.5rem; font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">REVENUE</th>
+                                        <th style="padding: 1.2rem 1.5rem; font-size: 0.85rem; color: var(--text-muted); font-weight: 600; text-align: right;">ACTIONS</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody style="color: var(--text-muted); font-size: 0.9rem;">
+                                    <% if(events && events.length === 0){ %>
+                                        <tr>
+                                            <td colspan="5" style="text-align: center; padding: 5rem 2rem; color: var(--text-dim);">
+                                                <div style="font-size: 3rem; margin-bottom: 1.5rem; opacity: 0.3;">
+                                                    <i class="fa fa-calendar-plus"></i>
+                                                </div>
+                                                <h3 style="margin-bottom: 0.5rem; color: var(--text-muted);">No events found</h3>
+                                                <p style="margin-bottom: 1.5rem;">Start creating amazing experiences for your audience.</p>
+                                                <a href="/organizer/event/create" class="btn btn-outline">Create Your First Event</a>
+                                            </td>
+                                        </tr>
+                                    <% } else { %>
+                                        <% events.forEach(event => { %>
+                                            <tr style="border-bottom: 1px solid var(--border); transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.01)'" onmouseout="this.style.background='transparent'">
+                                                <td style="padding: 1.5rem;">
+                                                    <div style="display: flex; gap: 1.5rem;">
+                                                        <div style="width: 100px; height: 75px; flex-shrink: 0; border-radius: 8px; overflow: hidden; background: var(--bg-surface); border: 1px solid var(--border);">
+                                                            <% 
+                                                                let bannerSrc = "/img/placeholder-event.jpg"; // Default fallback
+                                                                if (event.bannerImage) {
+                                                                    // If it's a full URL (Cloudinary), use as is. Otherwise assume local path.
+                                                                    bannerSrc = event.bannerImage.startsWith('http') ? event.bannerImage : "/" + event.bannerImage.replace(/\\/g, '/');
+                                                                }
+                                                            %>
+                                                            <img src="<%= bannerSrc %>" alt="<%= event.title %>" style="width: 100%; height: 100%; object-fit: cover;">
+                                                        </div>
+                                                        <div>
+                                                            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.4rem;">
+                                                                <h3 style="font-size: 1rem; font-weight: 600; color: var(--text-primary); margin: 0;"><%= event.title %></h3>
+                                                                <% if(event.visibility === 'Private') { %>
+                                                                    <span title="Private Event" style="font-size: 0.75rem; color: var(--text-dim);"><i class="fa fa-lock"></i></span>
+                                                                <% } %>
+                                                            </div>
+                                                            <div style="font-size: 0.8rem; color: var(--text-dim); margin-bottom: 0.6rem; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;">
+                                                                <%= event.description %>
+                                                            </div>
+                                                            <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; font-size: 0.75rem;">
+                                                                <span><i class="fa fa-map-marker-alt" style="margin-right: 0.3rem;"></i><%= event.venueLocation?.address?.split(',')[0] || 'N/A' %></span>
+                                                                <span><i class="fa fa-calendar" style="margin-right: 0.3rem;"></i><%= new Date(event.startDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) %> @ <%= event.startTime %></span>
+                                                                <span style="color: var(--primary);"><i class="fa fa-tag" style="margin-right: 0.3rem;"></i><%= event.category %></span>
+                                                            </div>
+                                                            <% if(event.tags && event.tags.length > 0) { %>
+                                                                <div style="display: flex; gap: 0.4rem; margin-top: 0.6rem;">
+                                                                    <% event.tags.slice(0, 3).forEach(tag => { %>
+                                                                        <span style="font-size: 0.65rem; padding: 0.1rem 0.5rem; background: rgba(255,255,255,0.05); border-radius: 4px; border: 1px solid var(--border);"><%= tag %></span>
+                                                                    <% }) %>
+                                                                </div>
+                                                            <% } %>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td style="padding: 1.5rem;">
+                                                    <%
+                                                        const statusColors = {
+                                                            Pending:  { bg: 'rgba(243, 156, 18, 0.1)', color: '#F39C12', dot: '#F39C12' },
+                                                            Approved: { bg: 'rgba(46, 204, 113, 0.1)', color: '#2ECC71', dot: '#2ECC71' },
+                                                            Published:{ bg: 'rgba(52, 152, 219, 0.1)', color: '#3498DB', dot: '#3498DB' },
+                                                            Rejected: { bg: 'rgba(231, 76, 60, 0.1)', color: '#E74C3C', dot: '#E74C3C' },
+                                                            Cancelled:{ bg: 'rgba(149, 165, 166, 0.1)', color: '#95A5A6', dot: '#95A5A6' },
+                                                            Draft:    { bg: 'rgba(155, 89, 182, 0.1)', color: '#9B59B6', dot: '#9B59B6' }
+                                                        };
+                                                        const sc = statusColors[event.status] || { bg: 'rgba(255,255,255,0.05)', color: 'var(--text-muted)', dot: 'var(--text-muted)' };
+                                                    %>
+                                                    <span style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.75rem; font-weight: 600; background: <%= sc.bg %>; color: <%= sc.color %>;">
+                                                        <span style="width: 6px; height: 6px; border-radius: 50%; background: <%= sc.dot %>;"></span>
+                                                        <%= event.status %>
+                                                    </span>
+                                                    <% if (event.status === 'Rejected' && event.rejectionReason) { %>
+                                                        <div style="margin-top: 0.5rem; font-size: 0.7rem; color: #E74C3C; max-width: 150px; line-height: 1.3;">
+                                                            <strong>Reason:</strong> <%= event.rejectionReason %>
+                                                        </div>
+                                                    <% } %>
+                                                </td>
+                                                <td style="padding: 1.5rem;">
+                                                    <% 
+                                                        const sold = event.ticketing?.reduce((sum, t) => sum + (t.bookedSeats || 0), 0) || 0;
+                                                        const total = event.ticketing?.reduce((sum, t) => sum + (t.availableSeats || 0), 0) || 0;
+                                                        const percent = total > 0 ? Math.round((sold/total) * 100) : 0;
+                                                    %>
+                                                    <div style="margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">
+                                                        <%= sold %> <span style="font-weight: 400; color: var(--text-dim); font-size: 0.8rem;">/ <%= total %> sold</span>
+                                                    </div>
+                                                    <div style="width: 100px; height: 4px; background: rgba(255,255,255,0.05); border-radius: 2px; overflow: hidden;">
+                                                        <div style="width: <%= percent %>%; height: 100%; background: var(--primary);"></div>
+                                                    </div>
+                                                </td>
+                                                <td style="padding: 1.5rem;">
+                                                    <div style="font-weight: 700; color: var(--text-primary); font-size: 1rem;">
+                                                        ₹<%= (event.totalRevenue || 0).toLocaleString('en-IN') %>
+                                                    </div>
+                                                </td>
+                                                <td style="padding: 1.5rem; text-align: right;">
+                                                    <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
+                                                        <% if (event.status !== 'Draft') { %>
+                                                            <a href="/organizer/event/<%= event._id %>/view" class="btn btn-outline" style="padding: 0.5rem; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;" title="View Details">
+                                                                <i class="fa fa-eye" style="font-size: 0.9rem;"></i>
+                                                            </a>
+                                                        <% } %>
+
+                                                        <a href="/organizer/event/<%= event._id %>/reviews" class="btn btn-outline" style="padding: 0.5rem; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-color: rgba(241, 196, 15, 0.2); color: #f1c40f;" title="View Reviews">
+                                                            <i class="fa fa-star" style="font-size: 0.9rem;"></i>
+                                                        </a>
+                                                        
+                                                        <a href="/organizer/event/<%= event._id %>/edit" class="btn <%= event.status === 'Draft' ? 'btn-success' : 'btn-primary' %>" style="padding: 0.5rem; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;" title="<%= event.status === 'Draft' ? 'Finish Setup' : 'Edit Event' %>">
+                                                            <i class="fa <%= event.status === 'Draft' ? 'fa-check-circle' : 'fa-edit' %>" style="font-size: 0.9rem;"></i>
+                                                        </a>
+
+                                                        <button class="btn btn-outline delete-event-btn" 
+                                                            data-id="<%= event._id %>" 
+                                                            data-title="<%= event.title %>"
+                                                            style="padding: 0.5rem; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; color: #e74c3c; border-color: rgba(231, 76, 60, 0.2);" 
+                                                            title="Delete Event">
+                                                            <i class="fa fa-trash" style="font-size: 0.9rem;"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        <% }) %>
+                                    <% } %>
+                                </tbody>
+                            </table>
+
+                            <!-- Pagination Footer -->
+                            <% if (totalPages > 1) { %>
+                                <div style="padding: 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                                    <div style="font-size: 0.85rem; color: var(--text-dim);">
+                                        Showing page <strong><%= currentPage %></strong> of <strong><%= totalPages %></strong> (<%= total %> total events)
+                                    </div>
+                                    <div style="display: flex; gap: 0.5rem;">
+                                        <% if (currentPage > 1) { %>
+                                            <a href="?page=<%= currentPage - 1 %><%= currentSearch ? '&search=' + currentSearch : '' %><%= currentStatus ? '&status=' + currentStatus : '' %><%= currentSort ? '&sort=' + currentSort : '' %>" 
+                                               class="btn btn-outline" style="padding: 0.5rem 1rem; border-radius: 8px; font-size: 0.85rem;">
+                                                <i class="fa fa-chevron-left" style="font-size: 0.75rem;"></i> Previous
+                                            </a>
+                                        <% } %>
+
+                                        <% for(let i = 1; i <= totalPages; i++) { %>
+                                            <% if (i === currentPage) { %>
+                                                <button class="btn btn-primary" style="padding: 0.5rem 1rem; border-radius: 8px; font-size: 0.85rem;"><%= i %></button>
+                                            <% } else if (i <= 3 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) { %>
+                                                <a href="?page=<%= i %><%= currentSearch ? '&search=' + currentSearch : '' %><%= currentStatus ? '&status=' + currentStatus : '' %><%= currentSort ? '&sort=' + currentSort : '' %>" 
+                                                   class="btn btn-outline" style="padding: 0.5rem 1rem; border-radius: 8px; font-size: 0.85rem;"><%= i %></a>
+                                            <% } else if (i === 4 || i === totalPages - 1) { %>
+                                                <span style="color: var(--text-dim); padding: 0.5rem;">...</span>
+                                            <% } %>
+                                        <% } %>
+
+                                        <% if (currentPage < totalPages) { %>
+                                            <a href="?page=<%= currentPage + 1 %><%= currentSearch ? '&search=' + currentSearch : '' %><%= currentStatus ? '&status=' + currentStatus : '' %><%= currentSort ? '&sort=' + currentSort : '' %>" 
+                                               class="btn btn-outline" style="padding: 0.5rem 1rem; border-radius: 8px; font-size: 0.85rem;">
+                                                Next <i class="fa fa-chevron-right" style="font-size: 0.75rem;"></i>
+                                            </a>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            <% } %>
+                        </div>
+                    </main>
+
+                        <!-- Mobile / Small Card View (Implicitly handled by table scroll or grid) -->
+                    </main>
             </div>
 
-            <!-- Event Table -->
-            <div class="card" style="padding: 0; overflow: hidden;">
-                <table style="width: 100%; border-collapse: collapse; text-align: left;">
-                    <thead>
-                        <tr style="background: var(--bg-surface); border-bottom: 1px solid var(--border);">
-                            <th style="padding: 1.5rem;">Event Details</th>
-                            <th style="padding: 1.5rem;">Status</th>
-                            <th style="padding: 1.5rem;">Tickets Sold</th>
-                            <th style="padding: 1.5rem;">Revenue</th>
-                            <th style="padding: 1.5rem;">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody style="color: var(--text-muted); font-size: 0.9rem;">
-                        <tr style="border-bottom: 1px solid var(--border);">
-                            <td style="padding: 1.5rem;">
-                                <div style="display: flex; gap: 1rem; align-items: center;">
-                                    <div
-                                        style="width: 50px; height: 50px; background: url('https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&q=80&w=100') center/cover; border-radius: 6px;">
-                                    </div>
-                                    <div>
-                                        <div style="font-weight: 600; color: white;">Midnight Jazz Festival</div>
-                                        <div style="font-size: 0.75rem;">Oct 24, 2026</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td style="padding: 1.5rem;"><span style="color: #2ECC71;"><i
-                                        class="fa fa-check-circle"></i> Approved</span></td>
-                            <td style="padding: 1.5rem;">324 / 500</td>
-                            <td style="padding: 1.5rem;">$14,580</td>
-                            <td style="padding: 1.5rem;">
-                                <div style="display: flex; gap: 0.8rem;">
-                                    <a href="bookings" class="btn btn-outline"
-                                        style="padding: 0.4rem 0.8rem; font-size: 0.75rem;"><i class="fa fa-users"></i>
-                                        Bookings</a>
-                                    <button class="btn btn-outline"
-                                        style="padding: 0.4rem 0.8rem; font-size: 0.75rem;"><i
-                                            class="fa fa-edit"></i></button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid var(--border);">
-                            <td style="padding: 1.5rem;">
-                                <div style="display: flex; gap: 1rem; align-items: center;">
-                                    <div
-                                        style="width: 50px; height: 50px; background: url('https://images.unsplash.com/photo-1540575861501-7ad0582371f3?auto=format&fit=crop&q=80&w=100') center/cover; border-radius: 6px;">
-                                    </div>
-                                    <div>
-                                        <div style="font-weight: 600; color: white;">Tech Summit 2026</div>
-                                        <div style="font-size: 0.75rem;">Nov 12, 2026</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td style="padding: 1.5rem;"><span style="color: #E67E22;"><i class="fa fa-clock"></i>
-                                    Pending Approval</span></td>
-                            <td style="padding: 1.5rem;">0 / 1000</td>
-                            <td style="padding: 1.5rem;">$0</td>
-                            <td style="padding: 1.5rem;">
-                                <div style="display: flex; gap: 0.8rem;">
-                                    <button class="btn btn-outline" disabled style="opacity: 0.5;"><i
-                                            class="fa fa-users"></i></button>
-                                    <button class="btn btn-outline"
-                                        style="padding: 0.4rem 0.8rem; font-size: 0.75rem;"><i
-                                            class="fa fa-edit"></i></button>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <%- include('../partials/footer-scripts') %>
 
-            <!-- Mobile / Small Card View (Implicitly handled by table scroll or grid) -->
-        </main>
-    </div>
-
-</body>
-
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    const deleteButtons = document.querySelectorAll('.delete-event-btn');
+                    
+                    deleteButtons.forEach(btn => {
+                        btn.addEventListener('click', async (e) => {
+                            const eventId = btn.getAttribute('data-id');
+                            const eventTitle = btn.getAttribute('data-title');
+                            
+                            const confirmed = await Confirmation.show({
+                                title: 'Delete Event',
+                                message: `Are you sure you want to permanently delete "${eventTitle}"? This action cannot be undone.`,
+                                type: 'delete',
+                                confirmText: 'Delete Event',
+                                cancelText: 'Keep Event'
+                            });
+                            
+                            if (confirmed) {
+                                try {
+                                    const response = await fetch(`/organizer/event/${eventId}`, {
+                                        method: 'DELETE',
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                        }
+                                    });
+                                    
+                                    const result = await response.json();
+                                    
+                                    if (result.success) {
+                                        if (typeof showToast === 'function') {
+                                            showToast(result.message, 'success');
+                                        }
+                                        // Find and remove the row
+                                        const row = btn.closest('tr');
+                                        if (row) {
+                                            row.style.opacity = '0';
+                                            row.style.transform = 'translateX(20px)';
+                                            setTimeout(() => row.remove(), 300);
+                                        } else {
+                                            window.location.reload();
+                                        }
+                                    } else {
+                                        if (typeof showToast === 'function') {
+                                            showToast(result.message, 'error');
+                                        }
+                                    }
+                                } catch (error) {
+                                    console.error('Delete Error:', error);
+                                    if (typeof showToast === 'function') {
+                                        showToast('A network error occurred while deleting.', 'error');
+                                    }
+                                }
+                            }
+                        });
+                    });
+                });
+            </script>
+    </body>
 </html>
-
-
-

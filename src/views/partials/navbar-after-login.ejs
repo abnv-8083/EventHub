@@ -13,15 +13,6 @@
                     <a class="nav-link" style="color: #ffffff; font-size: 1.15rem; font-weight: 500;" href="/events">Events</a>
                 </li>
                 <li class="nav-item">
-                    <% if (locals.user && locals.user.isOrganizer) { %>
-                        <a class="nav-link" style="color: #3498DB; font-size: 1.15rem; font-weight: 600;" href="/organizer/dashboard">
-                            <i class="fa fa-building" style="margin-right: 0.3rem;"></i>Organizer Portal
-                        </a>
-                    <% } else { %>
-                        <a class="nav-link" style="color: #ffffff; font-size: 1.15rem; font-weight: 500;" href="/become-organizer">Organizer</a>
-                    <% } %>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" style="color: #ffffff; font-size: 1.15rem; font-weight: 500;" href="/about">About</a>
                 </li>
                 <li class="nav-item">
@@ -60,6 +51,14 @@
                                 <span style="font-weight: 500; font-size: 0.95rem;">My Profile</span>
                             </a>
                         </li>
+                        <% if (user && user.isOrganizer) { %>
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center py-2 px-3" href="/organizer/dashboard" style="border-radius: 8px;">
+                                    <i class="fa fa-chart-line me-3" style="font-size: 1.1rem; color: #3498DB;"></i>
+                                    <span style="font-weight: 500; font-size: 0.95rem;">Organizer Portal</span>
+                                </a>
+                            </li>
+                        <% } %>
                         <li>
                             <hr class="dropdown-divider" style="opacity: 0.1; margin: 0.5rem 0;">
                         </li>

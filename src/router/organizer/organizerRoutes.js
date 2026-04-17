@@ -2,6 +2,7 @@ import express from 'express'
 const router = express.Router()
 import isOrganizerAuthenticated from '../../middleware/isOrganizerAuthenticated.js'
 import * as organizerController from '../../controller/organizer/organizerController.js'
+import { uploadBanner } from '../../middleware/multer.js'
 
 // Protect ALL organizer routes
 router.use(isOrganizerAuthenticated)
@@ -18,7 +19,23 @@ router.route('/profile')
     .post(organizerController.postProfile)
 
 router.route('/event')
-    .get(organizerController.getCreateEvent)
+    .get(organizerController.getEventMangement)
 
+router.route('/event/create')
+    .get(organizerController.getCreateEvent)
+    .post(uploadBanner.single('banner'),organizerController.postCreateEvent)
+
+router.get('/event/:id/view', organizerController.getEventDetails)
+router.get('/event/:id/reviews', organizerController.getEventReviews)
+
+router.route('/event/:id/edit')
+    .get(organizerController.getEditEvent)
+    .post(uploadBanner.single('banner'), organizerController.postEditEvent)
+
+router.delete('/event/:id', organizerController.deleteEvent)
 
 export default router
+
+
+
+

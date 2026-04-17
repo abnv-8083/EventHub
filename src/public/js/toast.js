@@ -20,7 +20,19 @@ function showToast(message, type = 'success') {
     closeBtn.className = 'fa-solid fa-xmark toast-close';
     closeBtn.onclick = () => removeToast(toast);
 
-    toast.innerHTML = `${icon} <span style="flex: 1;">${message}</span>`;
+    // Prepare content: Handle array of messages if needed
+    let content = message;
+    if (Array.isArray(message)) {
+        if (message.length > 1) {
+            content = `<ul style="margin: 0.5rem 0 0 1.2rem; padding: 0; list-style: disc;">
+                ${message.map(msg => `<li>${msg}</li>`).join('')}
+            </ul>`;
+        } else {
+            content = message[0];
+        }
+    }
+
+    toast.innerHTML = `${icon} <span style="flex: 1;">${content}</span>`;
     toast.appendChild(closeBtn);
 
     // 3. Add to container

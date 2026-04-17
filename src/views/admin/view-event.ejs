@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', { title: 'Review Event | Admin' }) %>
+
+    <body>
+
+        <%- include('../partials/header-admin') %>
+
+            <div class="dashboard-layout">
+                <%- include('../partials/sidebar-admin') %>
+
+                    <main class="dashboard-main animate">
+                        <div style="margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem;">
+                            <a href="#" onclick="history.back(); return false;" style="color: var(--text-muted);"><i class="fa fa-arrow-left"></i></a>
+                            <h1 style="font-size: 1.8rem; margin: 0;">Review <span class="text-gradient">Submission</span></h1>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2.5rem;">
+                            <!-- Event Details -->
+                            <div style="display: grid; gap: 2rem;">
+                                <!-- Identity Card -->
+                                <div class="card" style="padding: 2.5rem; display: flex; gap: 2rem; align-items: flex-start;">
+                                    <div style="width: 200px; height: 120px; border-radius: var(--radius-md); overflow: hidden; background: var(--bg-surface); flex-shrink: 0; box-shadow: var(--shadow-sm);">
+                                        <% let bannerSrc = event.bannerImage ? (event.bannerImage.startsWith('http') ? event.bannerImage : '/' + event.bannerImage.replace(/\\/g, '/')) : '/img/placeholder.png'; %>
+                                        <img src="<%= bannerSrc %>" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+                                    </div>
+                                    <div style="flex: 1;">
+                                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+                                            <div>
+                                                <h2 style="margin: 0; font-size: 1.5rem;"><%= event.title %></h2>
+                                                <p style="color: var(--primary); font-weight: 600; font-size: 0.9rem; margin-top: 0.25rem;"><%= event.category %></p>
+                                            </div>
+                                            <% 
+                                                let statusColor = '#3498db';
+                                                if (event.status === 'Pending') statusColor = '#f1c40f';
+                                                if (event.status === 'Approved' || event.status === 'Published') statusColor = '#2ecc71';
+                                                if (event.status === 'Rejected') statusColor = '#e74c3c';
+                                            %>
+                                            <span style="display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; font-weight: 600; color: <%= statusColor %>; background: <%= statusColor %>20; padding: 0.25rem 0.75rem; border-radius: 12px;">
+                                                <%= event.status %>
+                                            </span>
+                                        </div>
+                                        <p style="color: var(--text-muted); line-height: 1.6; font-size: 0.95rem; margin-bottom: 0;"><%= event.description %></p>
+                                    </div>
+                                </div>
+
+                                <!-- Ticketing Info -->
+                                <div class="card" style="padding: 2rem;">
+                                    <h3 style="margin-bottom: 1.5rem; font-size: 1.2rem; border-bottom: 1px solid var(--border); padding-bottom: 0.75rem;">
+                                        <i class="fa fa-ticket-alt" style="margin-right: 0.75rem; color: var(--primary);"></i>
+                                        Ticketing Tiers
+                                    </h3>
+                                    <div style="display: grid; gap: 1rem;">
+                                        <% event.ticketing.forEach(ticket => { %>
+                                            <div style="padding: 1rem; border: 1px solid var(--border); border-radius: var(--radius-sm); display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; align-items: center;">
+                                                <div style="font-weight: 600;"><%= ticket.name %></div>
+                                                <div style="color: var(--text-muted);">₹<%= ticket.price %></div>
+                                                <div style="color: var(--text-muted);"><%= ticket.availableSeats %> Seats</div>
+                                                <div style="color: var(--text-muted);">Max <%= ticket.maxPerUser %>/user</div>
+                                            </div>
+                                        <% }) %>
+                                    </div>
+                                </div>
+
+                                <!-- Location & Venue -->
+                                <div class="card" style="padding: 2rem;">
+                                    <h3 style="margin-bottom: 1.5rem; font-size: 1.2rem; border-bottom: 1px solid var(--border); padding-bottom: 0.75rem;">
+                                        <i class="fa fa-map-marker-alt" style="margin-right: 0.75rem; color: var(--primary);"></i>
+                                        Venue Details
+                                    </h3>
+                                    <div style="background: var(--bg-surface); padding: 1.5rem; border-radius: var(--radius-sm); margin-bottom: 1rem; border: 1px solid var(--border);">
+                                        <p style="margin: 0; font-weight: 500;"><%= event.venueLocation.address %></p>
+                                        <p style="font-size: 0.8rem; color: var(--text-dim); margin-top: 0.5rem;">GPS: <%= event.venueLocation.latitude %>, <%= event.venueLocation.longitude %></p>
+                                    </div>
+                                    <div id="reviewMap" style="height: 250px; border-radius: var(--radius-sm); border: 1px solid var(--border);"></div>
+                                </div>
+                            </div>
+
+                            <!-- Sidebar Actions -->
+                            <div style="display: grid; gap: 2rem; align-content: flex-start;">
+                                <div class="card" style="padding: 2rem;">
+                                    <h4 style="margin-bottom: 1.5rem;">Organizer Info</h4>
+                                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                                        <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                                            <%= event.organizerId.organizationName.charAt(0) %>
+                                        </div>
+                                        <div>
+                                            <div style="font-weight: 600; font-size: 0.95rem;"><%= event.organizerId.organizationName %></div>
+                                            <div style="font-size: 0.75rem; color: var(--text-muted);"><%= event.organizerId.industryCategory %></div>
+                                        </div>
+                                    </div>
+                                    <div style="padding-top: 1rem; border-top: 1px solid var(--border);">
+                                        <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Region:</div>
+                                        <div style="font-weight: 500;"><%= event.organizerId.operatingRegion %></div>
+                                    </div>
+                                </div>
+
+                                <!-- Action Buttons -->
+                                <% if (event.status === 'Pending') { %>
+                                    <div class="card" style="padding: 2rem; background: var(--bg-surface);">
+                                        <h4 style="margin-bottom: 1.5rem;">Take Action</h4>
+                                        <div style="display: grid; gap: 1rem;">
+                                            <button class="btn btn-primary" onclick="processApproval('<%= event._id %>')" style="padding: 1rem; display: flex; align-items: center; justify-content: center; gap: 0.75rem;">
+                                                <i class="fa fa-check-circle"></i> Approve Submission
+                                            </button>
+                                            <button class="btn btn-outline" onclick="openRejectModal()" style="padding: 1rem; border-color: var(--error); color: var(--error); display: flex; align-items: center; justify-content: center; gap: 0.75rem;">
+                                                <i class="fa fa-times-circle"></i> Reject Submission
+                                            </button>
+                                        </div>
+                                    </div>
+                                <% } %>
+
+                                <!-- Audit Info -->
+                                <div class="card" style="padding: 2rem;">
+                                    <h4 style="margin-bottom: 1rem;">Submission Timeline</h4>
+                                    <div style="display: grid; gap: 1rem; font-size: 0.85rem;">
+                                        <div style="display: flex; justify-content: space-between;">
+                                            <span style="color: var(--text-dim);">Created At:</span>
+                                            <span><%= new Date(event.createdAt).toLocaleDateString() %></span>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between;">
+                                            <span style="color: var(--text-dim);">Visibility:</span>
+                                            <span style="font-weight: 600;"><%= event.visibility %></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Reject Modal -->
+                        <div id="rejectModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9999; align-items: center; justify-content: center;">
+                            <div class="card animate" style="width: 100%; max-width: 500px; padding: 2.5rem; margin: 1rem;">
+                                <h2 style="margin-top: 0; margin-bottom: 0.5rem;">Reject Submission</h2>
+                                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Please provide a reason for rejection. The organizer will see this and can correct the issues.</p>
+                                
+                                <form id="rejectForm" class="needs-validation" novalidate>
+                                    <div class="form-group">
+                                        <label class="label">Rejection Reason</label>
+                                        <textarea class="input" id="rejectionReason" name="reason" rows="4" required placeholder="Describe what needs to be fixed..."></textarea>
+                                    </div>
+                                    <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2rem;">
+                                        <button type="button" class="btn btn-outline" onclick="closeRejectModal()">Cancel</button>
+                                        <button type="submit" class="btn btn-primary" style="background: var(--error);">Reject Permanently</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </main>
+            </div>
+
+            <!-- Scripts -->
+            <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+            <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+            <script src="/js/ajax-handler.js"></script>
+            <script src="/js/validate.js"></script>
+
+            <script>
+                // Initialize Map
+                const lat = <%= event.venueLocation.latitude %>;
+                const lng = <%= event.venueLocation.longitude %>;
+                const map = L.map('reviewMap').setView([lat, lng], 15);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+                L.marker([lat, lng]).addTo(map).bindPopup("<%= event.venueLocation.address %>").openPopup();
+
+                // Actions
+                function processApproval(id) {
+                    if (confirm('Are you sure you want to approve this event? It will be published immediately or on the scheduled date.')) {
+                        window.submitFormAjax({
+                            action: `/admin/events/approve/${id}`,
+                            method: 'POST'
+                        });
+                    }
+                }
+
+                function openRejectModal() { document.getElementById('rejectModal').style.display = 'flex'; }
+                function closeRejectModal() { document.getElementById('rejectModal').style.display = 'none'; }
+
+                document.getElementById('rejectForm').addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const reason = document.getElementById('rejectionReason').value;
+                    if (!reason) return;
+
+                    window.submitFormAjax({
+                        action: `/admin/events/reject/<%= event._id %>`,
+                        method: 'POST',
+                        data: { reason }
+                    });
+                });
+            </script>
+    </body>
+</html>

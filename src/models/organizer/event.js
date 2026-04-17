@@ -12,44 +12,48 @@ const eventSchema = new Schema({
     },
     description: {
         type: String,
-        required: true
+        required: false
     },
     category: {
         type: String,
-        enum: ['Music', 'Technology', 'Art', 'Business', 'Sports', 'Social', 'Education', 'Other'],
-        required: true
+        required: false // Removed the strict enum so your dynamic Admin categories work!
     },
     venueLocation: {
-        address: {
-            type: String,
-            required: true
-        },
-        latitude: {
-            type: Number,
-            required: true
-        },
-        longitude: {
-            type: Number,
-            required: true
-        }
+        address: { type: String, required: false },
+        latitude: { type: Number, required: false },
+        longitude: { type: Number, required: false }
     },
+    // Updated to handle both Dates and Times from your form
     startDate: {
         type: Date,
-        required: true
+        required: false
+    },
+    startTime: {
+        type: String,
+        required: false
     },
     endDate: {
         type: Date,
-        required: true
+        required: false
     },
-    ticketing: {
+    endTime: {
+        type: String,
+        required: false
+    },
+    // TICKETING FIXED: Now wrapped in an array [ { ... } ]
+    ticketing: [{
+        name: {
+            type: String,
+            required: false
+        },
         price: {
             type: Number,
-            required: true,
+            required: false,
             min: 0
         },
         availableSeats: {
             type: Number,
-            required: true,
+            required: false,
             min: 1
         },
         bookedSeats: {
@@ -59,11 +63,12 @@ const eventSchema = new Schema({
         },
         maxPerUser: {
             type: Number,
-            required: true,
+            required: false,
             min: 1
         }
-    },
-    banner: {
+    }],
+    // Renamed to match your controller (eventData.bannerImage)
+    bannerImage: {
         type: String,
         default: null
     },
@@ -75,7 +80,7 @@ const eventSchema = new Schema({
     status: {
         type: String,
         enum: ['Draft', 'Pending', 'Approved', 'Rejected', 'Published', 'Cancelled'],
-        default: 'Draft'
+        default: 'Pending' // Suggest changing default to 'Pending' so admins can approve it
     },
     rejectionReason: {
         type: String,

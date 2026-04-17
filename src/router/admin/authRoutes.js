@@ -42,15 +42,20 @@ router.route('/admins')
 router.route('/admins/view/:id')
     .get(adminController.getAdminView)
 
-router.route('/admins/edit/:id')
-    .get(adminController.getAdminEdit)
-    .post(adminController.postAdminEdit)
+router.get('/admins/edit/:id', adminController.getAdminEdit)
+router.post('/admins/edit/:id', adminController.postAdminEdit)
+router.post('/admins/toggle-block/:id', adminController.postToggleBlockAdmin)
+router.post('/admins/delete/:id', adminController.postDeleteAdmin)
 
-router.route('/admins/toggle-block/:id')
-    .post(adminController.postToggleBlockAdmin)
+// --- Events management ---
+// router.get('/events', adminController.getEventsList) (Removed)
+router.get('/events/view/:id', adminController.getEventView)
+router.post('/events/approve/:id', adminController.postApproveEvent)
+router.post('/events/reject/:id', adminController.postRejectEvent)
+router.get('/approvals', adminController.getApprovalsDashboard)
 
-router.route('/admins/delete/:id')
-    .post(adminController.postDeleteAdmin)
+// --- Categories management ---
+router.get('/categories', adminController.getCategory)
 
 router.route('/organizer')
     .get(adminController.getOrganizersList)
@@ -79,5 +84,18 @@ router.route('/users/toggle-block/:id')
 
 router.route('/users/delete/:id')
     .post(adminController.postDeleteUser)
+
+router.route('/categories')
+    .get(adminController.getCategory)
+router.route('/categories/create')
+    .get(adminController.getCreateCategory)
+    .post(adminController.postCreateCategory)
+
+router.route('/categories/delete/:id')
+    .post(adminController.postDeleteCategory)
+
+router.route('/categories/edit/:id')
+    .post(adminController.postEditCategory)
+
 
 export default router

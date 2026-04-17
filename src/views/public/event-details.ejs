@@ -1,182 +1,332 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<%- include('../partials/head', { title: 'Midnight Jazz Festival' }) %>
+<%- include('../partials/head', { title: event.title + ' | EventHub' }) %>
 
-<body>
+    <body>
 
-    <!-- Header -->
-    <%- include('../partials/header', { activePage: '' }) %>
+        <!-- Header -->
+        <%- include('../partials/header', { activePage: '' }) %>
 
-    <main>
-        <!-- Hero Banner -->
-        <section
-            style="height: 50vh; background: linear-gradient(to bottom, rgba(0,0,0,0.3), var(--bg-dark)), url('https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&q=80&w=1200') center/cover; display: flex; align-items: flex-end; padding-bottom: 3rem;">
-            <div class="container">
-                <span class="card-badge mb-2" style="position: static; display: inline-block;">LIVE</span>
-                <h1 style="font-size: 3.5rem;" class="mb-2">Midnight Jazz Festival</h1>
-                <div class="card-meta" style="font-size: 1.1rem;">
-                    <span><i class="fa fa-calendar-alt text-gradient"></i> Oct 24, 2026</span>
-                    <span><i class="fa fa-clock text-gradient"></i> 08:00 PM - 02:00 AM</span>
-                    <span><i class="fa fa-map-marker-alt text-gradient"></i> Blue Note Jazz Club, NY</span>
-                </div>
-            </div>
-        </section>
-
-        <section class="section">
-            <div class="container" style="display: grid; grid-template-columns: 2fr 1fr; gap: 4rem;">
-                <!-- Main Content -->
-                <div class="animate">
-                    <h2 class="mb-3" style="border-left: 4px solid var(--primary); padding-left: 1rem;">About
-                        the <span class="text-gradient">Event</span></h2>
-                    <p style="color: var(--text-muted);" class="mb-4">Experience an enchanting evening of
-                        soulful melodies and rhythmic beats at the Midnight Jazz Festival. This year featuring
-                        world-renowned artists and emerging talents in an intimate setting that captures the true
-                        essence of jazz.</p>
-
-                    <h3 style="margin-bottom: 1rem;">What to Expect</h3>
-                    <ul style="color: var(--text-muted); margin-bottom: 2rem; display: grid; gap: 0.5rem;">
-                        <li><i class="fa fa-check text-gradient"></i> 5 Hours of Live Performances</li>
-                        <li><i class="fa fa-check text-gradient"></i> Complimentary Hors d'oeuvres</li>
-                        <li><i class="fa fa-check text-gradient"></i> Exclusive Artist Q&A Session</li>
-                        <li><i class="fa fa-check text-gradient"></i> Professional Photo Booth</li>
-                    </ul>
-
-                    <h3 style="margin-bottom: 1rem;">Venue Location</h3>
-                    <div
-                        style="height: 300px; background: var(--bg-surface); border-radius: var(--radius-md); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center;">
-                        <span style="color: var(--text-dim);">[Map Integration Placeholder]</span>
-                    </div>
-                </div>
-
-                <!-- Sidebar / Booking CTA -->
-                <div class="animate" style="animation-delay: 0.2s;">
-                    <div class="card" style="padding: 2rem; position: sticky; top: 120px;">
-                        <h3 style="margin-bottom: 1.5rem;">Ticket Information</h3>
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-                            <span style="color: var(--text-muted);">Starting Price</span>
-                            <span style="font-weight: 700; color: var(--primary); font-size: 1.5rem;">$45.00</span>
-                        </div>
-                        <div style="margin-bottom: 2rem; font-size: 0.9rem; color: var(--text-dim);">
-                            <i class="fa fa-info-circle"></i> 124 seats remaining
-                        </div>
-
-                        <div style="display: grid; gap: 1rem;">
-                            <a href="../user/booking" class="btn btn-primary" style="width: 100%;">Book
-                                Ticket Now</a>
-                            <button class="btn btn-outline" style="width: 100%;"><i class="fa fa-heart"></i> Add to
-                                Wishlist</button>
-                        </div>
-
-                        <hr style="margin: 2rem 0; border: 0; border-top: 1px solid var(--border);">
-
-                        <h4 style="margin-bottom: 1rem;">Organizer</h4>
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <div
-                                style="width: 50px; height: 50px; background: var(--bg-surface); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary); border: 1px solid var(--border);">
-                                <i class="fa fa-users"></i>
-                            </div>
-                            <div>
-                                <div style="font-weight: 600;">Jazz Society NY</div>
-                                <a href="../organizer/profile"
-                                    style="font-size: 0.8rem; color: var(--primary);">View
-                                    Profile</a>
+            <main>
+                <!-- Hero Banner -->
+                <% let bannerSrc=event.bannerImage ? (event.bannerImage.startsWith('http') ? event.bannerImage : '/' +
+                    event.bannerImage.replace(/\\/g, '/' ))
+                    : 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&q=80&w=1200' ;
+                    %>
+                    <section
+                        style="height: 50vh; background: linear-gradient(to bottom, rgba(0,0,0,0.3), var(--bg-dark)), url('<%= bannerSrc %>') center/cover; display: flex; align-items: flex-end; padding-bottom: 3rem;">
+                        <div class="container">
+                            <h1 style="font-size: 3.5rem;" class="mb-2">
+                                <%= event.title %>
+                            </h1>
+                            <div class="card-meta" style="font-size: 1.1rem;">
+                                <span><i class="fa fa-calendar-alt text-gradient"></i>
+                                    <%= new Date(event.startDate).toLocaleDateString(undefined, { month: 'short' ,
+                                        day: 'numeric' , year: 'numeric' }) %>
+                                </span>
+                                <span><i class="fa fa-clock text-gradient"></i>
+                                    <%= event.startTime %>
+                                        <%= event.endTime ? '- ' + event.endTime : '' %>
+                                </span>
+                                <span><i class="fa fa-map-marker-alt text-gradient"></i>
+                                    <%= event.venueLocation.address %>
+                                </span>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
+                    </section>
 
-            <!-- Comments Section -->
-            <div class="container animate" style="margin-top: 6rem;">
-                <h2 style="margin-bottom: 2.5rem; text-align: center;">Attendee <span
-                        class="text-gradient">Reviews</span></h2>
+                    <section class="section">
+                        <div class="container" style="display: grid; grid-template-columns: 2fr 1fr; gap: 4rem;">
+                            <!-- Main Content -->
+                            <div class="animate">
+                                <h2 class="mb-3" style="border-left: 4px solid var(--primary); padding-left: 1rem;">
+                                    About
+                                    the <span class="text-gradient">Event</span></h2>
+                                <p style="color: var(--text-muted); line-height: 1.7; white-space: pre-line;"
+                                    class="mb-4">
+                                    <%= event.description %>
+                                </p>
 
-                <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 4rem;">
-                    <!-- Comment Form -->
-                    <div class="card glass" style="padding: 2.5rem; height: fit-content;">
-                        <h3 style="margin-bottom: 1.5rem;">Leave a Review</h3>
-                        <form action="#">
-                            <div class="form-group">
-                                <label class="label">Your Rating</label>
-                                <div
-                                    style="display: flex; gap: 0.5rem; color: #f1c40f; font-size: 1.25rem; margin-bottom: 1rem;">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa-regular fa-star"></i>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="label">Your Comment</label>
-                                <textarea class="input glass-dark" style="min-height: 120px; resize: none;"
-                                    placeholder="Share your experience..."></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-primary glow-primary"
-                                style="width: 100%; margin-top: 1rem;">Post Review</button>
-                        </form>
-                    </div>
-
-                    <!-- Comments List -->
-                    <div style="display: grid; gap: 1.5rem;">
-                        <!-- Comment 1 -->
-                        <div class="card glass animate stagger-1" style="padding: 2rem;">
-                            <div
-                                style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
-                                <div style="display: flex; gap: 1rem; align-items: center;">
-                                    <div
-                                        style="width: 45px; height: 45px; background: #333; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                                        <i class="fa fa-user" style="color: var(--primary);"></i>
+                                <% if(event.tags && event.tags.length> 0) { %>
+                                    <h3 style="margin-bottom: 1rem;">Tags</h3>
+                                    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem;">
+                                        <% event.tags.forEach(tag=> { %>
+                                            <span
+                                                style="background: var(--bg-surface); padding: 0.25rem 0.75rem; border-radius: 15px; font-size: 0.85rem; border: 1px solid var(--border);">
+                                                <%= tag %>
+                                            </span>
+                                            <% }) %>
                                     </div>
-                                    <div>
-                                        <div style="font-weight: 600;">Michael Chen</div>
-                                        <div style="font-size: 0.8rem; color: var(--text-dim);">Verified Attendee • 2
-                                            days ago</div>
-                                    </div>
-                                </div>
-                                <div style="color: #f1c40f; font-size: 0.9rem;">
-                                    <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i
-                                        class="fa fa-star"></i><i class="fa fa-star"></i>
-                                </div>
-                            </div>
-                            <p style="color: var(--text-muted); line-height: 1.6;">An incredible experience! The
-                                acoustics at the club were perfect for jazz, and the lineup was world-class. Highly
-                                recommend for any jazz enthusiasts.</p>
-                        </div>
+                                    <% } %>
 
-                        <!-- Comment 2 -->
-                        <div class="card glass animate stagger-2" style="padding: 2rem;">
-                            <div
-                                style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
-                                <div style="display: flex; gap: 1rem; align-items: center;">
-                                    <div
-                                        style="width: 45px; height: 45px; background: #333; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                                        <i class="fa fa-user" style="color: var(--primary);"></i>
-                                    </div>
-                                    <div>
-                                        <div style="font-weight: 600;">Sarah Jenkins</div>
-                                        <div style="font-size: 0.8rem; color: var(--text-dim);">Attendee • 1 week ago
+                                        <h3 style="margin-bottom: 1rem;">Venue Location</h3>
+                                        <div id="eventMap"
+                                            style="height: 300px; border-radius: var(--radius-md); border: 1px solid var(--border); overflow: hidden;">
                                         </div>
-                                    </div>
-                                </div>
-                                <div style="color: #f1c40f; font-size: 0.9rem;">
-                                    <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i
-                                        class="fa fa-star"></i><i class="fa-regular fa-star"></i>
+                                        <p style="margin-top: 1rem; color: var(--text-dim); font-size: 0.9rem;">
+                                            <i class="fa fa-map-pin text-gradient"></i>
+                                            <%= event.venueLocation.address %>
+                                        </p>
+                            </div>
+
+                            <!-- Sidebar / Booking CTA -->
+                            <div class="animate" style="animation-delay: 0.2s;">
+                                <div class="card" style="padding: 2rem; position: sticky; top: 120px;">
+                                    <h3 style="margin-bottom: 1.5rem;">Ticket Information</h3>
+                                    <% let minPrice=event.ticketing.length> 0 ? Math.min(...event.ticketing.map(t =>
+                                        t.price)) : 0;
+                                        let totalAvailable = event.ticketing.reduce((acc, t) => acc + (t.availableSeats
+                                        - (t.bookedSeats || 0)), 0);
+                                        %>
+                                        <!-- <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem; align-items: flex-end;">
+                            <span style="color: var(--text-muted); font-size: 0.9rem;">Price Range</span>
+                            <span style="font-weight: 700; color: var(--primary); font-size: 1.5rem;">₹<%= minPrice %> - ₹<%= Math.max(...event.ticketing.map(t => t.price)) %></span>
+                        </div> -->
+
+                                        <div style="display: grid; gap: 0.75rem; margin-bottom: 2rem;">
+                                            <% event.ticketing.forEach(tier=> {
+                                                let available = tier.availableSeats - (tier.bookedSeats || 0);
+                                                %>
+                                                <div
+                                                    style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: rgba(255,255,255,0.03); border-radius: 12px; border: 1px solid var(--border); transition: var(--transition);">
+                                                    <div>
+                                                        <div
+                                                            style="font-weight: 600; font-size: 0.95rem; color: var(--text-main);">
+                                                            <%= tier.type %>
+                                                        </div>
+                                                        <div
+                                                            style="font-size: 0.75rem; color: <%= available < 10 ? 'var(--primary)' : 'var(--text-dim)' %>;">
+                                                            <i class="fa fa-ticket-alt"></i>
+                                                            <%= available> 0 ? available + ' seats left' : 'Sold Out' %>
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                        style="font-weight: 700; font-size: 1.1rem; color: var(--primary);">
+                                                        ₹<%= tier.price %>
+                                                    </div>
+                                                </div>
+                                                <% }) %>
+                                        </div>
+
+                                        <div style="display: grid; gap: 1rem;">
+                                            <a href="/user/booking/<%= event._id %>" class="btn btn-primary"
+                                                style="width: 100%;">Book Ticket Now</a>
+                                            <button class="btn btn-outline" style="width: 100%;"><i
+                                                    class="fa fa-heart"></i> Add to
+                                                Wishlist</button>
+                                        </div>
+
+                                        <hr style="margin: 2rem 0; border: 0; border-top: 1px solid var(--border);">
+
+                                        <h4 style="margin-bottom: 1rem;">Organizer</h4>
+                                        <div style="display: flex; align-items: center; gap: 1rem;">
+                                            <div
+                                                style="width: 50px; height: 50px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1.2rem;">
+                                                <%= event.organizerId.organizationName.charAt(0).toUpperCase() %>
+                                            </div>
+                                            <div>
+                                                <div style="font-weight: 600;">
+                                                    <%= event.organizerId.organizationName %>
+                                                </div>
+                                                <div style="font-size: 0.75rem; color: var(--text-dim);">
+                                                    <%= event.organizerId.industryCategory %>
+                                                </div>
+                                            </div>
+                                        </div>
                                 </div>
                             </div>
-                            <p style="color: var(--text-muted); line-height: 1.6;">Great atmosphere and the hors
-                                d'oeuvres were delicious. Only wish it started slightly earlier, but otherwise a
-                                fantastic night out.</p>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
 
-    <!-- Footer same as index -->
-    <%- include('../partials/footer-scripts') %>
-</body>
+                        <!-- Comments Section -->
+                        <div class="container animate" style="margin-top: 6rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.5rem;">
+                                <h2 style="margin: 0;">Attendee <span class="text-gradient">Reviews</span></h2>
+                                <div style="background: rgba(255,255,255,0.05); padding: 0.5rem 1.25rem; border-radius: 50px; border: 1px solid var(--border); display: flex; align-items: center; gap: 0.25rem;">
+                                    <span style="color: #f1c40f;"><i class="fa fa-star"></i></span>
+                                    <span style="font-weight: 700; color: white;"><%= reviews.length > 0 ? (reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length).toFixed(1) : '0.0' %></span>
+                                    <span style="color: var(--text-dim); font-size: 0.8rem; margin-left: 0.25rem;">(<%= reviews.length %> reviews)</span>
+                                </div>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 4rem;">
+                                <!-- Comment Form -->
+                                <div class="card glass" style="padding: 2.5rem; height: fit-content;">
+                                    <% if (user) { %>
+                                        <h3 style="margin-bottom: 1.5rem;">Leave a Review</h3>
+                                        <form action="/events/<%= event._id %>/review" method="POST" id="reviewForm" class="ajax-form">
+                                            <div class="form-group">
+                                                <label class="label">Your Rating</label>
+                                                <div id="starContainer" style="display: flex; gap: 0.5rem; color: #f1c40f; font-size: 1.5rem; margin-bottom: 1.5rem; cursor: pointer;">
+                                                    <input type="hidden" name="rating" id="ratingInput" value="5">
+                                                    <i class="fa fa-star star-btn" data-val="1"></i>
+                                                    <i class="fa fa-star star-btn" data-val="2"></i>
+                                                    <i class="fa fa-star star-btn" data-val="3"></i>
+                                                    <i class="fa fa-star star-btn" data-val="4"></i>
+                                                    <i class="fa fa-star star-btn" data-val="5"></i>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="label">Your Comment</label>
+                                                <textarea name="comment" class="input glass-dark" style="min-height: 120px; resize: none; color: white;"
+                                                    placeholder="Share your experience..." required></textarea>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary glow-primary"
+                                                style="width: 100%; margin-top: 1.5rem;">
+                                                <i class="fa fa-paper-plane" style="margin-right: 0.5rem;"></i> Post Review
+                                            </button>
+                                        </form>
+
+                                        <script>
+                                            document.addEventListener('DOMContentLoaded', function() {
+                                                const stars = document.querySelectorAll('.star-btn');
+                                                const input = document.getElementById('ratingInput');
+                                                
+                                                stars.forEach(star => {
+                                                    star.addEventListener('click', function() {
+                                                        const val = this.getAttribute('data-val');
+                                                        input.value = val;
+                                                        updateStars(val);
+                                                    });
+                                                });
+                                                
+                                                function updateStars(val) {
+                                                    stars.forEach(star => {
+                                                        if (star.getAttribute('data-val') <= val) {
+                                                            star.classList.remove('fa-regular');
+                                                            star.classList.add('fa-star');
+                                                        } else {
+                                                            star.classList.remove('fa-star');
+                                                            star.classList.add('fa-regular');
+                                                        }
+                                                    });
+                                                }
+                                                
+                                                updateStars(5); // Default
+                                            });
+                                        </script>
+                                    <% } else { %>
+                                        <div style="text-align: center; padding: 2rem 1rem;">
+                                            <div style="width: 60px; height: 60px; background: rgba(255,255,255,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
+                                                <i class="fa fa-lock" style="color: var(--primary); font-size: 1.5rem;"></i>
+                                            </div>
+                                            <h3 style="font-size: 1.25rem; margin-bottom: 0.75rem;">Login to Review</h3>
+                                            <p style="color: var(--text-dim); font-size: 0.9rem; margin-bottom: 1.5rem;">Only registered users can share their experience.</p>
+                                            <a href="/user/login" class="btn btn-outline" style="width: 100%;">Sign In Now</a>
+                                        </div>
+                                    <% } %>
+                                </div>
+
+                                <!-- Comments List -->
+                                <div style="display: grid; gap: 1.5rem;">
+                                    <% if (reviews && reviews.length > 0) { %>
+                                        <% reviews.forEach((review, index) => { %>
+                                            <div class="card glass animate" style="padding: 2rem; border: 1px solid var(--border);">
+                                                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem;">
+                                                    <div style="display: flex; gap: 1rem; align-items: center;">
+                                                        <div style="width: 48px; height: 48px; background: #222; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border); overflow: hidden;">
+                                                            <% if (review.user && review.user.avatar) { %>
+                                                                <img src="<%= review.user.avatar %>" style="width: 100%; height: 100%; object-fit: cover;">
+                                                            <% } else { %>
+                                                                <i class="fa fa-user" style="color: var(--primary);"></i>
+                                                            <% } %>
+                                                        </div>
+                                                        <div>
+                                                            <div style="font-weight: 700; color: white;"><%= review.user ? review.user.name : 'Verified Attendee' %></div>
+                                                            <div style="font-size: 0.75rem; color: var(--text-dim); margin-top: 2px;">
+                                                                <i class="fa fa-calendar-alt" style="margin-right: 4px;"></i>
+                                                                <%= new Date(review.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) %>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div style="color: #f1c40f; font-size: 0.85rem; background: rgba(241, 196, 15, 0.05); padding: 0.35rem 0.75rem; border-radius: 50px; border: 1px solid rgba(241, 196, 15, 0.2); display: flex; align-items: center; gap: 0.75rem;">
+                                                        <div>
+                                                            <% for(let i=1; i<=5; i++) { %>
+                                                                <i class="fa<%= i <= review.rating ? 's' : '-regular' %> fa-star"></i>
+                                                            <% } %>
+                                                        </div>
+                                                        <% if (user && review.user && review.user._id.toString() === user._id.toString()) { %>
+                                                            <button onclick="confirmDeleteReview('<%= review._id %>')" 
+                                                                style="background: none; border: none; color: var(--primary); cursor: pointer; padding: 0; font-size: 1rem; margin-left: 0.5rem; transition: transform 0.2s;"
+                                                                onmouseover="this.style.transform='scale(1.2)'"
+                                                                onmouseout="this.style.transform='scale(1)'"
+                                                                title="Delete Review">
+                                                                <i class="fa fa-trash-alt"></i>
+                                                            </button>
+                                                        <% } %>
+                                                    </div>
+                                                </div>
+                                                <p style="color: rgba(255,255,255,0.8); line-height: 1.7; font-size: 0.95rem; font-style: italic;">"<%= review.comment %>"</p>
+                                            </div>
+                                        <% }) %>
+                                    <% } else { %>
+                                        <div style="text-align: center; padding: 5rem 2rem; background: rgba(255,255,255,0.02); border-radius: var(--radius-lg); border: 1px dashed var(--border);">
+                                            <i class="fa-regular fa-comments" style="font-size: 4rem; color: var(--text-dim); margin-bottom: 1.5rem;"></i>
+                                            <h3 style="color: var(--text-dim);">No reviews yet</h3>
+                                            <p style="color: var(--text-dim); margin-top: 0.5rem;">Be the first to share your experience with the community!</p>
+                                        </div>
+                                    <% } %>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+            </main>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const reviewForm = document.getElementById('reviewForm');
+                    if (reviewForm) {
+                        reviewForm.addEventListener('ajax:success', () => {
+                            // Short delay to let toast be visible before reload
+                            setTimeout(() => {
+                                window.location.reload();
+                            }, 500);
+                        });
+                    }
+                });
+
+                async function confirmDeleteReview(reviewId) {
+                    if (typeof window.submitFormAjax === 'function') {
+                        await window.submitFormAjax({
+                            action: `/review/${reviewId}`,
+                            method: 'DELETE',
+                            confirm: {
+                                title: 'Delete Review?',
+                                message: 'This action cannot be undone. Are you sure you want to remove your feedback?',
+                                type: 'danger',
+                                confirmText: 'Yes, Delete',
+                                cancelText: 'Cancel'
+                            }
+                        });
+                        // Since custom trigger doesn't fire ajax:success on element, we reload manually here
+                        window.location.reload();
+                    }
+                }
+            </script>
+
+            <!-- Footer same as index -->
+            <%- include('../partials/footer-scripts') %>
+
+                <!-- Leaflet JS for Map -->
+                <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+                <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const lat = <%= event.venueLocation.latitude %>;
+                        const lng = <%= event.venueLocation.longitude %>;
+                        const address = "<%= event.venueLocation.address %>";
+
+                        const map = L.map('eventMap').setView([lat, lng], 15);
+
+                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                        }).addTo(map);
+
+                        L.marker([lat, lng]).addTo(map)
+                            .bindPopup(`<b><%= event.title %></b><br>${address}`)
+                            .openPopup();
+                    });
+                </script>
+    </body>
 
 </html>

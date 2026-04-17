@@ -12,8 +12,8 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// Configure Multer Storage for Cloudinary
-const storage = new CloudinaryStorage({
+// --- 1. Avatar (Profile Image) Storage ---
+const avatarStorage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: "eventhub/avatars",
@@ -22,6 +22,17 @@ const storage = new CloudinaryStorage({
   },
 });
 
-const upload = multer({ storage: storage });
+// --- 2. Event Banner Storage ---
+const bannerStorage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "eventhub/banners",
+    allowed_formats: ["jpg", "jpeg", "png", "webp"],
+    // Banners are wider, so we use a different transformation limit
+    transformation: [{ width: 1200, height: 600,crop: "limit" }],
+  },
+});
 
-export default upload;
+// Create and export the specific upload middlewares
+export const uploadAvatar = multer({ storage: avatarStorage });
+export const uploadBanner = multer({ storage: bannerStorage });

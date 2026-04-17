@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <%- include('../partials/head', { title: 'Create Event' }) %>
@@ -14,7 +14,9 @@
                         <h1 style="font-size: 1.8rem; margin-bottom: 2.5rem;">Launch a New <span
                                 class="text-gradient">Experience</span></h1>
 
-                        <form action="create-event" method="post">
+                        <form action="/organizer/event/create" method="post" id="createEventForm"
+                            class="needs-validation" enctype="multipart/form-data">
+                            <input type="hidden" name="status" id="eventStatus" value="Pending">
                             <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2.5rem;">
 
                                 <!-- Form Main Body -->
@@ -25,27 +27,36 @@
                                             Basic Information</h3>
                                         <div class="form-group">
                                             <label class="label">Event Title</label>
-                                            <input type="text" class="input" placeholder="e.g. Summer Jazz Night">
+                                            <input type="text" name="title" class="input"
+                                                placeholder="e.g. Summer Jazz Night" required minlength="3"
+                                                maxlength="100">
                                         </div>
                                         <div class="form-group">
                                             <label class="label">Event Description</label>
-                                            <textarea class="input" rows="6"
-                                                placeholder="Describe your event to atttract attendees..."></textarea>
+                                            <textarea class="input" name="description" rows="6"
+                                                placeholder="Describe your event to atttract attendees..." required
+                                                minlength="20" maxlength="2000"></textarea>
                                         </div>
                                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
                                             <div class="form-group">
                                                 <label class="label">Category</label>
-                                                <select class="input">
-                                                    <option>Music</option>
-                                                    <option>Technology</option>
-                                                    <option>Art</option>
-                                                    <option>Business</option>
+                                                <select class="input" name="category" required>
+                                                    <option value="" disabled selected> ----Select Categories---- </option>
+                                                    <% if (!category || category.length === 0) { %> <option value="No Category Found" disabled>No Category Found</option>
+                                                        <% } else { %>
+                                                            <% category.forEach(cat => { %>
+                                                                <option value="<%= cat.name %>">
+                                                                    <%= cat.name %>
+                                                                </option>
+                                                            <% }) %>
+                                                        <% } %>
                                                 </select>
                                             </div>
                                             <div class="form-group">
                                                 <label class="label" style="color: #f0f0f0;">Venue Location</label>
                                                 <input type="text" id="locationInput" class="input"
-                                                    placeholder="Click 'Select Venue' to choose location..." readonly style="color: #000000;">
+                                                    placeholder="Click 'Select Venue' to choose location..." readonly
+                                                    style="color: #000000;">
                                                 <input type="hidden" name="latitude" id="latitude">
                                                 <input type="hidden" name="longitude" id="longitude">
                                                 <input type="hidden" name="address" id="address">
@@ -94,21 +105,21 @@
                                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
                                             <div class="form-group">
                                                 <label class="label">Start Date</label>
-                                                <input type="date" class="input">
+                                                <input type="date" name="startDate" class="input" required>
                                             </div>
                                             <div class="form-group">
                                                 <label class="label">Start Time</label>
-                                                <input type="time" class="input">
+                                                <input type="time" name="startTime" class="input" required>
                                             </div>
                                         </div>
                                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
                                             <div class="form-group">
                                                 <label class="label">End Date</label>
-                                                <input type="date" class="input">
+                                                <input type="date" name="endDate" class="input" required>
                                             </div>
                                             <div class="form-group">
                                                 <label class="label">End Time</label>
-                                                <input type="time" class="input">
+                                                <input type="time" name="endTime" class="input" required>
                                             </div>
                                         </div>
                                     </div>
@@ -117,25 +128,47 @@
                                         <div
                                             style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem;">
                                             <h3 style="margin-bottom: 0;">Ticketing</h3>
-                                            <button type="button" class="btn btn-primary"
+                                            <button type="button" id="addTicketBtn" class="btn btn-primary"
                                                 style="padding: 0.5rem; width: 32px; height: 32px; border-radius: 50%;"
                                                 title="Add Ticket Type">
                                                 <i class="fa fa-plus" style="font-size: 0.8rem;"></i>
                                             </button>
                                         </div>
-                                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem;">
-                                            <div class="form-group">
-                                                <label class="label">Ticket Price ($)</label>
-                                                <input type="number" class="input" placeholder="0.00">
+
+                                        <div id="ticketsContainer">
+
+                                            <div class="ticket-row"
+                                                style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr auto; gap: 1rem; margin-bottom: 1.5rem; align-items: end;">
+                                                <div class="form-group" style="margin: 0;">
+                                                    <label class="label">Ticket Name</label>
+                                                    <input type="text" class="input" name="tickets[0][name]"
+                                                        placeholder="e.g. General Admission" required minlength="2"
+                                                        maxlength="50">
+                                                </div>
+                                                <div class="form-group" style="margin: 0;">
+                                                    <label class="label">Price (₹)</label>
+                                                    <input type="number" step="0.01" class="input"
+                                                        name="tickets[0][price]" placeholder="0.00" required min="0">
+                                                </div>
+                                                <div class="form-group" style="margin: 0;">
+                                                    <label class="label">Available Seats</label>
+                                                    <input type="number" class="input" name="tickets[0][availableSeats]"
+                                                        placeholder="100" required min="1">
+                                                </div>
+                                                <div class="form-group" style="margin: 0;">
+                                                    <label class="label">Max per User</label>
+                                                    <input type="number" class="input" name="tickets[0][maxPerUser]"
+                                                        value="5" required min="1">
+                                                </div>
+                                                <div class="form-group" style="margin: 0;">
+                                                    <button type="button" class="btn btn-outline"
+                                                        style="padding: 0.5rem; width: 42px; height: 42px; color: var(--text-dim);"
+                                                        disabled>
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                </div>
                                             </div>
-                                            <div class="form-group">
-                                                <label class="label">Available Seats</label>
-                                                <input type="number" class="input" placeholder="100">
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="label">Max per User</label>
-                                                <input type="number" class="input" value="5">
-                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
@@ -144,24 +177,37 @@
                                 <div style="display: grid; gap: 2rem; align-content: flex-start;">
                                     <div class="card" style="padding: 2rem;">
                                         <h4 style="margin-bottom: 1.5rem;">Event Banner</h4>
-                                        <div
-                                            style="height: 180px; background: var(--bg-surface); border: 2px dashed var(--border); border-radius: var(--radius-md); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; cursor: pointer; transition: var(--transition);">
-                                            <i class="fa fa-cloud-upload-alt"
-                                                style="font-size: 2rem; color: var(--primary);"></i>
-                                            <span style="font-size: 0.85rem; color: var(--text-muted);">Upload Image
-                                                (1200x600)</span>
+
+                                        <div id="bannerUploadBox"
+                                            style="position: relative; height: 180px; background: var(--bg-surface); border: 2px dashed var(--border); border-radius: var(--radius-md); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; cursor: pointer; transition: var(--transition); overflow: hidden;">
+
+                                            <input type="file" name="banner" id="bannerInput"
+                                                accept="image/jpeg, image/png"
+                                                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; z-index: 2;">
+
+                                            <div id="bannerPlaceholder"
+                                                style="text-align: center; pointer-events: none;">
+                                                <i class="fa fa-cloud-upload-alt"
+                                                    style="font-size: 2rem; color: var(--primary);"></i>
+                                                <span
+                                                    style="display: block; font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">Upload
+                                                    Image (1200x600)</span>
+                                            </div>
+
+                                            <img id="bannerPreview" src="" alt="Banner Preview"
+                                                style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;">
                                         </div>
-                                        <p style="font-size: 0.75rem; color: var(--text-dim); margin-top: 1rem;">
-                                            JPG,
-                                            PNG up to 5MB
-                                        </p>
+                                        <p style="font-size: 0.75rem; color: var(--text-dim); margin-top: 1rem;">JPG,
+                                            PNG up to 5MB</p>
                                     </div>
 
                                     <div class="card" style="padding: 2rem;">
                                         <h4 style="margin-bottom: 1.5rem;">Tags</h4>
                                         <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
-                                            <input type="text" id="tagInput" class="input" placeholder="e.g. trending, outdoor..." style="flex: 1;">
-                                            <button type="button" id="addTagBtn" class="btn btn-primary" style="padding: 0.5rem 1rem;">
+                                            <input type="text" id="tagInput" class="input"
+                                                placeholder="e.g. trending, outdoor..." style="flex: 1;">
+                                            <button type="button" id="addTagBtn" class="btn btn-primary"
+                                                style="padding: 0.5rem 1rem;">
                                                 <i class="fa fa-plus"></i>
                                             </button>
                                         </div>
@@ -171,28 +217,43 @@
                                     </div>
 
                                     <div class="card" style="padding: 2rem;">
-                                        <h4 style="margin-bottom: 1.5rem;">Visibility</h4>
-                                        <div style="display: flex; flex-direction: column; gap: 1rem;">
+                                        <h4 style="margin-bottom: 1.5rem;">Visibility & Promotion</h4>
+                                        <div style="display: flex; flex-direction: column; gap: 1.25rem;">
                                             <label
-                                                style="display: flex; align-items: center; gap: 1rem; cursor: pointer; color: #000000;">
-                                                <input type="radio" name="visibility" checked
+                                                style="display: flex; align-items: center; gap: 1rem; cursor: pointer; color: #FFFFFF;">
+                                                <input type="radio" value="Public" name="visibility" checked
                                                     style="accent-color: var(--primary); width: 18px; height: 18px;">
-                                                <span style="font-size: 0.9rem;">Public</span>
+                                                <div style="display: flex; flex-direction: column;">
+                                                    <span style="font-size: 0.95rem; font-weight: 600;">Public</span>
+                                                    <span style="font-size: 0.75rem; color: var(--text-dim);">Visible to all attendees</span>
+                                                </div>
                                             </label>
                                             <label
-                                                style="display: flex; align-items: center; gap: 1rem; cursor: pointer; color: #000000;">
-                                                <input type="radio" name="visibility"
+                                                style="display: flex; align-items: center; gap: 1rem; cursor: pointer; color: #FFFFFF;">
+                                                <input type="radio" value="Private" name="visibility"
                                                     style="accent-color: var(--primary); width: 18px; height: 18px;">
-                                                <span style="font-size: 0.9rem;">Private (Link only)</span>
+                                                <div style="display: flex; flex-direction: column;">
+                                                    <span style="font-size: 0.95rem; font-weight: 600;">Private</span>
+                                                    <span style="font-size: 0.75rem; color: var(--text-dim);">Only accessible via direct link</span>
+                                                </div>
+                                            </label>
+
+                                            <hr style="border: 0; border-top: 1px solid var(--border); margin: 0.5rem 0;">
+
+                                            <label style="display: flex; align-items: center; gap: 1rem; cursor: pointer; color: #FFFFFF; padding: 0.75rem; background: rgba(230, 57, 70, 0.05); border-radius: 12px; border: 1px solid rgba(230, 57, 70, 0.1);">
+                                                <input type="checkbox" name="isFeatured" value="true" style="accent-color: var(--primary); width: 20px; height: 20px;">
+                                                <div style="display: flex; flex-direction: column;">
+                                                    <span style="font-size: 0.95rem; font-weight: 700; color: var(--primary);">Feature this Event</span>
+                                                    <span style="font-size: 0.75rem; color: var(--text-muted);">Request to be shown in the home page's featured section</span>
+                                                </div>
                                             </label>
                                         </div>
                                     </div>
 
                                     <div style="display: grid; gap: 1rem; margin-top: 2rem;">
-                                        <button type="submit" class="btn btn-primary" style="padding: 1rem;"><i
+                                        <button type="submit" class="btn btn-primary" onclick="document.getElementById('eventStatus').value='Pending'" style="padding: 1rem;"><i
                                                 class="fa fa-paper-plane"></i> Submit for Approval</button>
-                                        <button type="button" class="btn btn-outline" style="padding: 1rem;">Save
-                                            Draft</button>
+                                        <button type="submit" class="btn btn-outline" onclick="document.getElementById('eventStatus').value='Draft'" formnovalidate style="padding: 1rem;"><i class="fa fa-save"></i> Save as Draft</button>
                                     </div>
                                 </div>
 
@@ -244,7 +305,7 @@
                     if (selectedLocation) {
                         // Use address if available, otherwise use coordinates
                         const displayAddress = selectedLocation.address || `Location (${selectedLocation.lat.toFixed(4)}, ${selectedLocation.lng.toFixed(4)})`;
-                        
+
                         document.getElementById('locationInput').value = displayAddress;
                         document.getElementById('latitude').value = selectedLocation.lat;
                         document.getElementById('longitude').value = selectedLocation.lng;
@@ -355,7 +416,7 @@
 
                 function addTag() {
                     const tagValue = tagInput.value.trim();
-                    
+
                     if (!tagValue) {
                         alert('Please enter a tag');
                         return;
@@ -407,9 +468,70 @@
                         addTag();
                     }
                 });
-            
+
             </script>
+            <script>
+                // --- TICKETING DYNAMIC ROWS ---
+                let ticketIndex = 1; // Start at 1 since index 0 is hardcoded in the HTML
+
+                document.getElementById('addTicketBtn').addEventListener('click', function () {
+                    const container = document.getElementById('ticketsContainer');
+
+                    // Create a new div for the row
+                    const newRow = document.createElement('div');
+                    newRow.className = 'ticket-row animate'; // Optional: add an animation class
+                    newRow.style.cssText = 'display: grid; grid-template-columns: 2fr 1fr 1fr 1fr auto; gap: 1rem; margin-bottom: 1.5rem; align-items: end;';
+
+                    // Inject the inputs with the incremented index
+                    newRow.innerHTML = `
+    <div class="form-group" style="margin: 0;">
+        <label class="label">Ticket Name</label>
+        <input type="text" class="input" name="tickets[${ticketIndex}][name]" placeholder="e.g. VIP Pass" required minlength="2" maxlength="50">
+    </div>
+    <div class="form-group" style="margin: 0;">
+        <label class="label">Price (₹)</label>
+        <input type="number" step="0.01" class="input" name="tickets[${ticketIndex}][price]" placeholder="0.00" required min="0">
+    </div>
+    <div class="form-group" style="margin: 0;">
+        <label class="label">Available Seats</label>
+        <input type="number" class="input" name="tickets[${ticketIndex}][availableSeats]" placeholder="50" required min="1">
+    </div>
+    <div class="form-group" style="margin: 0;">
+        <label class="label">Max per User</label>
+        <input type="number" class="input" name="tickets[${ticketIndex}][maxPerUser]" value="5" required min="1">
+    </div>
+    <div class="form-group" style="margin: 0;">
+        <button type="button" class="btn btn-outline" style="padding: 0.5rem; width: 42px; height: 42px; color: #e74c3c; cursor: pointer;" onclick="this.closest('.ticket-row').remove()">
+            <i class="fa fa-trash"></i>
+        </button>
+    </div>
+`;
+
+                    container.appendChild(newRow);
+                    ticketIndex++; // Increase index for the next ticket
+                });
+            </script>
+
+            <script>
+                document.getElementById('bannerInput').addEventListener('change', function (event) {
+                    const file = event.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function (e) {
+                            const preview = document.getElementById('bannerPreview');
+                            const placeholder = document.getElementById('bannerPlaceholder');
+
+                            preview.src = e.target.result;
+                            preview.style.display = 'block'; // Show the image
+                            placeholder.style.display = 'none'; // Hide the cloud icon
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            </script>
+
             <%- include('../partials/footer-scripts') %>
     </body>
+
 
 </html>
