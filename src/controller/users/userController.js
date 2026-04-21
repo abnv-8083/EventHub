@@ -63,7 +63,8 @@ export const getBookingPage = async (req, res) => {
 
 export const postReview = async (req, res) => {
     try {
-        const { eventId, rating, comment } = req.body;
+        const { rating, comment } = req.body;
+        const eventId = req.params.id;
         const userId = req.session.user._id;
 
         await eventServices.postReview({
@@ -135,7 +136,7 @@ export const getProfile = async (req, res) => {
         const cities = City.getCitiesOfState(cityConst.CITY_COUNTRY, cityConst.CITY_STATE);
         const sortedCity = cities.sort((a,b)=>a.name.localeCompare(b.name));
 
-        res.render('public/profile', {
+        res.render('user/profile', {
             user: userDb,
             sortedCity
         });
@@ -186,7 +187,7 @@ export const updateAvatar = async (req, res) => {
 }
 
 export const getEditEmail = async (req, res) => {
-    res.render('public/edit-email', { user: req.session.user });
+    res.render('user/edit-email', { user: req.session.user });
 }
 
 export const editEmail = async (req, res) => {
@@ -207,7 +208,7 @@ export const editEmail = async (req, res) => {
 }
 
 export const getEditPassword = async (req, res) => {
-    res.render('public/edit-password', { user: req.session.user });
+    res.render('user/edit-password', { user: req.session.user });
 }
 
 export const editPassword = async (req, res) => {

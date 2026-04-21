@@ -258,9 +258,9 @@
                 let map;
                 let marker;
                 let selectedLocation = {
-                    lat: <%= event.venueLocation.latitude %>,
-                    lng: <%= event.venueLocation.longitude %>,
-                    address: "<%= event.venueLocation.address %>"
+                    lat: <%= event.venueLocation.latitude || 10.8505 %>,
+                    lng: <%= event.venueLocation.longitude || 76.2711 %>,
+                    address: `<%- event.venueLocation.address || "" %>`
                 };
 
                 document.getElementById('selectVenueBtn').addEventListener('click', function () {

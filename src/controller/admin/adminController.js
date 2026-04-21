@@ -4,8 +4,6 @@ import { sendResponse } from "../../utils/responseHandler.js"
 
 // ─── EVENTS ───────────────────────────────────────────────────────────
 
-// export const getEventsList = async (req, res) => ... (Removed redundant oversight page)
-
 
 export const getEventView = async (req, res) => {
     try {
@@ -240,6 +238,13 @@ export const getUsersList = async (req, res) => {
         const search = req.query.search || '';
         const limit = 10;
         const { users, totalPages, currentPage } = await adminService.fetchUsersList(page, limit, search);
+        const filterUser = null
+        console.log(users)
+        // for(let i =0;i<users.length;i++){
+        //     if(users[i].name.includes('D')){
+        //         filterUser = users[i]
+        //     }
+        // }
         res.render('admin/users', { users, totalPages, currentPage, search });
     } catch (error) {
         console.error("Error fetching users:", error);
@@ -303,8 +308,8 @@ export const getApprovalsDashboard = async (req, res) => {
         const filters = { search, category, sort };
 
         const { pendingEvents, pendingOrganizers, categories, total, totalPages } = await adminService.fetchApprovalsDashboardData(filters, currentPage);
-        res.render('admin/approvals', { 
-            pendingEvents, 
+        res.render('admin/approvals', {
+            pendingEvents,
             pendingOrganizers,
             categories,
             total,
@@ -316,12 +321,12 @@ export const getApprovalsDashboard = async (req, res) => {
         });
     } catch (error) {
         console.error("Error loading approvals dashboard:", error);
-        res.render('admin/approvals', { 
-            pendingEvents: [], 
-            pendingOrganizers: [], 
+        res.render('admin/approvals', {
+            pendingEvents: [],
+            pendingOrganizers: [],
             categories: [],
             currentSearch: '',
             currentCategory: ''
         });
     }
-}
+}
