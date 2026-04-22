@@ -23,12 +23,18 @@
                                     style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">
                                     <i class="fa fa-edit" style="margin-right: 0.4rem;"></i> Edit Event
                                 </a>
-                                <% if(event.status==='Published' ) { %>
+                                <% if(['Approved', 'Published'].includes(event.status)) { %>
+                                    <a href="/organizer/event/<%= event._id %>/payment" class="btn btn-primary"
+                                        style="padding: 0.6rem 1.2rem; font-size: 0.9rem; background: linear-gradient(135deg, #27ae60, #2ecc71); border: none; display: flex; align-items: center; gap: 0.4rem;">
+                                        <i class="fa fa-wallet"></i> Payments
+                                    </a>
+                                <% } %>
+                                <% if(event.status==='Published') { %>
                                     <button class="btn btn-primary"
                                         style="padding: 0.6rem 1.2rem; font-size: 0.9rem; background: #e74c3c;">
                                         <i class="fa fa-ban" style="margin-right: 0.4rem;"></i> Cancel Event
                                     </button>
-                                    <% } %>
+                                <% } %>
                             </div>
                         </div>
 

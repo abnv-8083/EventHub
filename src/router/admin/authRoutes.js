@@ -97,5 +97,9 @@ router.route('/categories/delete/:id')
 router.route('/categories/edit/:id')
     .patch(adminController.postEditCategory)
 
+router.get('/payments', adminController.getPaymentRequests)
+router.patch('/payments/:id/approve', adminController.approvePayment)
+router.patch('/payments/:id/reject', adminController.rejectPayment)
+
 
 export default router

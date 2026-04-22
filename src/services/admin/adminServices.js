@@ -4,6 +4,7 @@ import * as organizerQuery from "../../repositories/admin/organizerQueries.js"
 import * as userQuery from "../../repositories/admin/userQueries.js"
 import * as categoryQuery from "../../repositories/admin/categoriesQueries.js"
 import * as eventQuery from "../../repositories/admin/eventQueries.js"
+import * as adminPaymentRepo from '../../repositories/admin/paymentQueries.js';
 import AppError from "../../utils/AppError.js"
 import HTTP_STATUS from "../../constants/statusCode.js"
 import { sendOrganizerCredentials } from "../../constants/sendEmail.js"
@@ -345,4 +346,19 @@ export const deleteUserAccount = async (id) => {
     } catch (error) {
         throw error;
     }
+}
+
+export const fetchPaymentRequests = async (status = 'Pending') => {
+    return await adminPaymentRepo.fetchPaymentsByStatus(status);
+}
+export const approvePayoutRequest = async (id, utr, adminId) => {
+    const result = await adminPaymentRepo.approvePaymentById(id, utr, adminId);
+    if (!result) throw new AppError('Payment request not found.', HTTP_STATUS.NOT_FOUND);
+    return result;
+}
+export const rejectPayoutRequest = async (id, reason, adminId) => {
+    if (!reason) throw new AppError('Rejection reason is required.', HTTP_STATUS.BAD_REQUEST);
+    const result = await adminPaymentRepo.rejectPaymentById(id, reason, adminId);
+    if (!result) throw new AppError('Payment request not found.', HTTP_STATUS.NOT_FOUND);
+    return result;
 }

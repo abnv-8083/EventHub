@@ -27,6 +27,8 @@ router.route('/event/create')
 
 router.get('/event/:id/view', organizerController.getEventDetails)
 router.get('/event/:id/reviews', organizerController.getEventReviews)
+router.get('/event/:id/payment', organizerController.getEventPayment)
+router.post('/event/:id/payment/payout', organizerController.postEventPayout)
 
 router.route('/event/:id/edit')
     .get(organizerController.getEditEvent)

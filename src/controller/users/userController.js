@@ -264,6 +264,51 @@ export const postRetryOrganizer = async (req, res) => {
     }
 }
 
+export const postCheckout = async (req, res) => {
+    try {
+        const userId    = req.session.user._id;
+        const { eventId, tickets } = req.body;
+        const selection = JSON.parse(tickets);
+        const { order, booking } = await userServices.createCheckoutOrder(userId, eventId, selection);
+        return sendResponse(res, HTTP_STATUS.OK, true, 'Order created', {
+            orderId:   order.id,
+            amount:    order.amount,
+            currency:  'INR',
+            keyId:     process.env.RAZORPAY_KEY_ID,
+            bookingId: booking._id,
+            userName:  req.session.user.name,
+            userEmail: req.session.user.email
+        });
+    } catch (error) {
+        return sendResponse(res, error.statusCode || HTTP_STATUS.INTERNAL_SERVER_ERROR, false, error.message);
+    }
+};
+
+export const verifyPayment = async (req, res) => {
+    try {
+        const { razorpay_order_id, razorpay_payment_id, razorpay_signature, bookingId } = req.body;
+
+        await userServices.verifyAndCompletePayment(
+            razorpay_order_id, razorpay_payment_id, razorpay_signature, bookingId
+        );
+
+        return sendResponse(res, HTTP_STATUS.OK, true, 'Payment successful!',{ bookingId });
+    } catch (error) {
+        return sendResponse(res, error.statusCode || HTTP_STATUS.INTERNAL_SERVER_ERROR, false, error.message);
+    }
+};
+
+export const getPaymentSuccess = async (req, res) => {
+    try {
+        const booking = await userServices.getBookingWithEvent(req.params.id, req.session.user._id);
+        res.render('user/payment-success', { booking, user: req.session.user });
+    } catch (error) {
+        res.redirect('/');
+    }
+};
+
+
+
 // Static pages
 export const getAbout = (req, res) => {
     res.render('public/about', { user: req.session.user });

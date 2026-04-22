@@ -24,6 +24,11 @@ router.get('/booking/:id', isAuthenticated, userController.getBookingPage)
 router.post('/wishlist/toggle/:id', isAuthenticated, userController.toggleWishlist)
 router.get('/wishlist', isAuthenticated, userController.getWishlist)
 
+// Razorpay
+router.post('/checkout', isAuthenticated, userController.postCheckout)
+router.post('/verify-payment', isAuthenticated, userController.verifyPayment)
+router.get('/payment-success/:id', isAuthenticated, userController.getPaymentSuccess)
+
 
 export default router
 

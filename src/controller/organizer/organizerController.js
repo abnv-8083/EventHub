@@ -1,4 +1,5 @@
 import * as OrganizerService from '../../services/organizers/organizerService.js';
+import * as PaymentService from '../../services/organizers/paymentService.js';
 import * as organizerValidation from '../../validation/organizer/organizer.validation.js'
 import { sendResponse } from "../../utils/responseHandler.js";
 import HTTP_STATUS from "../../constants/statusCode.js";
@@ -226,3 +227,58 @@ export const getEventReviews = async (req, res) => {
         return sendResponse(res, HTTP_STATUS.INTERNAL_SERVER_ERROR, false, error.message);
     }
 }
+
+
+
+export const getEventPayment = async (req, res) => {
+    try {
+        const eventId = req.params.id;
+        const organizerId = req.session.user.organizerId;
+        // Service layer calls
+        const event = await OrganizerService.getEventById(eventId, organizerId);
+        const payoutHistory = await PaymentService.getEventPayoutHistory(eventId);
+        const transactions = await PaymentService.getEventTransactions(eventId);
+        
+        // Calculate total previously requested/approved payouts
+        const totalGross = event.totalRevenue || 0;
+        const totalFee = Math.round(totalGross * 0.05);
+        const totalNet = totalGross - totalFee;
+        const totalPayoutDone = payoutHistory
+            .filter(p => p.status !== 'Rejected')
+            .reduce((sum, p) => sum + p.netAmount, 0);
+        const availablePayout = Math.max(0, totalNet - totalPayoutDone);
+
+        // Find if there is currently a pending or approved request (for logic)
+        const activePayout = payoutHistory.find(p => p.status === 'Pending') || payoutHistory[0];
+
+        res.render('organizer/event-payment', { 
+            event, 
+            payoutHistory, 
+            payoutRequest: activePayout, 
+            transactions, 
+            totalPayoutDone,
+            availablePayout,
+            user: req.session.user 
+        });
+    } catch (error) {
+        res.redirect('/organizer/dashboard');
+    }
+};
+
+
+export const postEventPayout = async (req, res) => {
+    try {
+        const eventId     = req.params.id;
+        const organizerId = req.session.user.organizerId;
+        const { accountHolder, bankName, accountNumber, ifscCode, branchName, branchCity, notes } = req.body;
+        await PaymentService.submitPayoutRequest(
+            eventId,
+            organizerId,
+            { accountHolder, bankName, accountNumber, ifscCode, branchName, branchCity },
+            notes
+        );
+        return sendResponse(res, HTTP_STATUS.OK, true, 'Payout request submitted! Admin will process it shortly.');
+    } catch (error) {
+        return sendResponse(res, error.statusCode || HTTP_STATUS.INTERNAL_SERVER_ERROR, false, error.message);
+    }
+};

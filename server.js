@@ -59,9 +59,7 @@ app.use('/', ...withSession(appSession), checkBlocked, publicRouter)
 
 connectDB()
 app.listen(PORT, () => {
-    console.log(`Server is Running http://localhost:${PORT}`)
+    console.log(`Server is Running https://justly-mocha-preorder.ngrok-free.dev/`)
 })
 
 
-
-// Admin UI Updated

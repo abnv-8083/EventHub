@@ -330,3 +330,29 @@ export const getApprovalsDashboard = async (req, res) => {
         });
     }
 }
+
+export const getPaymentRequests = async (req, res) => {
+    try {
+        const payments = await adminService.fetchPaymentRequests(req.query.status || 'Pending');
+        res.render('admin/payments', { payments, currentStatus: req.query.status || 'Pending' });
+    } catch (error) {
+        console.error(error);
+        res.redirect('/admin/dashboard');
+    }
+};
+export const approvePayment = async (req, res) => {
+    try {
+        await adminService.approvePayoutRequest(req.params.id, req.body.utr, req.session.admin._id);
+        return sendResponse(res, HTTP_STATUS.OK, true, 'Payout approved.', { redirect: '/admin/payments' });
+    } catch (error) {
+        return sendResponse(res, error.statusCode || HTTP_STATUS.INTERNAL_SERVER_ERROR, false, error.message);
+    }
+};
+export const rejectPayment = async (req, res) => {
+    try {
+        await adminService.rejectPayoutRequest(req.params.id, req.body.reason, req.session.admin._id);
+        return sendResponse(res, HTTP_STATUS.OK, true, 'Payout rejected.', { redirect: '/admin/payments' });
+    } catch (error) {
+        return sendResponse(res, error.statusCode || HTTP_STATUS.INTERNAL_SERVER_ERROR, false, error.message);
+    }
+};

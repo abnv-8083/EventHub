@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../partials/head', { title: 'Payment Successful - EventHub' }) %>
+<body style="background:#000; color:#fff; min-height:100vh;">
+
+    <%- include('../partials/header') %>
+
+    <main style="padding-top:8rem; padding-bottom:6rem;">
+        <div class="container animate" style="max-width:720px; margin:0 auto;">
+
+            <!-- Success Animation -->
+            <div style="text-align:center; margin-bottom:3rem;">
+                <div style="width:90px; height:90px; background:rgba(46,204,113,0.12); border:2px solid rgba(46,204,113,0.4); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 1.5rem; animation: popIn 0.4s ease;">
+                    <i class="fa fa-check" style="font-size:2.2rem; color:#2ecc71;"></i>
+                </div>
+                <h1 style="font-size:2.2rem; font-weight:800; margin-bottom:0.5rem;">
+                    Payment <span class="text-gradient">Successful!</span>
+                </h1>
+                <p style="color:var(--text-muted); font-size:1rem;">
+                    Your tickets are confirmed. See you at the event! 🎉
+                </p>
+            </div>
+
+            <!-- Booking Card -->
+            <div class="card glass" style="padding:2rem; border:1px solid var(--border); margin-bottom:2rem;">
+
+                <!-- Event Info -->
+                <div style="display:flex; gap:1.25rem; align-items:center; padding-bottom:1.5rem; border-bottom:1px solid var(--border); margin-bottom:1.5rem;">
+                    <div style="width:72px; height:56px; border-radius:10px; overflow:hidden; border:1px solid var(--border); flex-shrink:0;">
+                        <img src="<%= booking.eventId.bannerImage.startsWith('http') ? booking.eventId.bannerImage : '/' + booking.eventId.bannerImage %>"
+                            style="width:100%; height:100%; object-fit:cover;" />
+                    </div>
+                    <div>
+                        <div style="font-weight:700; font-size:1.1rem; margin-bottom:0.2rem;"><%= booking.eventId.title %></div>
+                        <div style="font-size:0.82rem; color:var(--text-dim);">
+                            <i class="fa fa-calendar-alt" style="margin-right:0.4rem;"></i>
+                            <%= new Date(booking.eventId.startDate).toLocaleDateString('en-IN', { weekday:'long', day:'numeric', month:'long', year:'numeric' }) %>
+                            &nbsp;•&nbsp;
+                            <i class="fa fa-clock" style="margin-right:0.4rem;"></i><%= booking.eventId.startTime %>
+                        </div>
+                        <% if (booking.eventId.venueLocation?.name) { %>
+                        <div style="font-size:0.82rem; color:var(--text-dim); margin-top:0.2rem;">
+                            <i class="fa fa-map-marker-alt" style="margin-right:0.4rem;"></i><%= booking.eventId.venueLocation.name %>
+                        </div>
+                        <% } %>
+                    </div>
+                </div>
+
+                <!-- Tickets Table -->
+                <table style="width:100%; border-collapse:collapse; margin-bottom:1.5rem;">
+                    <thead>
+                        <tr style="background:rgba(255,255,255,0.03);">
+                            <th style="padding:0.75rem 1rem; text-align:left; font-size:0.72rem; text-transform:uppercase; letter-spacing:1px; color:var(--text-dim);">Ticket</th>
+                            <th style="padding:0.75rem; text-align:center; font-size:0.72rem; text-transform:uppercase; letter-spacing:1px; color:var(--text-dim);">Qty</th>
+                            <th style="padding:0.75rem; text-align:center; font-size:0.72rem; text-transform:uppercase; letter-spacing:1px; color:var(--text-dim);">Price</th>
+                            <th style="padding:0.75rem 1rem; text-align:right; font-size:0.72rem; text-transform:uppercase; letter-spacing:1px; color:var(--text-dim);">Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% booking.tickets.forEach(ticket => { %>
+                        <tr style="border-top:1px solid rgba(255,255,255,0.04);">
+                            <td style="padding:0.85rem 1rem; font-weight:600;"><%= ticket.ticketName %></td>
+                            <td style="padding:0.85rem; text-align:center; color:var(--text-muted);">× <%= ticket.quantity %></td>
+                            <td style="padding:0.85rem; text-align:center; color:var(--text-muted);">₹<%= ticket.pricePerTicket.toLocaleString('en-IN') %></td>
+                            <td style="padding:0.85rem 1rem; text-align:right; font-weight:600;">₹<%= ticket.subtotal.toLocaleString('en-IN') %></td>
+                        </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+
+                <!-- Totals -->
+                <div style="border-top:1px solid var(--border); padding-top:1.25rem; display:flex; flex-direction:column; gap:0.6rem;">
+                    <div style="display:flex; justify-content:space-between; font-size:0.88rem;">
+                        <span style="color:var(--text-muted);">Subtotal</span>
+                        <span>₹<%= booking.subtotal.toLocaleString('en-IN') %></span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; font-size:0.88rem;">
+                        <span style="color:var(--text-muted);">Platform Fee (5%)</span>
+                        <span>₹<%= booking.platformFee.toLocaleString('en-IN') %></span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; font-size:1.1rem; font-weight:800; padding-top:0.75rem; border-top:1px solid var(--border); margin-top:0.25rem;">
+                        <span>Total Paid</span>
+                        <span style="color:#2ecc71;">₹<%= booking.totalAmount.toLocaleString('en-IN') %></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- QR Code Card -->
+            <div class="card glass" style="padding:1.75rem 2rem; border:1px solid var(--border); margin-bottom:2rem; display:flex; align-items:center; gap:1.5rem;">
+                <div style="width:64px; height:64px; background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                    <i class="fa fa-qrcode" style="font-size:1.8rem; color:var(--text-dim);"></i>
+                </div>
+                <div>
+                    <div style="font-weight:700; margin-bottom:0.25rem;">Your Ticket ID</div>
+                    <div style="font-family:monospace; font-size:0.82rem; color:#2ecc71; word-break:break-all;"><%= booking.qrData %></div>
+                    <div style="font-size:0.75rem; color:var(--text-dim); margin-top:0.3rem;">Show this at the entrance for check-in</div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+                <a href="/user/bookings" class="btn btn-primary glow-primary"
+                    style="flex:1; padding:0.9rem; text-align:center; font-weight:700;">
+                    <i class="fa fa-ticket-alt" style="margin-right:0.5rem;"></i> View My Tickets
+                </a>
+                <a href="/events" class="btn btn-outline"
+                    style="flex:1; padding:0.9rem; text-align:center; font-weight:600;">
+                    <i class="fa fa-search" style="margin-right:0.5rem;"></i> Explore More Events
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <%- include('../partials/footer-scripts') %>
+
+    <style>
+        @keyframes popIn {
+            from { transform: scale(0.5); opacity: 0; }
+            to   { transform: scale(1);   opacity: 1; }
+        }
+    </style>
+
+</body>
+</html>

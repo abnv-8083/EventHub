@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', { title: 'Request Payout | ' + event.title }) %>
+
+    <body>
+
+        <%- include('../partials/header') %>
+
+            <div class="dashboard-layout">
+                <%- include('../partials/sidebar-organizer') %>
+
+                    <main class="dashboard-main animate">
+
+                        <!-- Navigation Header -->
+                        <div style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
+                            <a href="/organizer/event/<%= event._id %>/view"
+                                style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem;">
+                                <i class="fa fa-arrow-left" style="margin-right: 0.5rem;"></i> Back to Event
+                            </a>
+                            <span style="font-size: 0.85rem; color: var(--text-dim); background: rgba(39,174,96,0.12); border: 1px solid rgba(39,174,96,0.3); padding: 0.3rem 0.9rem; border-radius: 999px; color: #2ecc71;">
+                                <i class="fa fa-check-circle" style="margin-right: 0.4rem;"></i>
+                                Admin Approved
+                            </span>
+                        </div>
+
+                        <!-- Page Title -->
+                        <div style="margin-bottom: 2.5rem;">
+                            <h1 style="font-size: 1.8rem; margin-bottom: 0.4rem;">
+                                Payout <span class="text-gradient">Request</span>
+                            </h1>
+                            <p style="color: var(--text-muted); font-size: 0.95rem;">
+                                Request your earnings for <strong style="color: var(--text-primary);"><%= event.title %></strong>
+                            </p>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2.5rem;">
+
+                            <!-- LEFT: Form -->
+                            <div>
+                                <!-- Revenue Breakdown -->
+                                <div class="card" style="padding: 2rem; margin-bottom: 2rem;">
+                                    <h3 style="margin-bottom: 1.5rem; font-size: 1.1rem; display: flex; align-items: center; gap: 0.75rem;">
+                                        <i class="fa fa-chart-bar text-gradient"></i> Revenue Breakdown
+                                    </h3>
+                                    <table style="width: 100%; border-collapse: collapse;">
+                                        <thead>
+                                            <tr style="text-align: left; border-bottom: 1px solid var(--border);">
+                                                <th style="padding: 0.75rem 0; font-size: 0.8rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px;">Ticket Type</th>
+                                                <th style="padding: 0.75rem 1rem; font-size: 0.8rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; text-align: center;">Price</th>
+                                                <th style="padding: 0.75rem 1rem; font-size: 0.8rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; text-align: center;">Sold</th>
+                                                <th style="padding: 0.75rem 0; font-size: 0.8rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; text-align: right;">Subtotal</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% let grossRevenue = 0; %>
+                                            <% event.ticketing.forEach(ticket => { %>
+                                                <% const subtotal = (ticket.price || 0) * (ticket.bookedSeats || 0); %>
+                                                <% grossRevenue += subtotal; %>
+                                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.03);">
+                                                    <td style="padding: 1.1rem 0; font-weight: 600; color: #fff;"><%= ticket.name %></td>
+                                                    <td style="padding: 1.1rem; text-align: center; color: var(--text-muted);">₹<%= (ticket.price || 0).toLocaleString('en-IN') %></td>
+                                                    <td style="padding: 1.1rem; text-align: center; color: var(--primary); font-weight: 600;"><%= ticket.bookedSeats || 0 %></td>
+                                                    <td style="padding: 1.1rem 0; text-align: right; color: #fff; font-weight: 600;">₹<%= subtotal.toLocaleString('en-IN') %></td>
+                                                </tr>
+                                            <% }) %>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr style="border-top: 2px solid var(--border);">
+                                                <td colspan="3" style="padding: 1.2rem 0; font-weight: 700; font-size: 1rem; color: var(--text-muted);">Gross Revenue</td>
+                                                <td style="padding: 1.2rem 0; text-align: right; font-weight: 800; font-size: 1.1rem; color: #fff;">₹<%= grossRevenue.toLocaleString('en-IN') %></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3" style="padding: 0.5rem 0; font-size: 0.85rem; color: var(--text-dim);">Platform Fee (5%)</td>
+                                                <td style="padding: 0.5rem 0; text-align: right; font-size: 0.85rem; color: #e74c3c;">- ₹<%= Math.round(grossRevenue * 0.05).toLocaleString('en-IN') %></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3" style="padding: 1rem 0; font-weight: 800; font-size: 1.1rem; color: #2ecc71;">Net Payout</td>
+                                                <td style="padding: 1rem 0; text-align: right; font-weight: 900; font-size: 1.3rem; color: #2ecc71;">₹<%= Math.round(grossRevenue * 0.95).toLocaleString('en-IN') %></td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+
+                                <!-- Payout Request Form -->
+                                <div class="card" style="padding: 2rem;">
+                                    <h3 style="margin-bottom: 1.5rem; font-size: 1.1rem; display: flex; align-items: center; gap: 0.75rem;">
+                                        <i class="fa fa-university text-gradient"></i> Bank Details
+                                    </h3>
+
+                                    <form id="payoutForm" style="display: flex; flex-direction: column; gap: 1.25rem;">
+                                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+                                            <div class="form-group">
+                                                <label class="label">Account Holder Name</label>
+                                                <input type="text" id="accountHolder" class="input" placeholder="Full name on bank account" required />
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="label">Bank Name</label>
+                                                <input type="text" id="bankName" class="input" placeholder="e.g. HDFC Bank" required />
+                                            </div>
+                                        </div>
+
+                                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+                                            <div class="form-group">
+                                                <label class="label">Account Number</label>
+                                                <input type="text" id="accountNumber" class="input" placeholder="Enter account number" required />
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="label">IFSC Code</label>
+                                                <input type="text" id="ifscCode" class="input" placeholder="e.g. HDFC0001234" required style="text-transform: uppercase;" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="label">UPI ID <span style="color: var(--text-dim); font-size: 0.8rem;">(Optional — for faster payouts)</span></label>
+                                            <input type="text" id="upiId" class="input" placeholder="yourname@upi" />
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="label">Additional Notes</label>
+                                            <textarea id="payoutNotes" class="input" rows="3" placeholder="Any special instructions for this payout..." style="resize: vertical;"></textarea>
+                                        </div>
+
+                                        <!-- Disclaimer -->
+                                        <div style="background: rgba(39,174,96,0.06); border: 1px solid rgba(39,174,96,0.2); border-radius: 10px; padding: 1rem 1.25rem; display: flex; gap: 0.75rem; align-items: flex-start;">
+                                            <i class="fa fa-info-circle" style="color: #2ecc71; margin-top: 0.15rem; flex-shrink: 0;"></i>
+                                            <p style="font-size: 0.82rem; color: var(--text-muted); margin: 0; line-height: 1.6;">
+                                                Payouts are processed within <strong style="color: #fff;">3–5 business days</strong> after submission. A 5% platform fee is deducted from the gross revenue. Ensure your bank details are accurate to avoid delays.
+                                            </p>
+                                        </div>
+
+                                        <button type="submit" id="submitPayoutBtn" class="btn btn-primary"
+                                            style="background: linear-gradient(135deg, #27ae60, #2ecc71); border: none; padding: 0.85rem 2rem; font-size: 1rem; font-weight: 700; letter-spacing: 0.5px; align-self: flex-start;">
+                                            <i class="fa fa-paper-plane" style="margin-right: 0.5rem;"></i> Submit Payout Request
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <!-- RIGHT: Summary Sidebar -->
+                            <div>
+                                <!-- Event Card -->
+                                <div class="card" style="padding: 0; overflow: hidden; margin-bottom: 1.5rem;">
+                                    <% let bannerSrc = '/img/placeholder-event.jpg'; if (event.bannerImage) {
+                                        bannerSrc = event.bannerImage.startsWith('http') ? event.bannerImage : '/' + event.bannerImage.replace(/\\/g, '/');
+                                    } %>
+                                    <img src="<%= bannerSrc %>" alt="<%= event.title %>" style="width: 100%; height: 140px; object-fit: cover; display: block;">
+                                    <div style="padding: 1.25rem;">
+                                        <div style="font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.4rem;"><%= event.category %></div>
+                                        <div style="font-weight: 700; font-size: 1rem; color: #fff; margin-bottom: 0.5rem;"><%= event.title %></div>
+                                        <div style="font-size: 0.83rem; color: var(--text-muted);">
+                                            <i class="fa fa-calendar-alt" style="margin-right: 0.4rem;"></i>
+                                            <%= new Date(event.startDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) %>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Payout Summary -->
+                                <div class="card" style="padding: 1.75rem; margin-bottom: 1.5rem; background: linear-gradient(135deg, rgba(39,174,96,0.08), rgba(255,255,255,0.01)); border: 1px solid rgba(39,174,96,0.2);">
+                                    <h4 style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); margin-bottom: 1.5rem;">Payout Summary</h4>
+
+                                    <% const gross = event.totalRevenue || 0; %>
+                                    <% const platformFee = Math.round(gross * 0.05); %>
+                                    <% const netPayout = gross - platformFee; %>
+
+                                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                                            <span style="font-size: 0.85rem; color: var(--text-muted);">Gross Revenue</span>
+                                            <span style="font-weight: 600; color: #fff;">₹<%= gross.toLocaleString('en-IN') %></span>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                                            <span style="font-size: 0.85rem; color: var(--text-muted);">Platform Fee (5%)</span>
+                                            <span style="font-weight: 600; color: #e74c3c;">- ₹<%= platformFee.toLocaleString('en-IN') %></span>
+                                        </div>
+                                        <div style="border-top: 1px solid var(--border); padding-top: 1rem; display: flex; justify-content: space-between; align-items: center;">
+                                            <span style="font-size: 0.95rem; font-weight: 700; color: #2ecc71;">You Receive</span>
+                                            <span style="font-size: 1.5rem; font-weight: 900; color: #2ecc71;">₹<%= netPayout.toLocaleString('en-IN') %></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Tickets Sold Summary -->
+                                <div class="card" style="padding: 1.75rem;">
+                                    <h4 style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); margin-bottom: 1.25rem;">Tickets Sold</h4>
+                                    <% const totalSold = event.ticketing.reduce((sum, t) => sum + (t.bookedSeats || 0), 0); %>
+                                    <% const totalSeats = event.ticketing.reduce((sum, t) => sum + (t.availableSeats || 0), 0); %>
+                                    <div style="font-size: 2rem; font-weight: 800; color: var(--primary); margin-bottom: 0.25rem;"><%= totalSold %></div>
+                                    <div style="font-size: 0.83rem; color: var(--text-muted); margin-bottom: 1rem;">of <%= totalSeats %> total seats</div>
+                                    <div style="height: 6px; background: rgba(255,255,255,0.05); border-radius: 3px; overflow: hidden;">
+                                        <div style="width: <%= totalSeats > 0 ? Math.round((totalSold/totalSeats)*100) : 0 %>%; height: 100%; background: linear-gradient(90deg, var(--primary), #ff6b8a); border-radius: 3px;"></div>
+                                    </div>
+                                    <div style="font-size: 0.75rem; color: var(--text-dim); margin-top: 0.5rem; text-align: right;">
+                                        <%= totalSeats > 0 ? Math.round((totalSold/totalSeats)*100) : 0 %>% occupancy
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </main>
+            </div>
+
+        <%- include('../partials/footer-scripts') %>
+
+        <script>
+            document.getElementById('payoutForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const btn = document.getElementById('submitPayoutBtn');
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa fa-spinner fa-spin" style="margin-right:0.5rem;"></i> Submitting...';
+
+                const payload = {
+                    accountHolder: document.getElementById('accountHolder').value.trim(),
+                    bankName: document.getElementById('bankName').value.trim(),
+                    accountNumber: document.getElementById('accountNumber').value.trim(),
+                    ifscCode: document.getElementById('ifscCode').value.trim().toUpperCase(),
+                    upiId: document.getElementById('upiId').value.trim(),
+                    notes: document.getElementById('payoutNotes').value.trim()
+                };
+
+                try {
+                    const res = await fetch('/organizer/event/<%= event._id %>/payout', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    const data = await res.json();
+
+                    if (data.success) {
+                        showToast(data.message || 'Payout request submitted!', 'success');
+                        setTimeout(() => window.location.href = '/organizer/event/<%= event._id %>/view', 1800);
+                    } else {
+                        showToast(data.message || 'Failed to submit payout request.', 'error');
+                        btn.disabled = false;
+                        btn.innerHTML = '<i class="fa fa-paper-plane" style="margin-right:0.5rem;"></i> Submit Payout Request';
+                    }
+                } catch (err) {
+                    showToast('A network error occurred. Please try again.', 'error');
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fa fa-paper-plane" style="margin-right:0.5rem;"></i> Submit Payout Request';
+                }
+            });
+        </script>
+
+    </body>
+
+</html>
