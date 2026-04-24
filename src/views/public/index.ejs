@@ -20,19 +20,62 @@
                     community.</p>
 
                 <!-- Search Bar -->
-                <div
-                    style="max-width: 800px; margin: 0 auto; background: var(--bg-surface); padding: 0.5rem; border-radius: var(--radius-lg); border: 1px solid var(--border); display: flex; gap: 0.5rem;">
-                    <input type="text" class="input" placeholder="Search events, artists, venues..."
-                        style="border: none; background: transparent;">
-                    <select class="input"
-                        style="width: auto; border: none; background: transparent; color: var(--text-muted);">
-                        <option>Location</option>
-                        <option>New York</option>
-                        <option>London</option>
-                    </select>
-                    <button class="btn btn-primary" style="padding: 0 2rem;"><i class="fa fa-search"></i>
-                        Search</button>
-                </div>
+                <form id="heroSearchForm" action="/events" method="GET"
+                      style="max-width: 780px; margin: 0 auto; background: var(--bg-surface);
+                             padding: 0.45rem 0.45rem 0.45rem 1.5rem;
+                             border-radius: 100px; border: 1px solid var(--border);
+                             display: flex; gap: 0; align-items: center;
+                             transition: border-color 0.3s, box-shadow 0.3s;"
+                      id="heroForm">
+
+                    <!-- Event keyword -->
+                    <div style="flex: 2; display: flex; align-items: center; gap: 0.75rem; min-width: 0;">
+                        <i class="fa fa-search" style="color: var(--text-dim); font-size: 0.9rem; flex-shrink: 0;"></i>
+                        <input id="heroSearch" type="text" name="search"
+                               placeholder="Search events, artists, venues…"
+                               autocomplete="off"
+                               style="background: transparent; border: none; outline: none;
+                                      color: #fff; font-size: 0.95rem; width: 100%;
+                                      padding: 0.55rem 0;">
+                    </div>
+
+                    <!-- Divider -->
+                    <div style="width: 1px; height: 28px; background: var(--border); margin: 0 1rem; flex-shrink: 0;"></div>
+
+                    <!-- City / Location -->
+                    <div style="flex: 1; display: flex; align-items: center; gap: 0.6rem; min-width: 0;">
+                        <i class="fa fa-map-marker-alt" style="color: var(--primary); font-size: 0.85rem; flex-shrink: 0;"></i>
+                        <input id="heroCity" type="text" name="city"
+                               placeholder="Location"
+                               autocomplete="off"
+                               style="background: transparent; border: none; outline: none;
+                                      color: #fff; font-size: 0.9rem; width: 100%;
+                                      padding: 0.55rem 0;">
+                    </div>
+
+                    <!-- Search button -->
+                    <button type="submit" class="btn btn-primary"
+                            style="border-radius: 100px; padding: 0.7rem 1.8rem;
+                                   font-weight: 700; flex-shrink: 0; margin-left: 0.5rem;
+                                   display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fa fa-search"></i> Search
+                    </button>
+                </form>
+
+                <script>
+                    // Focus glow
+                    const heroForm = document.getElementById('heroForm');
+                    [document.getElementById('heroSearch'), document.getElementById('heroCity')].forEach(el => {
+                        el.addEventListener('focus', () => {
+                            heroForm.style.borderColor = 'rgba(230,57,70,0.5)';
+                            heroForm.style.boxShadow  = '0 0 0 4px rgba(230,57,70,0.08)';
+                        });
+                        el.addEventListener('blur', () => {
+                            heroForm.style.borderColor = '';
+                            heroForm.style.boxShadow   = '';
+                        });
+                    });
+                </script>
             </div>
         </section>
 
