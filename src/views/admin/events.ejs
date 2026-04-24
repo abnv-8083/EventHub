@@ -147,15 +147,23 @@
     </div>
 
     <%- include('../partials/footer-scripts') %>
+    <%- include('../partials/confirm-modal') %>
     <script src="/js/ajax-handler.js"></script>
     <script>
-        function quickApprove(id) {
-            if (confirm('Are you sure you want to approve this event?')) {
-                window.submitFormAjax({
-                    action: `/admin/events/approve/${id}`,
-                    method: 'POST'
-                });
-            }
+        async function quickApprove(id) {
+            const ok = await showConfirm({
+                icon:         'fa-check-circle',
+                iconColor:    '#2ecc71',
+                title:        'Approve Event?',
+                message:      'This event will be published and become visible to all users on the platform.',
+                confirmText:  'Yes, Approve',
+                confirmColor: '#2ecc71'
+            });
+            if (!ok) return;
+            window.submitFormAjax({
+                action: `/admin/events/approve/${id}`,
+                method: 'POST'
+            });
         }
 
         function openRejectModal(id) {

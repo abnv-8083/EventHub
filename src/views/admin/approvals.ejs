@@ -326,6 +326,7 @@
     </style>
 
     <%- include('../partials/footer-scripts') %>
+    <%- include('../partials/confirm-modal') %>
     <script src="/js/ajax-handler.js"></script>
     <script>
         function switchTab(tabId) {
@@ -341,16 +342,21 @@
             }
         }
 
-        function approveAction(type, id) {
-            const message = type === 'event' ? 'Approve this event?' : 'Approve this organizer KYC?';
-            const url = type === 'event' ? `/admin/events/approve/${id}` : `/admin/organizer/approve-kyc/${id}`;
-            
-            if (confirm(message)) {
-                window.submitFormAjax({
-                    action: url,
-                    method: 'PATCH'
-                });
-            }
+        async function approveAction(type, id) {
+            const isEvent = type === 'event';
+            const ok = await showConfirm({
+                icon:         isEvent ? 'fa-check-circle' : 'fa-id-badge',
+                iconColor:    isEvent ? '#2ecc71'          : '#3498db',
+                title:        isEvent ? 'Approve Event?'   : 'Approve KYC?',
+                message:      isEvent
+                    ? 'This event will be published and become visible to users on the platform.'
+                    : 'This organizer KYC will be approved and they will gain full platform access.',
+                confirmText:  isEvent ? 'Yes, Approve'     : 'Yes, Approve KYC',
+                confirmColor: isEvent ? '#2ecc71'          : '#3498db'
+            });
+            if (!ok) return;
+            const url = isEvent ? `/admin/events/approve/${id}` : `/admin/organizer/approve-kyc/${id}`;
+            window.submitFormAjax({ action: url, method: 'PATCH' });
         }
 
         function openRejectModal(type, id) {

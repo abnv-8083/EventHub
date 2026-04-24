@@ -1,0 +1,121 @@
+<!--
+  Shared Custom Confirm Modal
+  Usage: showConfirm({ icon, iconColor, title, message, confirmText, confirmColor, onConfirm })
+  Include once before </body> on any page that needs it.
+-->
+
+<div id="customConfirmModal"
+     style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75);
+            backdrop-filter:blur(8px); z-index:99999;
+            align-items:center; justify-content:center; padding:1rem;">
+    <div class="card animate" id="confirmCard"
+         style="width:100%; max-width:420px; padding:2.5rem;
+                border-radius:20px; animation: confirmPop 0.25s cubic-bezier(.34,1.56,.64,1);">
+
+        <!-- Icon -->
+        <div id="confirmIconWrap"
+             style="width:56px; height:56px; border-radius:16px; margin:0 auto 1.5rem;
+                    display:flex; align-items:center; justify-content:center; font-size:1.4rem;">
+            <i id="confirmIcon"></i>
+        </div>
+
+        <!-- Text -->
+        <h2 id="confirmTitle"
+            style="margin:0 0 0.6rem; font-size:1.2rem; text-align:center;"></h2>
+        <p  id="confirmMessage"
+            style="margin:0 0 2rem; font-size:0.88rem; color:var(--text-muted);
+                   text-align:center; line-height:1.6;"></p>
+
+        <!-- Buttons -->
+        <div style="display:flex; gap:0.75rem;">
+            <button id="confirmCancelBtn"
+                    onclick="closeConfirm()"
+                    class="btn btn-outline"
+                    style="flex:1; padding:0.75rem; font-weight:600; border-radius:12px;">
+                Cancel
+            </button>
+            <button id="confirmOkBtn"
+                    class="btn btn-primary"
+                    style="flex:2; padding:0.75rem; font-weight:700; border-radius:12px;">
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+    @keyframes confirmPop {
+        from { opacity:0; transform:scale(0.88) translateY(12px); }
+        to   { opacity:1; transform:scale(1)    translateY(0);     }
+    }
+    @keyframes confirmOut {
+        from { opacity:1; transform:scale(1)    translateY(0); }
+        to   { opacity:0; transform:scale(0.92) translateY(8px); }
+    }
+    #customConfirmModal.closing #confirmCard { animation: confirmOut 0.18s ease forwards; }
+</style>
+
+<script>
+    (function () {
+        let _resolve = null;
+
+        window.showConfirm = function ({
+            icon        = 'fa-question-circle',
+            iconColor   = '#e67e22',
+            title       = 'Are you sure?',
+            message     = '',
+            confirmText = 'Confirm',
+            confirmColor = 'var(--primary)'
+        } = {}) {
+            return new Promise(resolve => {
+                _resolve = resolve;
+
+                const wrap    = document.getElementById('customConfirmModal');
+                const iconEl  = document.getElementById('confirmIcon');
+                const iconWrap= document.getElementById('confirmIconWrap');
+                const titleEl = document.getElementById('confirmTitle');
+                const msgEl   = document.getElementById('confirmMessage');
+                const okBtn   = document.getElementById('confirmOkBtn');
+
+                // Apply content
+                iconEl.className  = `fa ${icon}`;
+                iconEl.style.color = iconColor;
+                iconWrap.style.background = iconColor + '18';
+                titleEl.textContent = title;
+                msgEl.textContent   = message;
+                okBtn.textContent   = confirmText;
+                okBtn.style.background   = confirmColor;
+                okBtn.style.borderColor  = confirmColor;
+
+                wrap.classList.remove('closing');
+                wrap.style.display = 'flex';
+
+                // Re-attach to avoid duplicates
+                okBtn.onclick = () => { _close(true); };
+            });
+        };
+
+        window.closeConfirm = function () { _close(false); };
+
+        function _close(result) {
+            const wrap = document.getElementById('customConfirmModal');
+            wrap.classList.add('closing');
+            setTimeout(() => {
+                wrap.style.display = 'none';
+                wrap.classList.remove('closing');
+                if (_resolve) { _resolve(result); _resolve = null; }
+            }, 180);
+        }
+
+        // Backdrop click to cancel
+        document.getElementById('customConfirmModal').addEventListener('click', function (e) {
+            if (e.target === this) _close(false);
+        });
+
+        // Keyboard ESC
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && document.getElementById('customConfirmModal').style.display === 'flex') {
+                _close(false);
+            }
+        });
+    })();
+</script>

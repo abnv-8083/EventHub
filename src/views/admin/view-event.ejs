@@ -152,6 +152,7 @@
             <!-- Scripts -->
             <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
             <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+            <%- include('../partials/confirm-modal') %>
             <script src="/js/ajax-handler.js"></script>
             <script src="/js/validate.js"></script>
 
@@ -164,13 +165,20 @@
                 L.marker([lat, lng]).addTo(map).bindPopup("<%= event.venueLocation.address %>").openPopup();
 
                 // Actions
-                function processApproval(id) {
-                    if (confirm('Are you sure you want to approve this event? It will be published immediately or on the scheduled date.')) {
-                        window.submitFormAjax({
-                            action: `/admin/events/approve/${id}`,
-                            method: 'PATCH'
-                        });
-                    }
+                async function processApproval(id) {
+                    const ok = await showConfirm({
+                        icon:         'fa-check-circle',
+                        iconColor:    '#2ecc71',
+                        title:        'Approve Submission?',
+                        message:      'This event will be published immediately or on the scheduled date and become visible to users.',
+                        confirmText:  'Yes, Approve',
+                        confirmColor: '#2ecc71'
+                    });
+                    if (!ok) return;
+                    window.submitFormAjax({
+                        action: `/admin/events/approve/${id}`,
+                        method: 'PATCH'
+                    });
                 }
 
                 function openRejectModal() { document.getElementById('rejectModal').style.display = 'flex'; }
