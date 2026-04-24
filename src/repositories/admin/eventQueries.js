@@ -112,3 +112,13 @@ export const getPendingEvents = async (filters = {}, sortOption = { createdAt: -
 export const countPendingEvents = async () => {
     return await Event.countDocuments({ status: 'Pending' });
 };
+
+/**
+ * Fetch events by status.
+ */
+export const getEventsByStatus = async (status, limit = 10) => {
+    return await Event.find({ status })
+        .populate('organizerId', 'organizationName')
+        .sort({ updatedAt: -1 })
+        .limit(limit);
+};

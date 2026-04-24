@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../partials/head', { title: 'Cancel Booking - EventHub' }) %>
+<body>
+
+    <%- include('../partials/header') %>
+
+    <div class="dashboard-layout">
+        <%- include('../partials/sidebar', { activePage: 'tickets' }) %>
+
+        <main class="dashboard-main animate">
+
+            <a href="/user/bookings" style="display: inline-flex; align-items: center; gap: 0.6rem; color: var(--text-dim); margin-bottom: 2rem; font-weight: 500; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-dim)'">
+                <i class="fa fa-arrow-left"></i> <span>Back to My Tickets</span>
+            </a>
+
+            <div class="card glass" style="padding: 2.5rem; border-radius: 24px; border: 1px solid var(--border); max-width: 780px;">
+                <h1 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 0.4rem;">Cancel <span class="text-gradient">Booking</span></h1>
+                <p style="color: var(--text-muted); margin-bottom: 2rem;">Choose how many tickets to cancel per ticket type. Partial refunds are available.</p>
+
+                <!-- Event Summary -->
+                <div style="display: flex; gap: 1.5rem; margin-bottom: 2rem; align-items: center; background: rgba(255,255,255,0.03); padding: 1.2rem 1.5rem; border-radius: 16px; border: 1px solid var(--border);">
+                    <div style="width: 110px; height: 70px; border-radius: 10px; overflow: hidden; flex-shrink: 0;">
+                        <img src="<%= booking.eventId.bannerImage.startsWith('http') ? booking.eventId.bannerImage : '/' + booking.eventId.bannerImage %>" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div>
+                        <h3 style="font-size: 1.15rem; margin-bottom: 0.3rem;"><%= booking.eventId.title %></h3>
+                        <p style="color: var(--text-dim); font-size: 0.88rem;"><i class="fa fa-calendar-alt" style="margin-right: 0.4rem;"></i><%= new Date(booking.eventId.startDate).toDateString() %></p>
+                    </div>
+                </div>
+
+                <form id="cancelForm">
+                    <!-- Ticket Rows -->
+                    <h4 style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-dim); margin-bottom: 1rem;">Select Tickets to Cancel</h4>
+
+                    <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem;">
+                        <% booking.tickets.forEach((ticket, index) => { %>
+                        <div class="ticket-row" data-price="<%= ticket.pricePerTicket %>" data-max="<%= ticket.quantity %>" data-name="<%= ticket.ticketName %>" data-type-id="<%= ticket.ticketTypeId %>">
+                            <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); padding: 1.2rem 1.5rem; border-radius: 14px; border: 1px solid var(--border); transition: all 0.3s;" class="ticket-card">
+
+                                <!-- Left: info -->
+                                <div>
+                                    <div style="font-weight: 700; font-size: 1rem; margin-bottom: 0.2rem;"><%= ticket.ticketName %></div>
+                                    <div style="font-size: 0.82rem; color: var(--text-dim);">₹<%= ticket.pricePerTicket %> per ticket &nbsp;·&nbsp; <span class="available-count"><%= ticket.quantity %></span> available</div>
+                                </div>
+
+                                <!-- Right: stepper + subtotal -->
+                                <div style="display: flex; align-items: center; gap: 1.5rem;">
+                                    <div class="qty-stepper" style="display: flex; align-items: center; gap: 0.6rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 10px; padding: 0.4rem 0.8rem;">
+                                        <button type="button" class="stepper-btn minus" style="background: none; border: none; color: var(--text-dim); font-size: 1.1rem; cursor: pointer; width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">−</button>
+                                        <span class="qty-display" style="min-width: 28px; text-align: center; font-weight: 700; font-size: 1rem;">0</span>
+                                        <button type="button" class="stepper-btn plus" style="background: none; border: none; color: var(--text-dim); font-size: 1.1rem; cursor: pointer; width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">+</button>
+                                    </div>
+                                    <div class="row-subtotal" style="font-weight: 800; font-size: 1rem; min-width: 70px; text-align: right; color: var(--text-dim);">₹0</div>
+                                </div>
+                            </div>
+                        </div>
+                        <% }) %>
+                    </div>
+
+                    <!-- Reason -->
+                    <div style="margin-bottom: 2rem;">
+                        <label class="label">Reason for Cancellation (Optional)</label>
+                        <textarea name="reason" id="cancelReason" class="input" rows="3" placeholder="Please let us know why you are cancelling..." style="resize: none;"></textarea>
+                    </div>
+
+                    <!-- Refund Summary -->
+                    <div style="background: rgba(46,204,113,0.05); padding: 1.2rem 1.5rem; border-radius: 16px; border: 1px solid rgba(46,204,113,0.2); margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div style="font-size: 0.82rem; color: #2ecc71; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Estimated Refund</div>
+                            <div style="font-size: 0.75rem; color: var(--text-dim);">Final amount subject to organizer approval</div>
+                        </div>
+                        <div style="font-size: 1.8rem; font-weight: 800; color: #2ecc71;">₹<span id="refundTotal">0</span></div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div style="display: flex; gap: 1.2rem;">
+                        <button type="submit" class="btn btn-primary glow-primary" id="submitBtn" disabled style="flex: 2; padding: 1rem; font-weight: 700; font-size: 1rem;">
+                            <i class="fa fa-times-circle" style="margin-right: 0.5rem;"></i>
+                            <span id="submitLabel">Select Tickets to Cancel</span>
+                        </button>
+                        <a href="/user/bookings" class="btn btn-outline" style="flex: 1; padding: 1rem; font-weight: 600;">Discard</a>
+                    </div>
+                </form>
+            </div>
+
+        </main>
+    </div>
+
+    <%- include('../partials/footer-scripts') %>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const rows = document.querySelectorAll('.ticket-row');
+            const refundTotalSpan = document.getElementById('refundTotal');
+            const submitBtn = document.getElementById('submitBtn');
+            const submitLabel = document.getElementById('submitLabel');
+            const bookingId = '<%= booking._id %>';
+            const totalTicketTypes = rows.length;
+
+            rows.forEach(row => {
+                const max = parseInt(row.dataset.max);
+                const price = parseFloat(row.dataset.price);
+                const qtyDisplay = row.querySelector('.qty-display');
+                const rowSubtotal = row.querySelector('.row-subtotal');
+                const card = row.querySelector('.ticket-card');
+                const minusBtn = row.querySelector('.minus');
+                const plusBtn = row.querySelector('.plus');
+                let qty = 0;
+
+                function updateRow() {
+                    qtyDisplay.textContent = qty;
+                    const sub = qty * price;
+                    rowSubtotal.textContent = '₹' + sub.toLocaleString('en-IN');
+                    rowSubtotal.style.color = qty > 0 ? '#2ecc71' : 'var(--text-dim)';
+
+                    if (qty > 0) {
+                        card.style.borderColor = 'var(--primary)';
+                        card.style.background = 'rgba(230,57,70,0.05)';
+                    } else {
+                        card.style.borderColor = 'var(--border)';
+                        card.style.background = 'rgba(255,255,255,0.02)';
+                    }
+
+                    minusBtn.style.color = qty > 0 ? 'var(--primary)' : 'var(--text-dim)';
+                    plusBtn.style.color = qty < max ? 'var(--primary)' : 'var(--text-dim)';
+
+                    updateTotal();
+                }
+
+                minusBtn.addEventListener('click', () => {
+                    if (qty > 0) { qty--; updateRow(); }
+                });
+                plusBtn.addEventListener('click', () => {
+                    if (qty < max) { qty++; updateRow(); }
+                });
+            });
+
+            function updateTotal() {
+                let total = 0;
+                let totalSelected = 0;
+                let totalBooked = 0;
+
+                rows.forEach(row => {
+                    const qty = parseInt(row.querySelector('.qty-display').textContent);
+                    const price = parseFloat(row.dataset.price);
+                    const max = parseInt(row.dataset.max);
+                    total += qty * price;
+                    totalSelected += qty;
+                    totalBooked += max;
+                });
+
+                refundTotalSpan.textContent = total.toLocaleString('en-IN');
+                submitBtn.disabled = totalSelected === 0;
+
+                if (totalSelected === 0) {
+                    submitLabel.textContent = 'Select Tickets to Cancel';
+                } else if (totalSelected === totalBooked) {
+                    submitLabel.textContent = 'Request Full Cancellation';
+                } else {
+                    submitLabel.textContent = `Cancel ${totalSelected} Ticket${totalSelected > 1 ? 's' : ''} (Partial)`;
+                }
+            }
+
+            // Form submit via AJAX
+            document.getElementById('cancelForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const cancelledTickets = [];
+                rows.forEach(row => {
+                    const qty = parseInt(row.querySelector('.qty-display').textContent);
+                    if (qty > 0) {
+                        cancelledTickets.push({
+                            ticketTypeId: row.dataset.typeId,
+                            ticketName: row.dataset.name,
+                            quantity: qty,
+                            pricePerTicket: parseFloat(row.dataset.price),
+                            subtotal: qty * parseFloat(row.dataset.price)
+                        });
+                    }
+                });
+
+                const reason = document.getElementById('cancelReason').value;
+
+                submitBtn.disabled = true;
+                submitLabel.textContent = 'Submitting...';
+
+                try {
+                    const res = await fetch(`/user/cancel-booking/${bookingId}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ cancelledTickets, reason })
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        window.location.href = '/user/refund-status';
+                    } else {
+                        alert(data.message || 'Failed to submit cancellation.');
+                        submitBtn.disabled = false;
+                        updateTotal();
+                    }
+                } catch (err) {
+                    alert('Something went wrong. Please try again.');
+                    submitBtn.disabled = false;
+                    updateTotal();
+                }
+            });
+        });
+    </script>
+
+    <style>
+        .text-gradient {
+            background: linear-gradient(135deg, #FF4D4D 0%, #E63946 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .stepper-btn:hover {
+            background: rgba(230, 57, 70, 0.15) !important;
+            color: var(--primary) !important;
+        }
+        .ticket-card:hover {
+            border-color: rgba(230, 57, 70, 0.35) !important;
+        }
+    </style>
+
+</body>
+</html>

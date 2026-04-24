@@ -17,6 +17,7 @@ export const getEventView = async (req, res) => {
 
 export const postApproveEvent = async (req, res) => {
     try {
+        const { id } = req.params;
         await adminService.approveEvent(id);
         return sendResponse(res, HTTP_STATUS.OK, true, "Event approved and published successfully", { redirect: '/admin/approvals' });
     } catch (error) {
@@ -27,6 +28,7 @@ export const postApproveEvent = async (req, res) => {
 export const postRejectEvent = async (req, res) => {
     try {
         const { id } = req.params;
+        const { reason } = req.body;
         await adminService.rejectEvent(id, reason);
         return sendResponse(res, HTTP_STATUS.OK, true, "Event submission rejected", { redirect: '/admin/approvals' });
     } catch (error) {
@@ -307,9 +309,11 @@ export const getApprovalsDashboard = async (req, res) => {
         const currentPage = parseInt(page) || 1;
         const filters = { search, category, sort };
 
-        const { pendingEvents, pendingOrganizers, categories, total, totalPages } = await adminService.fetchApprovalsDashboardData(filters, currentPage);
+        const { pendingEvents, approvedEvents, rejectedEvents, pendingOrganizers, categories, total, totalPages } = await adminService.fetchApprovalsDashboardData(filters, currentPage);
         res.render('admin/approvals', {
             pendingEvents,
+            approvedEvents,
+            rejectedEvents,
             pendingOrganizers,
             categories,
             total,
@@ -323,10 +327,16 @@ export const getApprovalsDashboard = async (req, res) => {
         console.error("Error loading approvals dashboard:", error);
         res.render('admin/approvals', {
             pendingEvents: [],
+            approvedEvents: [],
+            rejectedEvents: [],
             pendingOrganizers: [],
             categories: [],
+            total: 0,
+            totalPages: 1,
+            currentPage: 1,
             currentSearch: '',
-            currentCategory: ''
+            currentCategory: '',
+            currentSort: 'newest'
         });
     }
 }
@@ -346,6 +356,16 @@ export const approvePayment = async (req, res) => {
         return sendResponse(res, HTTP_STATUS.OK, true, 'Payout approved.', { redirect: '/admin/payments' });
     } catch (error) {
         return sendResponse(res, error.statusCode || HTTP_STATUS.INTERNAL_SERVER_ERROR, false, error.message);
+    }
+};
+
+export const getWallet = async (req, res) => {
+    try {
+        const data = await adminService.fetchWalletDashboardData();
+        res.render('admin/wallet', { ...data });
+    } catch (error) {
+        console.error("Wallet Error:", error);
+        res.redirect('/admin/dashboard');
     }
 };
 export const rejectPayment = async (req, res) => {

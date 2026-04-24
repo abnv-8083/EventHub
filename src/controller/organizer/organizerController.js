@@ -1,5 +1,6 @@
 import * as OrganizerService from '../../services/organizers/organizerService.js';
 import * as PaymentService from '../../services/organizers/paymentService.js';
+import * as userServices from '../../services/users/userServices.js';
 import * as organizerValidation from '../../validation/organizer/organizer.validation.js'
 import { sendResponse } from "../../utils/responseHandler.js";
 import HTTP_STATUS from "../../constants/statusCode.js";
@@ -38,12 +39,13 @@ export const getProfile = async (req, res) => {
 
 export const postProfile = async (req, res) => {
     try {
-        const organizerId = req.session.user.organizerId;
-        const { organizationName, industryCategory, operatingRegion } = req.body;
-
-        if (!organizationName || !industryCategory || !operatingRegion) {
-            return sendResponse(res, HTTP_STATUS.BAD_REQUEST, false, "All fields are required");
+        const { error, value } = organizerValidation.profileUpdateSchema.validate(req.body);
+        if (error) {
+            return sendResponse(res, HTTP_STATUS.BAD_REQUEST, false, error.details[0].message);
         }
+
+        const organizerId = req.session.user.organizerId;
+        const { organizationName, industryCategory, operatingRegion } = value;
 
         await OrganizerService.updateOrganizerProfile(organizerId, {
             organizationName,
@@ -268,17 +270,81 @@ export const getEventPayment = async (req, res) => {
 
 export const postEventPayout = async (req, res) => {
     try {
-        const eventId     = req.params.id;
+        const { error, value } = organizerValidation.payoutRequestSchema.validate(req.body);
+        if (error) {
+            return sendResponse(res, HTTP_STATUS.BAD_REQUEST, false, error.details[0].message);
+        }
+
+        const eventId = req.params.id;
         const organizerId = req.session.user.organizerId;
-        const { accountHolder, bankName, accountNumber, ifscCode, branchName, branchCity, notes } = req.body;
+        const { accountHolder, bankName, accountNumber, ifscCode, branchName, branchCity, notes } = value;
+
         await PaymentService.submitPayoutRequest(
             eventId,
             organizerId,
             { accountHolder, bankName, accountNumber, ifscCode, branchName, branchCity },
             notes
         );
-        return sendResponse(res, HTTP_STATUS.OK, true, 'Payout request submitted! Admin will process it shortly.');
+        return sendResponse(res, HTTP_STATUS.OK, true, 'Payout request submitted! Admin will process it shortly.', { 
+            redirect: `/organizer/event/${eventId}/view` 
+        });
     } catch (error) {
         return sendResponse(res, error.statusCode || HTTP_STATUS.INTERNAL_SERVER_ERROR, false, error.message);
+    }
+};
+
+export const getRefundRequests = async (req, res) => {
+    try {
+        const userId = req.session.user._id;
+        const organizer = await OrganizerService.getOrganizerByUserId(userId);
+        const allRefunds = await userServices.getAllOrganizerRefunds(organizer._id);
+
+        const pendingRefunds  = allRefunds.filter(r => r.status === 'pending');
+        const approvedRefunds = allRefunds.filter(r => r.status === 'approved');
+        const rejectedRefunds = allRefunds.filter(r => r.status === 'rejected');
+
+        res.render('organizer/refund-requests', {
+            pendingRefunds,
+            approvedRefunds,
+            rejectedRefunds,
+            organizer,
+            activePage: 'refunds'
+        });
+    } catch (error) {
+        console.error("Get Refunds Error:", error);
+        res.redirect('/organizer/dashboard');
+    }
+};
+
+export const postApproveRefund = async (req, res) => {
+    try {
+        const { utrNumber, adminNotes } = req.body;
+        const refundId = req.params.id;
+
+        if (!utrNumber) {
+            return res.status(400).json({ success: false, message: 'UTR Number is required for approval.' });
+        }
+
+        await userServices.processRefund(refundId, 'approved', utrNumber, adminNotes);
+        
+        res.json({ success: true, message: 'Refund approved successfully!' });
+    } catch (error) {
+        console.error("Approve Refund Error:", error);
+        res.status(500).json({ success: false, message: error.message || 'Failed to approve refund.' });
+    }
+};
+
+export const postRejectRefund = async (req, res) => {
+    try {
+        const { reason, adminNotes } = req.body;
+        const refundId = req.params.id;
+        const note = reason || adminNotes || 'Rejected by organizer';
+
+        await userServices.processRefund(refundId, 'rejected', null, note);
+        
+        res.json({ success: true, message: 'Refund request rejected.' });
+    } catch (error) {
+        console.error("Reject Refund Error:", error);
+        res.status(500).json({ success: false, message: error.message || 'Failed to reject refund.' });
     }
 };

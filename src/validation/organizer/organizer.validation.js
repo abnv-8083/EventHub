@@ -148,3 +148,55 @@ export const draftEventSchema = createEventSchema.fork(
         }).optional()
     )
 ).prefs({ convert: true, abortEarly: false, allowUnknown: true });
+
+/**
+ * Organizer Profile Update Schema
+ */
+export const profileUpdateSchema = Joi.object({
+    organizationName: Joi.string().trim().min(3).max(100).required().messages({
+        'string.empty': 'Organization name is required.',
+        'string.min': 'Organization name must be at least 3 characters.',
+        'any.required': 'Organization name is required.'
+    }),
+    industryCategory: Joi.string().required().messages({
+        'string.empty': 'Please select an industry category.',
+        'any.required': 'Industry category is required.'
+    }),
+    operatingRegion: Joi.string().required().messages({
+        'string.empty': 'Please select an operating region.',
+        'any.required': 'Operating region is required.'
+    })
+}).prefs({ stripUnknown: true });
+
+/**
+ * Payout Request (Bank Details) Schema
+ */
+export const payoutRequestSchema = Joi.object({
+    accountHolder: Joi.string().trim().min(3).max(100).required().messages({
+        'string.empty': 'Account holder name is required.',
+        'any.required': 'Account holder name is required.'
+    }),
+    bankName: Joi.string().trim().required().messages({
+        'string.empty': 'Bank name is required.',
+        'any.required': 'Bank name is required.'
+    }),
+    accountNumber: Joi.string().pattern(/^\d{9,18}$/).required().messages({
+        'string.empty': 'Account number is required.',
+        'string.pattern.base': 'Please enter a valid account number (9-18 digits).',
+        'any.required': 'Account number is required.'
+    }),
+    ifscCode: Joi.string().pattern(/^[A-Z]{4}0[A-Z0-9]{6}$/).required().messages({
+        'string.empty': 'IFSC code is required.',
+        'string.pattern.base': 'Please enter a valid 11-digit IFSC code (e.g., SBIN0012345).',
+        'any.required': 'IFSC code is required.'
+    }),
+    branchName: Joi.string().trim().required().messages({
+        'string.empty': 'Branch name is required.',
+        'any.required': 'Branch name is required.'
+    }),
+    branchCity: Joi.string().trim().required().messages({
+        'string.empty': 'Branch city is required.',
+        'any.required': 'Branch city is required.'
+    }),
+    notes: Joi.string().trim().max(500).allow('', null).optional()
+}).prefs({ stripUnknown: true });

@@ -307,6 +307,100 @@ export const getPaymentSuccess = async (req, res) => {
     }
 };
 
+export const getMyBookings = async (req, res) => {
+    try {
+        const bookings = await userServices.getUserBookings(req.session.user._id);
+        res.render('user/my-bookings', { bookings, user: req.session.user, activePage: 'tickets' });
+    } catch (error) {
+        console.error("My Bookings Error:", error);
+        res.redirect('/');
+    }
+};
+
+export const getCancelBooking = async (req, res) => {
+    try {
+        const booking = await userServices.getBookingWithEvent(req.params.id, req.session.user._id);
+        res.render('user/cancel-booking', { booking, user: req.session.user, activePage: 'tickets' });
+    } catch (error) {
+        res.redirect('/user/bookings');
+    }
+};
+
+export const postCancelBooking = async (req, res) => {
+    try {
+        const { cancelledTickets: rawTickets, reason } = req.body;
+        const bookingId = req.params.id;
+        const userId = req.session.user._id;
+
+        const booking = await userServices.getBookingWithEvent(bookingId, userId);
+
+        let cancelledTickets = [];
+        let refundAmount = 0;
+
+        if (!rawTickets || rawTickets.length === 0) {
+            // Full cancellation — cancel all tickets
+            cancelledTickets = booking.tickets.map(t => ({
+                ticketTypeId: t.ticketTypeId,
+                ticketName: t.ticketName,
+                quantity: t.quantity,
+                pricePerTicket: t.pricePerTicket,
+                subtotal: t.subtotal
+            }));
+            refundAmount = booking.subtotal;
+        } else {
+            // Partial / single-ticket cancellation
+            rawTickets.forEach(item => {
+                const qty = parseInt(item.quantity);
+                const price = parseFloat(item.pricePerTicket);
+                if (qty > 0) {
+                    cancelledTickets.push({
+                        ticketTypeId: item.ticketTypeId,
+                        ticketName: item.ticketName,
+                        quantity: qty,
+                        pricePerTicket: price,
+                        subtotal: qty * price
+                    });
+                    refundAmount += qty * price;
+                }
+            });
+        }
+
+        if (cancelledTickets.length === 0) {
+            return res.status(400).json({ success: false, message: 'No tickets selected for cancellation.' });
+        }
+
+        // Determine if full or partial cancellation
+        const totalBookedQty  = booking.tickets.reduce((s, t) => s + t.quantity, 0);
+        const totalCancelledQty = cancelledTickets.reduce((s, t) => s + t.quantity, 0);
+        const cancellationType = totalCancelledQty >= totalBookedQty ? 'full' : 'partial';
+
+        await userServices.createCancellation({
+            bookingId,
+            userId,
+            organizerId: booking.organizerId,
+            eventId: booking.eventId._id,
+            type: cancellationType,
+            tickets: cancelledTickets,
+            refundAmount,
+            reason: reason || 'User requested cancellation'
+        });
+
+        res.json({ success: true, message: 'Cancellation request submitted successfully!' });
+    } catch (error) {
+        console.error("Post Cancel Error:", error);
+        res.status(500).json({ success: false, message: error.message || 'Failed to submit cancellation request.' });
+    }
+};
+
+export const getRefundStatus = async (req, res) => {
+    try {
+        const cancellations = await userServices.getCancellationRequests(req.session.user._id);
+        res.render('user/refund-status', { cancellations, user: req.session.user, activePage: 'refund-status' });
+    } catch (error) {
+        res.redirect('/');
+    }
+};
+
 
 
 // Static pages

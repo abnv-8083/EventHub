@@ -36,6 +36,11 @@ router.route('/event/:id/edit')
 
 router.delete('/event/:id', organizerController.deleteEvent)
 
+// Refund Management
+router.get('/refunds', organizerController.getRefundRequests)
+router.post('/refunds/approve/:id', organizerController.postApproveRefund)
+router.post('/refunds/reject/:id', organizerController.postRejectRefund)
+
 export default router
 
 

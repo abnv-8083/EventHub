@@ -5,6 +5,7 @@ import * as userQuery from "../../repositories/admin/userQueries.js"
 import * as categoryQuery from "../../repositories/admin/categoriesQueries.js"
 import * as eventQuery from "../../repositories/admin/eventQueries.js"
 import * as adminPaymentRepo from '../../repositories/admin/paymentQueries.js';
+import * as walletRepo from "../../repositories/admin/adminWalletQueries.js"
 import AppError from "../../utils/AppError.js"
 import HTTP_STATUS from "../../constants/statusCode.js"
 import { sendOrganizerCredentials } from "../../constants/sendEmail.js"
@@ -18,12 +19,14 @@ export const fetchApprovalsDashboardData = async (filters = {}, page = 1, limit 
         if (sort === 'oldest') sortOption = { createdAt: 1 };
         if (sort === 'alphabetical') sortOption = { title: 1 };
 
-        const [eventsData, pendingOrganizers, categories] = await Promise.all([
+        const [eventsData, approvedEvents, rejectedEvents, pendingOrganizers, categories] = await Promise.all([
             eventQuery.getPendingEvents(restFilters, sortOption, page, limit),
+            eventQuery.getEventsByStatus('Approved', 50),
+            eventQuery.getEventsByStatus('Rejected', 50),
             organizerQuery.getPendingOrganizers(),
             categoryQuery.fetchAllCategories()
         ]);
-        return { ...eventsData, pendingOrganizers, categories };
+        return { ...eventsData, approvedEvents, rejectedEvents, pendingOrganizers, categories };
     } catch (error) {
         throw new AppError("Failed to fetch approvals data", HTTP_STATUS.INTERNAL_SERVER_ERROR);
     }
@@ -354,6 +357,14 @@ export const fetchPaymentRequests = async (status = 'Pending') => {
 export const approvePayoutRequest = async (id, utr, adminId) => {
     const result = await adminPaymentRepo.approvePaymentById(id, utr, adminId);
     if (!result) throw new AppError('Payment request not found.', HTTP_STATUS.NOT_FOUND);
+
+    // Credit Admin Wallet with the platform commission from this payout
+    try {
+        await walletRepo.creditWallet(result.platformFeeAmount, null, result._id);
+    } catch (err) {
+        console.error("Failed to credit admin wallet during payout:", err);
+    }
+
     return result;
 }
 export const rejectPayoutRequest = async (id, reason, adminId) => {
@@ -361,4 +372,19 @@ export const rejectPayoutRequest = async (id, reason, adminId) => {
     const result = await adminPaymentRepo.rejectPaymentById(id, reason, adminId);
     if (!result) throw new AppError('Payment request not found.', HTTP_STATUS.NOT_FOUND);
     return result;
+}
+
+export const fetchWalletDashboardData = async () => {
+    try {
+        const [wallet, transactions, pendingEvents, approvedEvents, rejectedEvents] = await Promise.all([
+            walletRepo.getWalletData(),
+            walletRepo.getRecentTransactions(20),
+            eventQuery.getEventsByStatus('Pending', 10),
+            eventQuery.getEventsByStatus('Approved', 10),
+            eventQuery.getEventsByStatus('Rejected', 10)
+        ]);
+        return { wallet, transactions, pendingEvents, approvedEvents, rejectedEvents };
+    } catch (error) {
+        throw new AppError("Failed to fetch wallet data", HTTP_STATUS.INTERNAL_SERVER_ERROR);
+    }
 }

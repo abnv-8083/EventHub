@@ -1,23 +1,32 @@
 import session from "express-session"
 import MongoStore from "connect-mongo"
 
-const createSession = () => session({
-    name: process.env.SESSION_NAME || 'eventhub.sid',
+const createMongoStore = (collection) => MongoStore.create({
+    mongoUrl: process.env.MONGO_URI,
+    collectionName: collection
+});
+
+export const userSession = session({
+    name: 'eventhub.user.sid',
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    store: MongoStore.create({
-        mongoUrl: process.env.MONGO_URI,
-        collectionName: process.env.SESSION_COLLECTION || 'sessions'
-    }),
+    store: createMongoStore('user_sessions'),
     cookie: {
         maxAge: 1000 * 60 * 60 * 24 // 1 day
     }
-})
+});
 
-const appSession = createSession();
+export const adminSession = session({
+    name: 'eventhub.admin.sid',
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: createMongoStore('admin_sessions'),
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 24 // 1 day
+    }
+});
 
-export const userSession = appSession;
-export const adminSession = appSession;
-export const organizerSession = appSession;
-export default appSession;
+// Alias organizerSession to userSession since organizer uses the user session
+export const organizerSession = userSession;

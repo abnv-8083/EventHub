@@ -88,20 +88,47 @@ document.addEventListener('DOMContentLoaded', () => {
     function getErrorMessage(input) {
         if (input.validity.valueMissing) return 'This field is required';
         if (input.validity.typeMismatch) {
-            if (input.type === 'email') return 'Valid email required';
-            if (input.type === 'url') return 'Valid URL required';
+            if (input.type === 'email') return 'Please enter a valid email address';
+            if (input.type === 'url') return 'Please enter a valid URL';
+            if (input.type === 'tel') return 'Please enter a valid phone number';
         }
-        if (input.validity.tooShort) return `Min ${input.minLength} characters`;
-        if (input.validity.patternMismatch) return 'Invalid format';
+        if (input.validity.tooShort) return `Minimum ${input.minLength} characters required`;
+        if (input.validity.tooLong) return `Maximum ${input.maxLength} characters allowed`;
+        if (input.validity.rangeUnderflow) return `Value must be at least ${input.min}`;
+        if (input.validity.rangeOverflow) return `Value must be at most ${input.max}`;
+        if (input.validity.patternMismatch) return input.title || 'Invalid format';
+        
         return 'Invalid input'; // Fallback
     }
 
-    // Helper: Show Error (NON-DESTRUCTIVE - No more clearing input.value!)
+    // Helper: Show Error (Injects message below input)
     function showError(input, message) {
-        if (input.type === 'checkbox') return;
+        // Add error class to input
         input.classList.add('input-error');
         
-        // We only change placeholder if the input is actually empty
+        // Find or create error message element
+        let errorDisplay = input.parentElement.querySelector('.error-text');
+        
+        // If input is inside a group (like password-group), look at the parent's sibling
+        if (!errorDisplay && (input.parentElement.classList.contains('password-group') || input.parentElement.classList.contains('input-group'))) {
+            errorDisplay = input.parentElement.parentElement.querySelector('.error-text');
+        }
+
+        if (!errorDisplay) {
+            errorDisplay = document.createElement('div');
+            errorDisplay.className = 'error-text';
+            
+            // Insert after the input or its container
+            if (input.parentElement.classList.contains('password-group') || input.parentElement.classList.contains('input-group')) {
+                input.parentElement.insertAdjacentElement('afterend', errorDisplay);
+            } else {
+                input.insertAdjacentElement('afterend', errorDisplay);
+            }
+        }
+        
+        errorDisplay.innerText = message;
+        
+        // Optional: Update placeholder if empty
         if (input.value === '') {
             input.placeholder = message;
         }
@@ -109,11 +136,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Helper: Clear Error
     function clearError(input) {
-        if (input.classList.contains('input-error')) {
-            input.classList.remove('input-error');
-            if (input.dataset.originalPlaceholder !== undefined) {
-                input.placeholder = input.dataset.originalPlaceholder;
-            }
+        input.classList.remove('input-error');
+        
+        let errorDisplay = input.parentElement.querySelector('.error-text');
+        if (!errorDisplay && (input.parentElement.classList.contains('password-group') || input.parentElement.classList.contains('input-group'))) {
+            errorDisplay = input.parentElement.parentElement.querySelector('.error-text');
+        }
+
+        if (errorDisplay) {
+            errorDisplay.remove();
+        }
+
+        if (input.dataset.originalPlaceholder !== undefined) {
+            input.placeholder = input.dataset.originalPlaceholder;
         }
     }
 });

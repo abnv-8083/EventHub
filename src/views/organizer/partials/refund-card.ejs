@@ -1,0 +1,147 @@
+<!-- Refund Request Card — mode: 'pending' | 'approved' | 'rejected' -->
+<div class="card glass" style="padding: 2rem; border-radius: 20px; border: 1px solid var(--border);">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 2rem;">
+
+        <!-- Left: Attendee & Event Info -->
+        <div style="flex: 1; min-width: 260px;">
+            <div style="display: flex; gap: 1.2rem; align-items: center; margin-bottom: 1.5rem;">
+                <div style="width: 46px; height: 46px; background: var(--bg-surface); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border); flex-shrink: 0;">
+                    <i class="fa fa-user" style="color: var(--primary);"></i>
+                </div>
+                <div>
+                    <div style="font-weight: 800; font-size: 1rem;"><%= request.userId.name %></div>
+                    <div style="font-size: 0.82rem; color: var(--text-muted);"><%= request.userId.email %> · <%= request.userId.phone %></div>
+                </div>
+            </div>
+
+            <div style="background: rgba(255,255,255,0.02); padding: 1rem 1.2rem; border-radius: 12px; border: 1px solid var(--border);">
+                <div style="font-size: 0.68rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); margin-bottom: 0.4rem;">Event</div>
+                <div style="font-weight: 700; margin-bottom: 0.2rem;"><%= request.eventId.title %></div>
+                <div style="font-size: 0.8rem; color: var(--text-dim); font-family: monospace;">Booking: <%= request.bookingId %></div>
+            </div>
+        </div>
+
+        <!-- Right: Cancellation Details -->
+        <div style="flex: 1; min-width: 260px;">
+            <!-- Tickets -->
+            <div style="margin-bottom: 1.2rem;">
+                <div style="font-size: 0.68rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); margin-bottom: 0.6rem;">
+                    Tickets (<%= request.type %>)
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 0.4rem;">
+                    <% request.tickets.forEach(t => { %>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.88rem; padding: 0.35rem 0.8rem; background: rgba(255,255,255,0.02); border-radius: 6px;">
+                            <span><%= t.ticketName %> × <%= t.quantity %></span>
+                            <span style="font-weight: 700;">₹<%= t.subtotal.toLocaleString('en-IN') %></span>
+                        </div>
+                    <% }) %>
+                </div>
+            </div>
+
+            <!-- Reason + Amount -->
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem;">
+                <div style="max-width: 60%;">
+                    <div style="font-size: 0.68rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); margin-bottom: 0.25rem;">User's Reason</div>
+                    <div style="font-size: 0.85rem; color: var(--text-muted); font-style: italic;">"<%= request.reason %>"</div>
+                </div>
+                <div style="text-align: right;">
+                    <div style="font-size: 0.68rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); margin-bottom: 0.25rem;">Refund Amount</div>
+                    <div style="font-size: 1.5rem; font-weight: 800; color: #2ecc71;">₹<%= request.refundAmount.toLocaleString('en-IN') %></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Status badge + meta for non-pending ── -->
+    <% if (mode === 'approved') { %>
+        <div style="margin-top: 1.5rem; padding-top: 1.2rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <span style="display:inline-flex; align-items:center; gap:0.5rem; font-size:0.82rem; padding:0.4rem 1rem; background:rgba(46,204,113,0.08); border:1px solid rgba(46,204,113,0.25); color:#2ecc71; border-radius:20px;">
+                <i class="fa fa-check-circle"></i> Approved & Refunded
+            </span>
+            <% if (request.utrNumber) { %>
+                <div style="font-size:0.8rem; color:var(--text-dim);">
+                    <i class="fa fa-hashtag" style="margin-right:0.3rem;"></i>UTR:
+                    <span style="font-family:monospace; color:#fff; margin-left:0.3rem;"><%= request.utrNumber %></span>
+                </div>
+            <% } %>
+            <div style="font-size:0.78rem; color:var(--text-dim);">
+                <i class="fa fa-calendar-check" style="margin-right:0.3rem;"></i>
+                <%= new Date(request.updatedAt).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' }) %>
+            </div>
+        </div>
+
+    <% } else if (mode === 'rejected') { %>
+        <div style="margin-top: 1.5rem; padding-top: 1.2rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <span style="display:inline-flex; align-items:center; gap:0.5rem; font-size:0.82rem; padding:0.4rem 1rem; background:rgba(231,76,60,0.08); border:1px solid rgba(231,76,60,0.25); color:#e74c3c; border-radius:20px;">
+                <i class="fa fa-times-circle"></i> Request Rejected
+            </span>
+            <% if (request.adminNotes) { %>
+                <div style="font-size:0.82rem; color:var(--text-dim); font-style:italic; max-width:60%;">
+                    <i class="fa fa-comment-alt" style="margin-right:0.3rem;"></i>"<%= request.adminNotes %>"
+                </div>
+            <% } %>
+            <div style="font-size:0.78rem; color:var(--text-dim);">
+                <i class="fa fa-calendar-times" style="margin-right:0.3rem;"></i>
+                <%= new Date(request.updatedAt).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' }) %>
+            </div>
+        </div>
+
+    <% } else { %>
+        <!-- PENDING: Approve + Reject actions -->
+        <div style="margin-top: 1.5rem; padding-top: 1.2rem; border-top: 1px solid var(--border);">
+
+            <!-- Approve Form -->
+            <form class="approve-form" data-id="<%= request._id %>" novalidate
+                style="display: flex; gap: 1rem; align-items: flex-start; margin-bottom: 1rem;">
+                <div style="flex: 1;">
+                    <div style="position: relative;">
+                        <input type="text" name="utrNumber" class="input utr-input v-field"
+                            placeholder="Enter UTR / Transaction ID"
+                            autocomplete="off"
+                            style="padding: 0.8rem 2.8rem 0.8rem 1rem; font-size: 0.88rem; letter-spacing: 0.5px; width: 100%;">
+                        <span class="utr-icon" style="position:absolute; right:0.9rem; top:50%; transform:translateY(-50%); font-size:0.85rem; pointer-events:none;"></span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:0.3rem;">
+                        <span class="utr-error v-error" style="display:none;"></span>
+                        <span class="utr-hint" style="font-size:0.72rem; color:var(--text-dim); margin-left:auto;">8–22 chars</span>
+                    </div>
+                </div>
+                <button type="submit" class="approve-btn btn btn-primary"
+                    style="padding: 0.8rem 1.4rem; font-weight: 700; white-space: nowrap; flex-shrink: 0; background:#2ecc71; border-color:#2ecc71;">
+                    <i class="fa fa-check" style="margin-right:0.4rem;"></i>Approve & Refund
+                </button>
+            </form>
+
+            <!-- Reject Row -->
+            <div class="reject-wrapper" data-id="<%= request._id %>">
+                <div class="reject-trigger">
+                    <button type="button" class="btn btn-outline-danger reject-open-btn"
+                        style="width: 100%; padding: 0.65rem; font-weight: 600;">
+                        <i class="fa fa-times" style="margin-right:0.4rem;"></i>Reject Request
+                    </button>
+                </div>
+                <div class="reject-expanded" style="display:none; margin-top:0.75rem;">
+                    <div style="margin-bottom:0.5rem;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem;">
+                            <label style="font-size:0.8rem; font-weight:600; color:var(--text-muted);">Rejection Reason <span style="color:#e74c3c;">*required</span></label>
+                            <span class="reject-char-count" style="font-size:0.72rem; color:var(--text-dim);">0 / 300</span>
+                        </div>
+                        <textarea class="input reject-reason v-field" rows="2" maxlength="300"
+                            placeholder="e.g. Cancellation policy does not apply for this event."
+                            style="resize:none; font-size:0.88rem;"></textarea>
+                        <span class="reject-error v-error" style="display:none;"></span>
+                    </div>
+                    <div style="display:flex; gap:0.75rem;">
+                        <button type="button" class="reject-cancel-btn btn btn-outline"
+                            style="flex:1; padding:0.6rem; font-size:0.85rem;">Cancel</button>
+                        <button type="button" class="reject-confirm-btn btn btn-primary"
+                            style="flex:2; padding:0.6rem; background:#e74c3c; border-color:#e74c3c; font-weight:700;">
+                            <i class="fa fa-times" style="margin-right:0.4rem;"></i>Confirm Reject
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    <% } %>
+</div>

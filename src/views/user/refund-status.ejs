@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../partials/head', { title: 'Refund Status - EventHub' }) %>
+<body style="background:#000; color:#fff; min-height:100vh;">
+
+    <%- include('../partials/header') %>
+
+    <div class="dashboard-layout">
+        <%- include('../partials/sidebar') %>
+        
+        <main class="dashboard-main animate">
+            <h1 style="font-size: 1.8rem; margin-bottom: 2.5rem;">Refund <span class="text-gradient">Status</span></h1>
+
+            <% if (cancellations && cancellations.length > 0) { %>
+                <div class="card glass" style="padding: 0; overflow: hidden; border-radius: 20px;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="border-bottom: 1px solid var(--border); background: rgba(255,255,255,0.02);">
+                                <th style="padding: 1.5rem 2rem; text-align: left; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim);">Event & Details</th>
+                                <th style="padding: 1.5rem 2rem; text-align: left; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim);">Refund Amount</th>
+                                <th style="padding: 1.5rem 2rem; text-align: left; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim);">Status</th>
+                                <th style="padding: 1.5rem 2rem; text-align: left; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim);">UTR / Reference</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% cancellations.forEach(cancel => { %>
+                                <tr style="border-bottom: 1px solid var(--border); transition: all 0.3s ease;" onmouseover="this.style.background='rgba(255,255,255,0.01)'" onmouseout="this.style.background='transparent'">
+                                    <td style="padding: 1.5rem 2rem;">
+                                        <div style="display: flex; gap: 1.2rem; align-items: center;">
+                                            <div style="width: 60px; height: 40px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border);">
+                                                <img src="<%= cancel.eventId.bannerImage.startsWith('http') ? cancel.eventId.bannerImage : '/' + cancel.eventId.bannerImage %>" style="width: 100%; height: 100%; object-fit: cover;">
+                                            </div>
+                                            <div>
+                                                <div style="font-weight: 700; color: #fff; margin-bottom: 0.2rem;"><%= cancel.eventId.title %></div>
+                                                <div style="font-size: 0.75rem; color: var(--text-dim);"><%= cancel.type === 'full' ? 'Full Booking' : cancel.tickets.length + ' Ticket(s)' %> • Requested <%= new Date(cancel.createdAt).toLocaleDateString() %></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="padding: 1.5rem 2rem;">
+                                        <div style="font-weight: 800; font-size: 1.1rem; color: #2ecc71;">₹<%= cancel.refundAmount.toLocaleString('en-IN') %></div>
+                                    </td>
+                                    <td style="padding: 1.5rem 2rem;">
+                                        <% if (cancel.status === 'pending') { %>
+                                            <span style="background: rgba(243, 156, 18, 0.1); color: #f39c12; padding: 0.4rem 1rem; border-radius: 100px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; border: 1px solid rgba(243, 156, 18, 0.2);">Pending</span>
+                                        <% } else if (cancel.status === 'approved') { %>
+                                            <span style="background: rgba(46, 204, 113, 0.1); color: #2ecc71; padding: 0.4rem 1rem; border-radius: 100px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; border: 1px solid rgba(46, 204, 113, 0.2);">Approved</span>
+                                        <% } else { %>
+                                            <span style="background: rgba(230, 57, 70, 0.1); color: #e63946; padding: 0.4rem 1rem; border-radius: 100px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; border: 1px solid rgba(230, 57, 70, 0.2);">Rejected</span>
+                                        <% } %>
+                                    </td>
+                                    <td style="padding: 1.5rem 2rem;">
+                                        <% if (cancel.utrNumber) { %>
+                                            <div style="font-family: monospace; font-weight: 700; color: var(--primary);"><%= cancel.utrNumber %></div>
+                                        <% } else if (cancel.status === 'rejected' && cancel.adminNotes) { %>
+                                            <div style="font-size: 0.85rem; color: var(--text-muted); font-style: italic;"><%= cancel.adminNotes %></div>
+                                        <% } else { %>
+                                            <div style="font-size: 0.85rem; color: var(--text-dim);">Awaiting confirmation</div>
+                                        <% } %>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            <% } else { %>
+                <div class="card glass" style="padding: 5rem 2rem; text-align: center; border-radius: 24px;">
+                    <div style="width: 80px; height: 80px; background: rgba(255,255,255,0.03); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
+                        <i class="fa fa-history" style="font-size: 2.5rem; color: var(--text-dim);"></i>
+                    </div>
+                    <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem;">No Refund Requests</h2>
+                    <p style="color: var(--text-muted);">You haven't requested any cancellations or refunds yet.</p>
+                </div>
+            <% } %>
+
+        </main>
+    </div>
+
+    <%- include('../partials/footer-scripts') %>
+
+</body>
+</html>

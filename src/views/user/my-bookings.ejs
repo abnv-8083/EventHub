@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../partials/head', { title: 'My Tickets - EventHub' }) %>
+<body>
+
+    <%- include('../partials/header') %>
+
+    <div class="dashboard-layout">
+        <%- include('../partials/sidebar', { activePage: 'tickets' }) %>
+
+        <main class="dashboard-main animate">
+
+            <div style="margin-bottom:2.5rem; display: flex; justify-content: space-between; align-items: flex-end;">
+                <div>
+                    <h1 style="font-size:2rem; font-weight:800; margin-bottom:0.4rem;">My <span class="text-gradient">Tickets</span></h1>
+                    <p style="color:var(--text-muted); font-size:1rem;">Manage your upcoming events and view your purchase history.</p>
+                </div>
+                <div style="background: rgba(255,255,255,0.05); padding: 0.5rem 1.2rem; border-radius: 100px; border: 1px solid var(--border); font-size: 0.85rem; font-weight: 600; color: var(--text-dim); white-space: nowrap;">
+                    <i class="fa fa-ticket-alt" style="margin-right: 0.4rem; color: var(--primary);"></i>
+                    <%= bookings.length %> Ticket<%= bookings.length !== 1 ? 's' : '' %> Found
+                </div>
+            </div>
+
+            <% if (bookings && bookings.length > 0) { %>
+                <div style="display: flex; flex-direction: column; gap: 2rem;">
+                    <% bookings.forEach(booking => { %>
+                        <!-- Ticket Card -->
+                        <div class="card glass" style="padding:0; border:1px solid var(--border); border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; position: relative;">
+
+                            <!-- Header Area -->
+                            <div style="padding: 1.5rem 2rem; background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 100%);">
+                                <div style="display:flex; gap:1.5rem; align-items:center; flex-wrap: wrap;">
+                                    <div style="width:100px; height:70px; border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,0.1); flex-shrink:0;">
+                                        <img src="<%= booking.eventId.bannerImage.startsWith('http') ? booking.eventId.bannerImage : '/' + booking.eventId.bannerImage %>"
+                                            style="width:100%; height:100%; object-fit:cover;" />
+                                    </div>
+                                    <div style="flex: 1; min-width: 200px;">
+                                        <div style="font-weight:800; font-size:1.2rem; margin-bottom:0.4rem; color: #fff;"><%= booking.eventId.title %></div>
+                                        <div style="font-size:0.82rem; color:var(--text-dim); display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: center;">
+                                            <span><i class="fa fa-calendar-alt text-gradient" style="margin-right:0.4rem;"></i><%= new Date(booking.eventId.startDate).toLocaleDateString('en-IN', { weekday:'long', day:'numeric', month:'long', year:'numeric' }) %></span>
+                                            <span><i class="fa fa-clock text-gradient" style="margin-right:0.4rem;"></i><%= booking.eventId.startTime %></span>
+                                            <% if (booking.eventId.venueLocation?.name) { %>
+                                                <span><i class="fa fa-map-marker-alt text-gradient" style="margin-right:0.4rem;"></i><%= booking.eventId.venueLocation.name %></span>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; gap: 0.8rem; align-items: center; flex-shrink: 0;">
+                                        <a href="/user/cancel-booking/<%= booking._id %>" class="btn btn-outline-danger" style="padding: 0.5rem 1rem; font-size: 0.82rem; font-weight: 700;">
+                                            <i class="fa fa-times" style="margin-right: 0.4rem;"></i> Cancel
+                                        </a>
+                                        <a href="/user/payment-success/<%= booking._id %>" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.82rem; font-weight: 700;">
+                                            <i class="fa fa-qrcode" style="margin-right: 0.4rem;"></i> View QR
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Ticket Stub Divider -->
+                            <div style="position: relative; height: 2px; background: rgba(255,255,255,0.05); margin: 0 -1px;">
+                                <div style="position: absolute; left: -12px; top: -11px; width: 22px; height: 22px; background: var(--bg-dark); border-radius: 50%; border: 1px solid var(--border);"></div>
+                                <div style="position: absolute; right: -12px; top: -11px; width: 22px; height: 22px; background: var(--bg-dark); border-radius: 50%; border: 1px solid var(--border);"></div>
+                            </div>
+
+                            <!-- Details Area -->
+                            <div style="padding: 1.2rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.2rem;">
+                                <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
+                                    <% booking.tickets.forEach(ticket => { %>
+                                        <div>
+                                            <div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); margin-bottom: 0.25rem;"><%= ticket.ticketName %></div>
+                                            <div style="font-weight: 700; color: #fff;"><%= ticket.quantity %> Ticket<%= ticket.quantity !== 1 ? 's' : '' %></div>
+                                        </div>
+                                    <% }) %>
+                                    <div>
+                                        <div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); margin-bottom: 0.25rem;">Order ID</div>
+                                        <div style="font-weight: 600; color: var(--text-muted); font-family: monospace; font-size: 0.8rem;"><%= booking.razorpay_order_id %></div>
+                                    </div>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); margin-bottom: 0.25rem;">Total Amount</div>
+                                    <div style="font-weight: 800; font-size: 1.2rem; color: #2ecc71;">₹<%= booking.totalAmount.toLocaleString('en-IN') %></div>
+                                </div>
+                            </div>
+
+                        </div>
+                    <% }) %>
+                </div>
+            <% } else { %>
+                <div class="card glass" style="padding: 4rem 2rem; text-align: center; border: 1px solid var(--border); border-radius: 20px;">
+                    <div style="width: 90px; height: 90px; background: rgba(230,57,70,0.06); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 2rem;">
+                        <i class="fa fa-ticket-alt" style="font-size: 2.5rem; color: var(--primary); opacity: 0.7;"></i>
+                    </div>
+                    <h2 style="font-size: 1.6rem; font-weight: 700; margin-bottom: 1rem;">No Tickets Yet!</h2>
+                    <p style="color: var(--text-muted); margin-bottom: 2rem; max-width: 380px; margin-left: auto; margin-right: auto;">You haven't booked any events yet. Explore the latest events and grab your tickets today!</p>
+                    <a href="/events" class="btn btn-primary glow-primary" style="padding: 0.9rem 2.5rem; font-weight: 700;">Browse Events</a>
+                </div>
+            <% } %>
+
+        </main>
+    </div>
+
+    <%- include('../partials/footer-scripts') %>
+
+    <style>
+        .btn-outline-danger {
+            background-color: transparent;
+            border: 1px solid rgba(230, 57, 70, 0.4);
+            color: #ff4d4d;
+            transition: all 0.3s ease;
+        }
+        .btn-outline-danger:hover {
+            background-color: rgba(230, 57, 70, 0.1);
+            border-color: #ff4d4d;
+            color: #ff4d4d;
+            transform: translateY(-2px);
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #FF4D4D 0%, #E63946 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+
+</body>
+</html>

@@ -65,17 +65,23 @@
                 </form>
             </div>
 
-            <!-- Tab Navigation (Simplified) -->
+            <!-- Tab Navigation -->
             <div class="tabs-container" style="margin-bottom: 2rem;">
                 <div style="display: flex; gap: 2rem; border-bottom: 1px solid var(--border);">
-                    <div id="tab-events" class="tab-btn active">
-                        Events <span class="count-badge"><%= pendingEvents.length %></span>
+                    <div id="tab-pending" class="tab-btn active" onclick="switchTab('pending')">
+                        Pending <span class="count-badge"><%= pendingEvents.length %></span>
+                    </div>
+                    <div id="tab-approved" class="tab-btn" onclick="switchTab('approved')">
+                        Approved <span class="count-badge"><%= approvedEvents.length %></span>
+                    </div>
+                    <div id="tab-rejected" class="tab-btn" onclick="switchTab('rejected')">
+                        Rejected <span class="count-badge"><%= rejectedEvents.length %></span>
                     </div>
                 </div>
             </div>
 
-            <!-- Events Tab -->
-            <div id="content-events" class="tab-content active">
+            <!-- Pending Events Tab -->
+            <div id="content-pending" class="tab-content active">
                 <div class="card" style="padding: 0; overflow: hidden;">
                     <table class="data-table">
                         <thead>
@@ -156,8 +162,6 @@
                                     <% } else if (i <= 3 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) { %>
                                         <a href="?page=<%= i %><%= currentSearch ? '&search=' + currentSearch : '' %><%= currentCategory ? '&category=' + currentCategory : '' %><%= currentSort ? '&sort=' + currentSort : '' %>" 
                                            class="btn btn-outline" style="padding: 0.5rem 1rem; border-radius: 8px; font-size: 0.85rem;"><%= i %></a>
-                                    <% } else if (i === 4 || i === totalPages - 1) { %>
-                                        <span style="color: var(--text-dim); padding: 0.5rem;">...</span>
                                     <% } %>
                                 <% } %>
 
@@ -170,6 +174,80 @@
                             </div>
                         </div>
                     <% } %>
+                </div>
+            </div>
+
+            <!-- Approved Events Tab -->
+            <div id="content-approved" class="tab-content">
+                <div class="card" style="padding: 0; overflow: hidden;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Event Details</th>
+                                <th>Organizer</th>
+                                <th>Date</th>
+                                <th style="text-align: right;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (approvedEvents && approvedEvents.length > 0) { %>
+                                <% approvedEvents.forEach(event => { %>
+                                    <tr>
+                                        <td>
+                                            <div style="font-weight: 600;"><%= event.title %></div>
+                                            <div style="font-size: 0.75rem; color: var(--text-dim);"><%= event.category %></div>
+                                        </td>
+                                        <td><%= event.organizerId ? event.organizerId.organizationName : 'N/A' %></td>
+                                        <td><%= new Date(event.startDate).toLocaleDateString() %></td>
+                                        <td style="text-align: right;">
+                                            <a href="/admin/events/view/<%= event._id %>" class="btn btn-outline" style="padding: 0.4rem 0.8rem; border-radius: 8px;">
+                                                <i class="fa fa-eye"></i> View Details
+                                            </a>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                            <% } else { %>
+                                <tr><td colspan="4" style="text-align: center; padding: 3rem; color: var(--text-dim);">No approved events found.</td></tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Rejected Events Tab -->
+            <div id="content-rejected" class="tab-content">
+                <div class="card" style="padding: 0; overflow: hidden;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Event Details</th>
+                                <th>Organizer</th>
+                                <th>Reason</th>
+                                <th style="text-align: right;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (rejectedEvents && rejectedEvents.length > 0) { %>
+                                <% rejectedEvents.forEach(event => { %>
+                                    <tr>
+                                        <td>
+                                            <div style="font-weight: 600;"><%= event.title %></div>
+                                            <div style="font-size: 0.75rem; color: var(--text-dim);"><%= event.category %></div>
+                                        </td>
+                                        <td><%= event.organizerId ? event.organizerId.organizationName : 'N/A' %></td>
+                                        <td style="max-width: 300px; font-size: 0.85rem; color: var(--error);"><%= event.rejectionReason %></td>
+                                        <td style="text-align: right;">
+                                            <a href="/admin/events/view/<%= event._id %>" class="btn btn-outline" style="padding: 0.4rem 0.8rem; border-radius: 8px;">
+                                                <i class="fa fa-eye"></i> View Details
+                                            </a>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                            <% } else { %>
+                                <tr><td colspan="4" style="text-align: center; padding: 3rem; color: var(--text-dim);">No rejected events found.</td></tr>
+                            <% } %>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
@@ -254,8 +332,13 @@
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
             
-            document.getElementById('tab-' + tabId).classList.add('active');
-            document.getElementById('content-' + tabId).classList.add('active');
+            const tab = document.getElementById('tab-' + tabId);
+            const content = document.getElementById('content-' + tabId);
+            
+            if (tab && content) {
+                tab.classList.add('active');
+                content.classList.add('active');
+            }
         }
 
         function approveAction(type, id) {

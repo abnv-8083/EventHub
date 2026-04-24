@@ -98,13 +98,19 @@
                                     <a href="/admin/users/view/<%= u._id %>" class="btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" title="View">
                                         <i class="fa fa-eye"></i>
                                     </a>
-                                    <form class="ajax-form m-0" action="/admin/users/toggle-block/<%= u._id %>?_method=PATCH" method="POST">
-                                        <button type="submit" class="btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.8rem; color: <%= u.status === 'Active' ? '#E67E22' : '#2ECC71' %>;" title="<%= u.status === 'Active' ? 'Block' : 'Unblock' %>">
+                                    <form class="ajax-form m-0" action="/admin/users/toggle-block/<%= u._id %>?_method=PATCH" method="POST" 
+                                          data-confirm="Are you sure you want to <%= u.status === 'Active' ? 'block' : 'unblock' %> this user?"
+                                          data-confirm-title="<%= u.status === 'Active' ? 'Block User' : 'Unblock User' %>"
+                                          data-confirm-type="<%= u.status === 'Active' ? 'delete' : 'confirm' %>">
+                                         <button type="submit" class="btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.8rem; color: <%= u.status === 'Active' ? '#E67E22' : '#2ECC71' %>;" title="<%= u.status === 'Active' ? 'Block' : 'Unblock' %>">
                                             <i class="fa fa-<%= u.status === 'Active' ? 'ban' : 'check-circle' %>"></i>
                                         </button>
                                     </form>
-                                    <form class="ajax-form m-0" action="/admin/users/delete/<%= u._id %>?_method=DELETE" method="POST">
-                                        <button type="submit" class="btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.8rem; color: #E63946;" title="Delete">
+                                    <form class="ajax-form m-0" action="/admin/users/delete/<%= u._id %>?_method=DELETE" method="POST"
+                                          data-confirm="Are you sure you want to permanently delete this user? This action cannot be undone."
+                                          data-confirm-title="Delete User"
+                                          data-confirm-type="delete">
+                                         <button type="submit" class="btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.8rem; color: #E63946;" title="Delete">
                                             <i class="fa fa-trash"></i>
                                         </button>
                                     </form>

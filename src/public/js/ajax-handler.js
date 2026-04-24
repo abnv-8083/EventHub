@@ -135,8 +135,20 @@ window.submitFormAjax = submitFormAjax;
 document.addEventListener('DOMContentLoaded', () => {
     const ajaxForms = document.querySelectorAll('form.ajax-form');
     ajaxForms.forEach(form => {
-        form.addEventListener('submit', (e) => {
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
+            
+            // Check for custom confirmation message
+            const confirmMsg = form.dataset.confirm;
+            if (confirmMsg) {
+                const confirmed = await Confirmation.show({
+                    title: form.dataset.confirmTitle || 'Confirm Action',
+                    message: confirmMsg,
+                    type: form.dataset.confirmType || 'confirm'
+                });
+                if (!confirmed) return;
+            }
+
             if (typeof window.submitFormAjax === 'function') {
                 window.submitFormAjax(form);
             }

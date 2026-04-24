@@ -360,15 +360,17 @@
                 </button>
             </div>
 
-            <form id="payoutForm" style="display: flex; flex-direction: column; gap: 1.1rem;">
+            <form id="payoutForm" class="needs-validation ajax-form" action="/organizer/event/<%= event._id %>/payment/payout" method="POST" novalidate style="display: flex; flex-direction: column; gap: 1.1rem;">
+                <input type="hidden" name="branchName" id="hiddenBranchName">
+                <input type="hidden" name="branchCity" id="hiddenBranchCity">
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                     <div class="form-group">
                         <label class="label">Account Holder</label>
-                        <input type="text" id="accountHolder" class="input" placeholder="Full name" required />
+                        <input type="text" name="accountHolder" id="accountHolder" class="input" placeholder="Full name" required minlength="3" />
                     </div>
                     <div class="form-group">
                         <label class="label">Bank Name</label>
-                        <select id="bankName" class="input" required>
+                        <select name="bankName" id="bankName" class="input" required>
                             <option value="" disabled selected>Select your bank</option>
                             <option>Axis Bank</option>
                             <option>Bank of Baroda</option>
@@ -394,13 +396,13 @@
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                     <div class="form-group">
                         <label class="label">Account Number</label>
-                        <input type="text" id="accountNumber" class="input" placeholder="Account number" required />
+                        <input type="text" name="accountNumber" id="accountNumber" class="input" placeholder="Account number" required pattern="^\d{9,18}$" title="9-18 digits required" />
                     </div>
                     <div class="form-group">
                         <label class="label">IFSC Code</label>
                         <div style="position: relative;">
-                            <input type="text" id="ifscCode" class="input" placeholder="e.g. HDFC0001234"
-                                maxlength="11" style="text-transform: uppercase; padding-right: 2.5rem;" required />
+                            <input type="text" name="ifscCode" id="ifscCode" class="input" placeholder="e.g. HDFC0001234"
+                                maxlength="11" style="text-transform: uppercase; padding-right: 2.5rem;" required pattern="^[A-Z]{4}0[A-Z0-9]{6}$" title="Invalid IFSC format" />
                             <span id="ifscSpinner" style="display:none; position:absolute; right:0.8rem; top:50%; transform:translateY(-50%); color:var(--text-dim); font-size:0.85rem;">
                                 <i class="fa fa-spinner fa-spin"></i>
                             </span>
@@ -416,7 +418,7 @@
                 </div>
                 <div class="form-group">
                     <label class="label">Notes</label>
-                    <textarea id="payoutNotes" class="input" rows="2" placeholder="Any special instructions..." style="resize: none;"></textarea>
+                    <textarea name="notes" id="payoutNotes" class="input" rows="2" placeholder="Any special instructions..." style="resize: none;"></textarea>
                 </div>
 
                 <button type="submit" id="submitPayoutBtn"
@@ -447,8 +449,11 @@
                 document.getElementById('branchText').textContent =
                     `${data.BRANCH}, ${data.CITY}, ${data.STATE}`;
                 info.style.display = 'block';
-                this.dataset.branch = data.BRANCH;
-                this.dataset.city   = data.CITY;
+                
+                // Update hidden fields
+                document.getElementById('hiddenBranchName').value = data.BRANCH;
+                document.getElementById('hiddenBranchCity').value = data.CITY;
+
                 // Auto-select matching bank
                 const sel = document.getElementById('bankName');
                 for (let o of sel.options) {
@@ -468,68 +473,9 @@
         closeBtn.addEventListener('click', () => modal.classList.remove('open'));
         modal.addEventListener('click', e => { if (e.target === modal) modal.classList.remove('open'); });
 
-        document.getElementById('payoutForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const accountHolder = document.getElementById('accountHolder').value.trim();
-            const bankName      = document.getElementById('bankName').value;
-            const accountNumber = document.getElementById('accountNumber').value.trim();
-            const ifscInput     = document.getElementById('ifscCode');
-            const ifscCode      = ifscInput.value.trim().toUpperCase();
-            
-            // Client-side Validation
-            if (!accountHolder || accountHolder.length < 3) {
-                return showToast('Please enter a valid account holder name.', 'error');
-            }
-            if (!bankName) {
-                return showToast('Please select a bank.', 'error');
-            }
-            if (!/^\d{8,18}$/.test(accountNumber)) {
-                return showToast('Account number must be between 8 and 18 digits.', 'error');
-            }
-            if (ifscCode.length !== 11) {
-                return showToast('IFSC Code must be exactly 11 characters.', 'error');
-            }
-            if (document.getElementById('ifscError').style.display === 'block') {
-                return showToast('Please enter a valid IFSC code verified by the system.', 'error');
-            }
-
-            const btn = document.getElementById('submitPayoutBtn');
-            btn.disabled = true;
-            btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Submitting...';
-
-            const payload = {
-                accountHolder,
-                bankName,
-                accountNumber,
-                ifscCode,
-                branchName    : ifscInput.dataset.branch || null,
-                branchCity    : ifscInput.dataset.city   || null,
-                notes         : document.getElementById('payoutNotes').value.trim()
-            };
-
-            try {
-                const res  = await fetch('/organizer/event/<%= event._id %>/payment/payout', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                const data = await res.json();
-
-                if (data.success) {
-                    modal.classList.remove('open');
-                    showToast(data.message || 'Payout request submitted!', 'success');
-                    setTimeout(() => window.location.href = '/organizer/event/<%= event._id %>/view', 2000);
-                } else {
-                    showToast(data.message || 'Failed to submit payout.', 'error');
-                    btn.disabled = false;
-                    btn.innerHTML = '<i class="fa fa-check-circle"></i> Confirm Payout Request';
-                }
-            } catch (err) {
-                showToast('Network error. Please try again.', 'error');
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fa fa-check-circle"></i> Confirm Payout Request';
-            }
+        // AJAX Handler will take over from here because of .needs-validation and .ajax-form classes
+        document.getElementById('payoutForm').addEventListener('ajax:success', (e) => {
+            modal.classList.remove('open');
         });
     </script>
 

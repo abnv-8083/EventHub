@@ -778,6 +778,15 @@ footer {
     opacity: 1;
 }
 
+.error-text {
+    color: #E63946;
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-top: 0.4rem;
+    display: block;
+    animation: fadeIn 0.2s ease-out;
+}
+
 /* --- TOAST NOTIFICATIONS --- */
 #toast-container {
     position: fixed;

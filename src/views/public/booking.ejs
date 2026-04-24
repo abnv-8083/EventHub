@@ -132,10 +132,7 @@
                                         <span style="color: var(--text-dim);">Subtotal</span>
                                         <span id="subtotal" style="font-weight: 600;">₹0</span>
                                     </div>
-                                    <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
-                                        <span style="color: var(--text-dim);">Platform Fee (5%)</span>
-                                        <span id="fee" style="font-weight: 600;">₹0</span>
-                                    </div>
+                                    <!-- Platform fee is now deducted from organizer payout, hidden from user -->
                                     <div
                                         style="display: flex; justify-content: space-between; padding-top: 1.5rem; border-top: 1px solid var(--border); margin-bottom: 2.5rem;">
                                         <span style="font-size: 1.25rem; font-weight: 700;">Total</span>
@@ -257,11 +254,9 @@
                                 checkoutBtn.disabled = false;
                             }
 
-                            const fee = subtotal * 0.05;
-                            const total = subtotal + fee;
+                            const total = subtotal;
 
                             subtotalEl.textContent = `₹${subtotal.toLocaleString('en-IN')}`;
-                            feeEl.textContent = `₹${fee.toLocaleString('en-IN')}`;
                             totalEl.textContent = `₹${total.toLocaleString('en-IN')}`;
                         }
                         document.getElementById('checkoutBtn').addEventListener('click', async function () {

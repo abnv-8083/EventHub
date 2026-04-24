@@ -101,5 +101,7 @@ router.get('/payments', adminController.getPaymentRequests)
 router.patch('/payments/:id/approve', adminController.approvePayment)
 router.patch('/payments/:id/reject', adminController.rejectPayment)
 
+router.get('/wallet', adminController.getWallet)
+
 
 export default router

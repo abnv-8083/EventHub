@@ -16,6 +16,10 @@ export const getDashboardData = async (userId) => {
     return { organizer, stats };
 };
 
+export const getOrganizerByUserId = async (userId) => {
+    return await OrganizerRepo.getOrganizerByUserId(userId);
+};
+
 export const getOrganizerStats = async (organizerId) => {
     // For stats, we need all events. fetchEvents is now paginated by default.
     // We pass large limit to get all events for now (or better, use a specific agg query).

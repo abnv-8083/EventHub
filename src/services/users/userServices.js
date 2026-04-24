@@ -7,6 +7,7 @@ import * as userQuery from "../../repositories/users/usersQueries.js"
 import * as wishlistRepo from "../../repositories/users/wishlistQueries.js"
 import * as bookingRepo from "../../repositories/users/bookingQueries.js"
 import * as eventRepo from "../../repositories/users/eventQueries.js"
+import * as walletRepo from "../../repositories/admin/adminWalletQueries.js"
 import AppError from "../../utils/AppError.js"
 import HTTP_STATUS from "../../constants/statusCode.js"
 import razorpay from "../../utils/razorpay.js"
@@ -123,7 +124,7 @@ export const createCheckoutOrder = async (userId, eventId, selection) => {
 
     // 2. Calculate totals
     const platformFee = Math.round(subtotal * 0.05);
-    const totalAmount = subtotal + platformFee;
+    const totalAmount = subtotal; // Platform fee is now deducted from the organizer's revenue later
 
     // 3. Create Razorpay order
     const order = await razorpay.orders.create({
@@ -169,6 +170,8 @@ export const verifyAndCompletePayment = async (orderId, paymentId, signature, bo
         booking.eventId, booking.tickets, booking.subtotal, booking.userId
     );
 
+    // Note: Admin wallet is now credited when the organizer's payout is approved, not here.
+
     return true;
 }
 
@@ -177,6 +180,30 @@ export const getBookingWithEvent = async (bookingId, userId) => {
     if (!booking || booking.userId.toString() !== userId.toString())
         throw new AppError('Booking not found', HTTP_STATUS.NOT_FOUND);
     return booking;
+}
+
+export const getUserBookings = async (userId) => {
+    return await bookingRepo.findUserBookings(userId);
+}
+
+export const getCancellationRequests = async (userId) => {
+    return await bookingRepo.findUserCancellations(userId);
+}
+
+export const createCancellation = async (data) => {
+    return await bookingRepo.createCancellationRequest(data);
+}
+
+export const getOrganizerRefunds = async (organizerId) => {
+    return await bookingRepo.findOrganizerRefundRequests(organizerId);
+}
+
+export const getAllOrganizerRefunds = async (organizerId) => {
+    return await bookingRepo.findAllOrganizerRefunds(organizerId);
+}
+
+export const processRefund = async (refundId, status, utrNumber, adminNotes) => {
+    return await bookingRepo.updateCancellationStatus(refundId, status, utrNumber, adminNotes);
 }
 
 

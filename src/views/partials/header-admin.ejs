@@ -54,7 +54,10 @@
                                 <hr class="dropdown-divider" style="opacity: 0.1; margin: 0.5rem 0;">
                             </li>
                             <li>
-                                <form class="ajax-form m-0 p-0" action="/admin/logout" method="POST">
+                                <form class="ajax-form m-0 p-0" action="/admin/logout" method="POST"
+                                      data-confirm="Are you sure you want to exit the admin panel?"
+                                      data-confirm-title="Admin Logout"
+                                      data-confirm-type="confirm">
                                     <button type="submit" class="dropdown-item text-danger d-flex align-items-center py-2 px-3" style="background: none; border: none; width: 100%; text-align: left; border-radius: 8px; transition: all 0.2s;">
                                         <i class="fa fa-sign-out-alt me-3" style="font-size: 1.1rem;"></i>
                                         <span style="font-weight: 500; font-size: 0.95rem;">Logout</span>

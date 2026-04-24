@@ -11,7 +11,7 @@ import passportConfig from "./src/config/passport.js"
 
 //Middlewares
 import toastMiddleware from "./src/middleware/toastMiddleware.js"
-import appSession from "./src/middleware/session.js"
+import { userSession, adminSession } from "./src/middleware/session.js"
 
 // User Routes
 import userAuthRoute from "./src/router/user/authRoutes.js"
@@ -40,7 +40,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 
-// Helper for route chains that need session + flash + toast
+// Helper for route chains that need session + flash + toast (User)
 const withSession = (sessionMw) => [
     sessionMw,
     passport.initialize(),
@@ -49,13 +49,20 @@ const withSession = (sessionMw) => [
     toastMiddleware
 ];
 
+// Admin does not use passport, so we omit it for cleaner session management
+const withAdminSession = (sessionMw) => [
+    sessionMw,
+    flash(),
+    toastMiddleware
+];
+
 import checkBlocked from "./src/middleware/checkBlocked.js"
 
-app.use('/user', ...withSession(appSession), checkBlocked, userAuthRoute)
-app.use('/user', ...withSession(appSession), checkBlocked, userRouter)
-app.use('/admin', ...withSession(appSession), adminViewMiddleware, adminAuthRoute)
-app.use('/organizer', ...withSession(appSession), checkBlocked, organizerRouter)
-app.use('/', ...withSession(appSession), checkBlocked, publicRouter)
+app.use('/user', ...withSession(userSession), checkBlocked, userAuthRoute)
+app.use('/user', ...withSession(userSession), checkBlocked, userRouter)
+app.use('/admin', ...withAdminSession(adminSession), adminViewMiddleware, adminAuthRoute)
+app.use('/organizer', ...withSession(userSession), checkBlocked, organizerRouter)
+app.use('/', ...withSession(userSession), checkBlocked, publicRouter)
 
 connectDB()
 app.listen(PORT, () => {

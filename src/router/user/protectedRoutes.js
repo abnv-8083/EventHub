@@ -24,10 +24,16 @@ router.get('/booking/:id', isAuthenticated, userController.getBookingPage)
 router.post('/wishlist/toggle/:id', isAuthenticated, userController.toggleWishlist)
 router.get('/wishlist', isAuthenticated, userController.getWishlist)
 
+router.get('/bookings', isAuthenticated, userController.getMyBookings)
 // Razorpay
 router.post('/checkout', isAuthenticated, userController.postCheckout)
 router.post('/verify-payment', isAuthenticated, userController.verifyPayment)
 router.get('/payment-success/:id', isAuthenticated, userController.getPaymentSuccess)
+
+// Cancellation & Refunds
+router.get('/cancel-booking/:id', isAuthenticated, userController.getCancelBooking)
+router.post('/cancel-booking/:id', isAuthenticated, userController.postCancelBooking)
+router.get('/refund-status', isAuthenticated, userController.getRefundStatus)
 
 
 export default router

@@ -21,79 +21,87 @@
                 </p>
             </div>
 
-            <!-- Booking Card -->
-            <div class="card glass" style="padding:2rem; border:1px solid var(--border); margin-bottom:2rem;">
-
-                <!-- Event Info -->
-                <div style="display:flex; gap:1.25rem; align-items:center; padding-bottom:1.5rem; border-bottom:1px solid var(--border); margin-bottom:1.5rem;">
-                    <div style="width:72px; height:56px; border-radius:10px; overflow:hidden; border:1px solid var(--border); flex-shrink:0;">
-                        <img src="<%= booking.eventId.bannerImage.startsWith('http') ? booking.eventId.bannerImage : '/' + booking.eventId.bannerImage %>"
-                            style="width:100%; height:100%; object-fit:cover;" />
-                    </div>
-                    <div>
-                        <div style="font-weight:700; font-size:1.1rem; margin-bottom:0.2rem;"><%= booking.eventId.title %></div>
-                        <div style="font-size:0.82rem; color:var(--text-dim);">
-                            <i class="fa fa-calendar-alt" style="margin-right:0.4rem;"></i>
-                            <%= new Date(booking.eventId.startDate).toLocaleDateString('en-IN', { weekday:'long', day:'numeric', month:'long', year:'numeric' }) %>
-                            &nbsp;•&nbsp;
-                            <i class="fa fa-clock" style="margin-right:0.4rem;"></i><%= booking.eventId.startTime %>
+            <!-- Real Ticket Design -->
+            <div class="card glass" style="padding:0; border:1px solid var(--border); margin-bottom:2rem; border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; position: relative;">
+                
+                <!-- Ticket Header (Event Info) -->
+                <div style="padding: 2.25rem 2.25rem 1.5rem 2.25rem; background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0) 100%);">
+                    <div style="display:flex; gap:1.5rem; align-items:center;">
+                        <div style="width:84px; height:84px; border-radius:14px; overflow:hidden; border:1px solid rgba(255,255,255,0.1); flex-shrink:0; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+                            <img src="<%= booking.eventId.bannerImage.startsWith('http') ? booking.eventId.bannerImage : '/' + booking.eventId.bannerImage %>"
+                                style="width:100%; height:100%; object-fit:cover;" />
                         </div>
-                        <% if (booking.eventId.venueLocation?.name) { %>
-                        <div style="font-size:0.82rem; color:var(--text-dim); margin-top:0.2rem;">
-                            <i class="fa fa-map-marker-alt" style="margin-right:0.4rem;"></i><%= booking.eventId.venueLocation.name %>
+                        <div>
+                            <div style="font-weight:800; font-size:1.4rem; margin-bottom:0.6rem; color: #fff; letter-spacing: -0.02em;"><%= booking.eventId.title %></div>
+                            <div style="font-size:0.85rem; color:var(--text-dim); display: flex; flex-wrap: wrap; gap: 1rem; align-items: center;">
+                                <span style="display: flex; align-items: center;"><i class="fa fa-calendar-alt text-gradient" style="margin-right:0.4rem; font-size: 0.95rem;"></i><%= new Date(booking.eventId.startDate).toLocaleDateString('en-IN', { weekday:'long', day:'numeric', month:'long', year:'numeric' }) %></span>
+                                <span style="display: flex; align-items: center;"><i class="fa fa-clock text-gradient" style="margin-right:0.4rem; font-size: 0.95rem;"></i><%= booking.eventId.startTime %></span>
+                                <% if (booking.eventId.venueLocation?.name) { %>
+                                    <span style="display: flex; align-items: center;"><i class="fa fa-map-marker-alt text-gradient" style="margin-right:0.4rem; font-size: 0.95rem;"></i><%= booking.eventId.venueLocation.name %></span>
+                                <% } %>
+                            </div>
                         </div>
-                        <% } %>
                     </div>
                 </div>
 
-                <!-- Tickets Table -->
-                <table style="width:100%; border-collapse:collapse; margin-bottom:1.5rem;">
-                    <thead>
-                        <tr style="background:rgba(255,255,255,0.03);">
-                            <th style="padding:0.75rem 1rem; text-align:left; font-size:0.72rem; text-transform:uppercase; letter-spacing:1px; color:var(--text-dim);">Ticket</th>
-                            <th style="padding:0.75rem; text-align:center; font-size:0.72rem; text-transform:uppercase; letter-spacing:1px; color:var(--text-dim);">Qty</th>
-                            <th style="padding:0.75rem; text-align:center; font-size:0.72rem; text-transform:uppercase; letter-spacing:1px; color:var(--text-dim);">Price</th>
-                            <th style="padding:0.75rem 1rem; text-align:right; font-size:0.72rem; text-transform:uppercase; letter-spacing:1px; color:var(--text-dim);">Subtotal</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% booking.tickets.forEach(ticket => { %>
-                        <tr style="border-top:1px solid rgba(255,255,255,0.04);">
-                            <td style="padding:0.85rem 1rem; font-weight:600;"><%= ticket.ticketName %></td>
-                            <td style="padding:0.85rem; text-align:center; color:var(--text-muted);">× <%= ticket.quantity %></td>
-                            <td style="padding:0.85rem; text-align:center; color:var(--text-muted);">₹<%= ticket.pricePerTicket.toLocaleString('en-IN') %></td>
-                            <td style="padding:0.85rem 1rem; text-align:right; font-weight:600;">₹<%= ticket.subtotal.toLocaleString('en-IN') %></td>
-                        </tr>
-                        <% }) %>
-                    </tbody>
-                </table>
-
-                <!-- Totals -->
-                <div style="border-top:1px solid var(--border); padding-top:1.25rem; display:flex; flex-direction:column; gap:0.6rem;">
-                    <div style="display:flex; justify-content:space-between; font-size:0.88rem;">
-                        <span style="color:var(--text-muted);">Subtotal</span>
-                        <span>₹<%= booking.subtotal.toLocaleString('en-IN') %></span>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; font-size:0.88rem;">
-                        <span style="color:var(--text-muted);">Platform Fee (5%)</span>
-                        <span>₹<%= booking.platformFee.toLocaleString('en-IN') %></span>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; font-size:1.1rem; font-weight:800; padding-top:0.75rem; border-top:1px solid var(--border); margin-top:0.25rem;">
-                        <span>Total Paid</span>
-                        <span style="color:#2ecc71;">₹<%= booking.totalAmount.toLocaleString('en-IN') %></span>
-                    </div>
+                <!-- Perforation / Cutout separator -->
+                <div style="position: relative; height: 32px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                    <div style="position: absolute; left: -16px; width: 32px; height: 32px; background: #000; border-radius: 50%; border-right: 1px solid var(--border); box-shadow: inset -3px 0 5px rgba(0,0,0,0.2);"></div>
+                    <div style="width: calc(100% - 60px); border-top: 2px dashed rgba(255,255,255,0.15);"></div>
+                    <div style="position: absolute; right: -16px; width: 32px; height: 32px; background: #000; border-radius: 50%; border-left: 1px solid var(--border); box-shadow: inset 3px 0 5px rgba(0,0,0,0.2);"></div>
                 </div>
-            </div>
 
-            <!-- QR Code Card -->
-            <div class="card glass" style="padding:1.75rem 2rem; border:1px solid var(--border); margin-bottom:2rem; display:flex; align-items:center; gap:1.5rem;">
-                <div style="width:64px; height:64px; background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-                    <i class="fa fa-qrcode" style="font-size:1.8rem; color:var(--text-dim);"></i>
-                </div>
-                <div>
-                    <div style="font-weight:700; margin-bottom:0.25rem;">Your Ticket ID</div>
-                    <div style="font-family:monospace; font-size:0.82rem; color:#2ecc71; word-break:break-all;"><%= booking.qrData %></div>
-                    <div style="font-size:0.75rem; color:var(--text-dim); margin-top:0.3rem;">Show this at the entrance for check-in</div>
+                <!-- Ticket Body (Details & QR) -->
+                <div style="padding: 1.5rem 2.25rem 2.25rem 2.25rem; display: flex; gap: 2.5rem; align-items: stretch; flex-wrap: wrap;">
+                    
+                    <!-- Left: Tickets & Totals -->
+                    <div style="flex: 1; min-width: 280px; display: flex; flex-direction: column; justify-content: space-between;">
+                        <table style="width:100%; border-collapse:collapse; margin-bottom:1.5rem;">
+                            <thead>
+                                <tr style="background:rgba(255,255,255,0.03); border-radius: 6px;">
+                                    <th style="padding:0.75rem 1rem; text-align:left; font-size:0.72rem; text-transform:uppercase; letter-spacing:1px; color:var(--text-dim); border-top-left-radius: 6px; border-bottom-left-radius: 6px;">Ticket</th>
+                                    <th style="padding:0.75rem; text-align:center; font-size:0.72rem; text-transform:uppercase; letter-spacing:1px; color:var(--text-dim);">Qty</th>
+                                    <th style="padding:0.75rem; text-align:center; font-size:0.72rem; text-transform:uppercase; letter-spacing:1px; color:var(--text-dim);">Price</th>
+                                    <th style="padding:0.75rem 1rem; text-align:right; font-size:0.72rem; text-transform:uppercase; letter-spacing:1px; color:var(--text-dim); border-top-right-radius: 6px; border-bottom-right-radius: 6px;">Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% booking.tickets.forEach(ticket => { %>
+                                <tr>
+                                    <td style="padding:1rem 1rem; font-weight:600; color: #fff; border-bottom: 1px solid rgba(255,255,255,0.04);"><%= ticket.ticketName %></td>
+                                    <td style="padding:1rem; text-align:center; color:var(--text-muted); border-bottom: 1px solid rgba(255,255,255,0.04);">× <%= ticket.quantity %></td>
+                                    <td style="padding:1rem; text-align:center; color:var(--text-muted); border-bottom: 1px solid rgba(255,255,255,0.04);">₹<%= ticket.pricePerTicket.toLocaleString('en-IN') %></td>
+                                    <td style="padding:1rem 1rem; text-align:right; font-weight:600; color: #fff; border-bottom: 1px solid rgba(255,255,255,0.04);">₹<%= ticket.subtotal.toLocaleString('en-IN') %></td>
+                                </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                        
+                        <div style="padding-top:0.5rem; display:flex; flex-direction:column; gap:0.6rem;">
+                            <div style="display:flex; justify-content:space-between; font-size:0.88rem;">
+                                <span style="color:var(--text-muted);">Subtotal</span>
+                                <span style="color: #fff; font-weight: 500;">₹<%= booking.subtotal.toLocaleString('en-IN') %></span>
+                            </div>
+                            <div style="display:flex; justify-content:space-between; font-size:0.88rem;">
+                                <span style="color:var(--text-muted);">Platform Fee (5%)</span>
+                                <span style="color: #fff; font-weight: 500;">₹<%= booking.platformFee.toLocaleString('en-IN') %></span>
+                            </div>
+                            <div style="display:flex; justify-content:space-between; font-size:1.1rem; font-weight:800; padding-top:0.85rem; border-top:1px dashed rgba(255,255,255,0.1); margin-top:0.25rem;">
+                                <span style="color: #fff;">Total Paid</span>
+                                <span style="color:#2ecc71;">₹<%= booking.totalAmount.toLocaleString('en-IN') %></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: QR Code -->
+                    <div style="width: 170px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(255,255,255,0.02); padding: 1.25rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); flex-shrink: 0;">
+                        <div style="width:130px; height:130px; background:#fff; border-radius:8px; display:flex; align-items:center; justify-content:center; padding: 0.5rem; margin-bottom: 1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=<%= encodeURIComponent(booking.qrData) %>" alt="QR Code" style="width: 100%; height: 100%; object-fit: contain;">
+                        </div>
+                        <div style="font-weight:800; font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.4rem;">Ticket ID</div>
+                        <div style="font-family:monospace; font-size:0.75rem; color:#2ecc71; text-align: center; word-break:break-all; font-weight: 600;"><%= booking.qrData %></div>
+                    </div>
+
                 </div>
             </div>
 

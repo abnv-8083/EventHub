@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../partials/head', { title: 'Refund Requests - Organizer' }) %>
+<body>
+
+    <%- include('../partials/header') %>
+
+    <div class="dashboard-layout">
+        <%- include('../partials/sidebar-organizer') %>
+
+        <main class="dashboard-main animate">
+
+            <!-- Page Header -->
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem;">
+                <div>
+                    <h1 style="font-size: 1.8rem; margin-bottom: 0.4rem;">Refund <span class="text-gradient">Requests</span></h1>
+                    <p style="color: var(--text-dim); font-size: 0.9rem;">Manage cancellation and refund requests from your attendees.</p>
+                </div>
+                <div style="display: flex; gap: 0.75rem;">
+                    <div class="stat-mini">
+                        <span class="stat-label">Pending</span>
+                        <span class="stat-value" style="color: #e67e22;"><%= pendingRefunds.length %></span>
+                    </div>
+                    <div class="stat-mini">
+                        <span class="stat-label">Approved</span>
+                        <span class="stat-value" style="color: #2ecc71;"><%= approvedRefunds.length %></span>
+                    </div>
+                    <div class="stat-mini">
+                        <span class="stat-label">Rejected</span>
+                        <span class="stat-value" style="color: #e74c3c;"><%= rejectedRefunds.length %></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Nav -->
+            <div style="display: flex; gap: 2rem; border-bottom: 1px solid var(--border); margin-bottom: 2rem;">
+                <div id="tab-pending" class="r-tab active" onclick="switchTab('pending')">
+                    <i class="fa fa-clock" style="margin-right:0.4rem;"></i>Pending
+                    <span class="r-badge"><%= pendingRefunds.length %></span>
+                </div>
+                <div id="tab-approved" class="r-tab" onclick="switchTab('approved')">
+                    <i class="fa fa-check-circle" style="margin-right:0.4rem;"></i>Approved
+                    <span class="r-badge"><%= approvedRefunds.length %></span>
+                </div>
+                <div id="tab-rejected" class="r-tab" onclick="switchTab('rejected')">
+                    <i class="fa fa-times-circle" style="margin-right:0.4rem;"></i>Rejected
+                    <span class="r-badge"><%= rejectedRefunds.length %></span>
+                </div>
+            </div>
+
+            <!-- ══ PENDING TAB ══════════════════════════════════════════ -->
+            <div id="content-pending" class="r-tab-content active">
+                <% if (pendingRefunds.length > 0) { %>
+                    <div style="display: grid; gap: 1.5rem;">
+                        <% pendingRefunds.forEach(request => { %>
+                            <%- include('./partials/refund-card', { request, mode: 'pending' }) %>
+                        <% }) %>
+                    </div>
+                <% } else { %>
+                    <%- include('./partials/refund-empty', { icon: 'fa-clock', message: 'No pending refund requests.' }) %>
+                <% } %>
+            </div>
+
+            <!-- ══ APPROVED TAB ═════════════════════════════════════════ -->
+            <div id="content-approved" class="r-tab-content">
+                <% if (approvedRefunds.length > 0) { %>
+                    <div style="display: grid; gap: 1.5rem;">
+                        <% approvedRefunds.forEach(request => { %>
+                            <%- include('./partials/refund-card', { request, mode: 'approved' }) %>
+                        <% }) %>
+                    </div>
+                <% } else { %>
+                    <%- include('./partials/refund-empty', { icon: 'fa-check-circle', message: 'No approved refund requests yet.' }) %>
+                <% } %>
+            </div>
+
+            <!-- ══ REJECTED TAB ═════════════════════════════════════════ -->
+            <div id="content-rejected" class="r-tab-content">
+                <% if (rejectedRefunds.length > 0) { %>
+                    <div style="display: grid; gap: 1.5rem;">
+                        <% rejectedRefunds.forEach(request => { %>
+                            <%- include('./partials/refund-card', { request, mode: 'rejected' }) %>
+                        <% }) %>
+                    </div>
+                <% } else { %>
+                    <%- include('./partials/refund-empty', { icon: 'fa-times-circle', message: 'No rejected refund requests.' }) %>
+                <% } %>
+            </div>
+
+        </main>
+    </div>
+
+    <%- include('../partials/footer-scripts') %>
+
+    <script>
+        function switchTab(id) {
+            document.querySelectorAll('.r-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.r-tab-content').forEach(c => c.classList.remove('active'));
+            document.getElementById('tab-' + id).classList.add('active');
+            document.getElementById('content-' + id).classList.add('active');
+        }
+
+        // ─── Shared validation helpers ───────────────────────────────────
+        function vSetValid(field, iconEl, errEl) {
+            field.classList.remove('v-invalid'); field.classList.add('v-valid');
+            if (iconEl) iconEl.innerHTML = '<i class="fa fa-check-circle" style="color:#2ecc71;"></i>';
+            if (errEl)  errEl.style.display = 'none';
+        }
+        function vSetInvalid(field, iconEl, errEl, msg) {
+            field.classList.remove('v-valid'); field.classList.add('v-invalid');
+            if (iconEl) iconEl.innerHTML = '<i class="fa fa-exclamation-circle" style="color:#e74c3c;"></i>';
+            if (errEl) {
+                errEl.style.display = 'none';
+                void errEl.offsetWidth;
+                errEl.textContent = msg;
+                errEl.style.display = 'block';
+            }
+        }
+        function vClear(field, iconEl, errEl) {
+            field.classList.remove('v-valid','v-invalid');
+            if (iconEl) iconEl.innerHTML = '';
+            if (errEl)  errEl.style.display = 'none';
+        }
+        function validateUTR(input, iconEl, errEl) {
+            const val = input.value.trim();
+            if (!val) { vSetInvalid(input, iconEl, errEl, 'UTR / Transaction ID is required.'); return false; }
+            if (!/^[A-Za-z0-9]{8,22}$/.test(val)) { vSetInvalid(input, iconEl, errEl, 'Must be 8–22 alphanumeric characters.'); return false; }
+            vSetValid(input, iconEl, errEl);
+            return true;
+        }
+        function validateRejectReason(textarea, errEl) {
+            const val = textarea.value.trim();
+            if (!val) { vSetInvalid(textarea, null, errEl, 'Rejection reason is required.'); return false; }
+            if (val.length < 10) { vSetInvalid(textarea, null, errEl, 'Please provide more detail (min 10 characters).'); return false; }
+            vSetValid(textarea, null, errEl);
+            return true;
+        }
+        async function sendRequest(url, body, btn, originalHTML) {
+            try {
+                const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+                const result = await res.json();
+                if (result.success) {
+                    showToast(result.message, 'success');
+                    setTimeout(() => location.reload(), 1500);
+                } else {
+                    showToast(result.message || 'Failed.', 'error');
+                    btn.disabled = false; btn.innerHTML = originalHTML;
+                }
+            } catch (err) {
+                showToast('An error occurred. Please try again.', 'error');
+                btn.disabled = false; btn.innerHTML = originalHTML;
+            }
+        }
+
+        // ─── Wire approve forms ──────────────────────────────────────────
+        document.querySelectorAll('.approve-form').forEach(form => {
+            const id     = form.dataset.id;
+            const input  = form.querySelector('.utr-input');
+            const iconEl = form.querySelector('.utr-icon');
+            const errEl  = form.querySelector('.utr-error');
+            const hintEl = form.querySelector('.utr-hint');
+            const btn    = form.querySelector('.approve-btn');
+
+            input.addEventListener('input', () => {
+                const len = input.value.trim().length;
+                hintEl.textContent = `${len} / 22`;
+                hintEl.style.color = (len >= 8 && len <= 22) ? '#2ecc71' : (len > 0 ? '#e74c3c' : 'var(--text-dim)');
+                if (input.classList.contains('v-invalid') || input.classList.contains('v-valid')) validateUTR(input, iconEl, errEl);
+            });
+            input.addEventListener('blur', () => validateUTR(input, iconEl, errEl));
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                if (!validateUTR(input, iconEl, errEl)) { input.focus(); return; }
+                const orig = btn.innerHTML;
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa fa-spinner fa-spin" style="margin-right:0.4rem;"></i>Processing...';
+                await sendRequest(`/organizer/refunds/approve/${id}`, { utrNumber: input.value.trim() }, btn, orig);
+            });
+        });
+
+        // ─── Wire reject wrappers ────────────────────────────────────────
+        document.querySelectorAll('.reject-wrapper').forEach(wrapper => {
+            const id         = wrapper.dataset.id;
+            const trigger    = wrapper.querySelector('.reject-trigger');
+            const expanded   = wrapper.querySelector('.reject-expanded');
+            const openBtn    = wrapper.querySelector('.reject-open-btn');
+            const cancelBtn  = wrapper.querySelector('.reject-cancel-btn');
+            const confirmBtn = wrapper.querySelector('.reject-confirm-btn');
+            const textarea   = wrapper.querySelector('.reject-reason');
+            const errEl      = wrapper.querySelector('.reject-error');
+            const charCount  = wrapper.querySelector('.reject-char-count');
+
+            openBtn.addEventListener('click', () => {
+                trigger.style.display = 'none'; expanded.style.display = 'block';
+                textarea.value = ''; charCount.textContent = '0 / 300'; charCount.style.color = 'var(--text-dim)';
+                vClear(textarea, null, errEl); setTimeout(() => textarea.focus(), 80);
+            });
+            cancelBtn.addEventListener('click', () => { expanded.style.display = 'none'; trigger.style.display = 'block'; });
+
+            textarea.addEventListener('input', () => {
+                const len = textarea.value.length;
+                charCount.textContent = `${len} / 300`;
+                charCount.style.color = len >= 10 ? '#2ecc71' : (len > 0 ? '#e67e22' : 'var(--text-dim)');
+                if (textarea.classList.contains('v-invalid') || textarea.classList.contains('v-valid')) validateRejectReason(textarea, errEl);
+            });
+            textarea.addEventListener('blur', () => validateRejectReason(textarea, errEl));
+
+            confirmBtn.addEventListener('click', async () => {
+                if (!validateRejectReason(textarea, errEl)) { textarea.focus(); return; }
+                const orig = confirmBtn.innerHTML;
+                confirmBtn.disabled = true;
+                confirmBtn.innerHTML = '<i class="fa fa-spinner fa-spin" style="margin-right:0.4rem;"></i>Processing...';
+                await sendRequest(`/organizer/refunds/reject/${id}`, { reason: textarea.value.trim() }, confirmBtn, orig);
+            });
+        });
+    </script>
+
+    <style>
+        /* ── Tabs ── */
+        .r-tab {
+            padding: 0.9rem 0;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.92rem;
+            color: var(--text-muted);
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.2s;
+            margin-bottom: -1px;
+        }
+        .r-tab:hover { color: #fff; }
+        .r-tab.active { color: var(--primary); }
+        .r-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px; left: 0;
+            width: 100%; height: 2px;
+            background: var(--primary);
+            border-radius: 2px 2px 0 0;
+        }
+        .r-badge {
+            background: rgba(255,255,255,0.06);
+            padding: 0.1rem 0.5rem;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 700;
+        }
+        .r-tab.active .r-badge { background: rgba(230,57,70,0.12); color: var(--primary); }
+        .r-tab-content { display: none; }
+        .r-tab-content.active { display: block; }
+
+        /* ── Stat mini ── */
+        .stat-mini { background: rgba(255,255,255,0.03); padding: 0.5rem 1rem; border-radius: 10px; border: 1px solid var(--border); text-align: center; }
+        .stat-label { display: block; font-size: 0.68rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; }
+        .stat-value { font-size: 1.15rem; font-weight: 800; }
+
+        /* ── Buttons ── */
+        .btn-outline-danger {
+            background: transparent;
+            border: 1px solid rgba(230, 57, 70, 0.4);
+            color: #ff4d4d;
+            transition: all 0.3s ease;
+        }
+        .btn-outline-danger:hover { background: rgba(230,57,70,0.1); border-color: #ff4d4d; }
+
+        /* ── Inline Validation ── */
+        .v-field { transition: border-color 0.25s, box-shadow 0.25s; }
+        .v-field.v-invalid { border-color: #e74c3c !important; box-shadow: 0 0 0 3px rgba(231,76,60,0.15) !important; }
+        .v-field.v-valid   { border-color: #2ecc71 !important; box-shadow: 0 0 0 3px rgba(46,204,113,0.12) !important; }
+        .v-error { display: block; font-size: 0.76rem; font-weight: 600; color: #e74c3c; animation: v-shake 0.3s ease; }
+        @keyframes v-shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
+
+        /* ── Reject expand animation ── */
+        .reject-expanded { animation: slideDown 0.2s ease; }
+        @keyframes slideDown { from{opacity:0;transform:translateY(-6px)} to{opacity:1;transform:translateY(0)} }
+    </style>
+
+</body>
+</html>
