@@ -25,8 +25,8 @@ export const fetchUserById = async (id, excludeField='')=>{
     return await User.findById(id).select(excludeField)
 }
 
-export const editUser = async (id,name, phone, city, bio, gender, dob, occupation)=>{
-    return await User.findOneAndUpdate({_id:id},{$set:{name:name, phone:phone, city:city, bio:bio, gender:gender, dob:dob, occupation:occupation}},{new: true})
+export const editUser = async (id,name, phone, city, bio, gender, age, occupation)=>{
+    return await User.findOneAndUpdate({_id:id},{$set:{name:name, phone:phone, city:city, bio:bio, gender:gender, age:age, occupation:occupation}},{new: true})
 }
 
 export const editUserAvatar = async (id, avatarUrl) => {

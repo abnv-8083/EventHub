@@ -6,6 +6,7 @@ import { City } from "country-state-city"
 import * as cityConst from "../../constants/cityConstant.js"
 import { profileUpdateValidate, editEmailValidate, passwordUpdateValidate, organizerRegisterValidate } from "../../validation/user/user.js"
 import * as organizerQuery from "../../repositories/organizer/organizerQueries.js"
+import Event from "../../models/organizer/event.js"
 
 export const getHome = async (req, res) => {
     try {
@@ -154,9 +155,9 @@ export const editProfile = async (req, res) => {
         }
 
         const userId = req.session.user._id;
-        const { name, phone, city, bio, gender, dob, occupation } = value;
+        const { name, phone, city, bio, gender, age, occupation } = value;
 
-        const updatedUser = await userServices.profileUpdate(userId, name, phone, city, bio, gender, dob, occupation);
+        const updatedUser = await userServices.profileUpdate(userId, name, phone, city, bio, gender, age, occupation);
         
         // Update session
         req.session.user.name = updatedUser.name;

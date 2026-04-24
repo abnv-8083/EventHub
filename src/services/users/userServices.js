@@ -27,8 +27,8 @@ export const getUserProfile = async (userId) => {
     return await userQuery.fetchUserById(userId);
 }
 
-export const profileUpdate = async (id, name, phone, city, bio, gender, dob, occupation) =>{
-    const editedUser = await userQuery.editUser(id, name, phone, city, bio, gender, dob, occupation)
+export const profileUpdate = async (id, name, phone, city, bio, gender, age, occupation) =>{
+    const editedUser = await userQuery.editUser(id, name, phone, city, bio, gender, age, occupation)
     if(!editedUser){
         throw new AppError('Failed to Edit User Detail', HTTP_STATUS.BAD_REQUEST)
     }

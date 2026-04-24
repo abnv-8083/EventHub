@@ -18,10 +18,14 @@ export const getEventsData = async (query) => {
     const skip = (page - 1) * limit;
 
     const filters = {};
-    if (category && category !== 'All' && category !== 'All Types') filters.category = category;
-    if (search) filters.title = { $regex: search, $options: 'i' };
-    if (city) filters['venueLocation.address'] = { $regex: city, $options: 'i' };
-    if (featured === 'true') filters.isFeatured = true;
+    if (category && category !== 'All' && category !== 'All Types') 
+        filters.category = category;
+    if (search) 
+        filters.title = { $regex: search, $options: 'i' };
+    if (city) 
+        filters['venueLocation.address'] = { $regex: city, $options: 'i' };
+    if (featured === 'true') 
+        filters.isFeatured = true;
 
     // Price Filtering
     if (minPrice || maxPrice) {

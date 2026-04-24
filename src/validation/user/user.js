@@ -120,11 +120,13 @@ export const profileUpdateValidate = Joi.object({
             'any.required': 'Gender is a required field.',
             'any.only': 'Please select a valid gender option.'
         }),
-    dob: Joi.date()
-        .max(new Date(new Date().setFullYear(new Date().getFullYear() - 18)))
+    age: Joi.number()
+        .min(18)
+        .max(120)
         .messages({
-            'date.base': 'Please enter a valid date of birth.',
-            'date.max': 'You must be at least 18 years old.'
+            'number.base': 'Please enter a valid age.',
+            'number.min': 'You must be at least 18 years old.',
+            'number.max': 'Please enter a valid age.'
         })
         .allow('', null)
         .optional(),

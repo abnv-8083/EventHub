@@ -3,9 +3,9 @@ const router = express.Router()
 import * as userController from "../../controller/users/userController.js"
 // import isAuthenticated from "../../middleware/isAuthenticated.js"
 
-router.get('/',userController.getHome)
 
-router.get('/events',userController.getEvents)
+router.get('/', userController.getHome)
+router.get('/events', userController.getEvents)
 router.get('/events/:id', userController.getEventDetails)
 router.post('/events/:id/review', userController.postReview)
 router.delete('/review/:id', userController.deleteReview)

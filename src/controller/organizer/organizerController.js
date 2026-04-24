@@ -80,6 +80,11 @@ export const postCreateEvent = async (req, res) => {
 
         // Use qs to parse nested objects (tickets, etc.) from the flat req.body
         const parseBody = qs.parse(qs.stringify(req.body));
+        
+        // Ensure tickets is an array (qs.parse might make it an object if indices are non-sequential)
+        if (parseBody.tickets && !Array.isArray(parseBody.tickets)) {
+            parseBody.tickets = Object.values(parseBody.tickets);
+        }
 
         // Determine which schema to use
         const status = parseBody.status || 'Pending';
@@ -173,6 +178,11 @@ export const postEditEvent = async (req, res) => {
 
         // Use qs to parse nested objects (tickets, etc.) from the flat req.body
         const parseBody = qs.parse(qs.stringify(req.body));
+        
+        // Ensure tickets is an array (qs.parse might make it an object if indices are non-sequential)
+        if (parseBody.tickets && !Array.isArray(parseBody.tickets)) {
+            parseBody.tickets = Object.values(parseBody.tickets);
+        }
 
         // Determine which schema to use (Edit process keeps current status unless toggled to Pending)
         const status = parseBody.status || 'Pending';
@@ -182,6 +192,7 @@ export const postEditEvent = async (req, res) => {
 
         if (error) {
             const errorMessages = error.details.map(err => err.message);
+            console.error("Validation Failed in postEditEvent:", errorMessages, parseBody);
             return sendResponse(res, HTTP_STATUS.BAD_REQUEST, false, errorMessages);
         }
 

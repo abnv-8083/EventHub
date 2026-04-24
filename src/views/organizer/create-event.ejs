@@ -516,6 +516,22 @@
                 document.getElementById('bannerInput').addEventListener('change', function (event) {
                     const file = event.target.files[0];
                     if (file) {
+                        if (file.type !== 'image/jpeg' && file.type !== 'image/png') {
+                            if (typeof showToast === 'function') {
+                                showToast('Please upload a valid image file (JPG or PNG).', 'error');
+                            } else {
+                                alert('Please upload a valid image file (JPG or PNG).');
+                            }
+                            event.target.value = ''; // Clear the input
+                            
+                            const preview = document.getElementById('bannerPreview');
+                            const placeholder = document.getElementById('bannerPlaceholder');
+                            preview.style.display = 'none';
+                            preview.src = '';
+                            placeholder.style.display = 'block';
+                            return;
+                        }
+
                         const reader = new FileReader();
                         reader.onload = function (e) {
                             const preview = document.getElementById('bannerPreview');

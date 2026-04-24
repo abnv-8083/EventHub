@@ -338,9 +338,35 @@
                 };
 
                 // --- Banner Logic ---
+                const originalBannerSrc = document.getElementById('bannerPreview').src;
+                const hasOriginalBanner = originalBannerSrc && !originalBannerSrc.startsWith('data:') && originalBannerSrc !== window.location.href;
+
                 document.getElementById('bannerInput').onchange = (e) => {
                     const file = e.target.files[0];
                     if (file) {
+                        if (file.type !== 'image/jpeg' && file.type !== 'image/png') {
+                            if (typeof showToast === 'function') {
+                                showToast('Please upload a valid image file (JPG or PNG).', 'error');
+                            } else {
+                                alert('Please upload a valid image file (JPG or PNG).');
+                            }
+                            e.target.value = ''; // Clear the input
+                            
+                            const preview = document.getElementById('bannerPreview');
+                            const placeholder = document.getElementById('bannerPlaceholder');
+                            
+                            if (hasOriginalBanner) {
+                                preview.src = originalBannerSrc;
+                                preview.style.display = 'block';
+                                placeholder.style.display = 'none';
+                            } else {
+                                preview.style.display = 'none';
+                                preview.src = '';
+                                placeholder.style.display = 'block';
+                            }
+                            return;
+                        }
+
                         const reader = new FileReader();
                         reader.onload = (ev) => {
                             document.getElementById('bannerPreview').src = ev.target.result;

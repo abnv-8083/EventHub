@@ -44,8 +44,8 @@ const userSchema = new Schema({
         enum: ["Male", "Female", "Other", "Prefer not to say"],
         default: "Prefer not to say"
     },
-    dob: {
-        type: Date,
+    age: {
+        type: Number,
         default: null
     },
     occupation: {
